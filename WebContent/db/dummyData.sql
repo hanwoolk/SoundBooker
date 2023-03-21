@@ -39,49 +39,49 @@ INSERT INTO RECTEAM (rID, rPW, rNAME, rJOB)
 --------------------------------------------------------------------------------
 
 INSERT INTO MEMBER (mID, mPW, mNAME, pNUM, mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('aaa', '1', '김녹음', 1, '1990-06-06', 'M', '010-0101-0101', 'N',
-        '경기도', 'N', NULL, NULL, NULL, 1, '우리', '1002-33-11-2341');
+        '경기도', 'N', NULL, NULL, NULL, 1, '우리', '1002-33-11-2341', 'ON');
 
 INSERT INTO MEMBER (mID, mPW, mNAME, pNUM, mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('bbb', '1', '박박박', 1, '1988-01-04', 'F', '010-0222-1121', 'N',
-        '서울', 'Y', '09:00', '13:00', NULL, 5, '농혐', '1002-3312-2341');
+        '서울', 'Y', '09:00', '13:00', NULL, 5, '농혐', '1002-3312-2341', 'ON');
 
 INSERT INTO MEMBER (mID, mPW, mNAME, pNUM, mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('ccc', '1', 'BOB', 1, '1973-04-05', 'M', '010-1111-3301', 'I',
-        '경기도', 'Y', '17:30', NULL, NULL, 1, 'CITY', '1002-1134-1234');
+        '경기도', 'Y', '17:30', NULL, NULL, 1, 'CITY', '1002-1134-1234', 'ON');
 
 INSERT INTO MEMBER (mID, mPW, mNAME,pNUMREG, mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('ddd', '1', 'LISA',2,'1994-02-08', 'F', '010-1234-0555', 'I',
-        '서울', 'N', NULL, NULL, NULL, 0, '농협', '1002-12-115553');
+        '서울', 'N', NULL, NULL, NULL, 0, '농협', '1002-12-115553', 'ON');
 
 INSERT INTO MEMBER (mID, mPW, mNAME,pNUM,mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('asdf', '1', '박이김', 3, '1992-07-11', 'M', '010-4444-0128', 'N',
-        '경기도', 'N', NULL, NULL, NULL, 0, '우리', '1002-44-512');
+        '경기도', 'N', NULL, NULL, NULL, 0, '우리', '1002-44-512', 'ON');
         
 INSERT INTO MEMBER (mID, mPW, mNAME,pNUM,mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('kik', '1', '최고', 2, '1992-07-11', 'M', '010-4123-7432', 'N',
-        '경기도', 'N', NULL, NULL, NULL, 0, '국민', '1002-51262-512');
+        '경기도', 'N', NULL, NULL, NULL, 0, '국민', '1002-51262-512', 'ON');
 
 INSERT INTO MEMBER (mID, mPW, mNAME, pNUMREG,mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('dgga', '1', '최고',2, '1992-07-11', 'M', '010-4123-7432', 'N',
-        '경기도', 'N', NULL, NULL, NULL, 2, '국민', '1002-51262-512');
+        '경기도', 'N', NULL, NULL, NULL, 2, '국민', '1002-51262-512', 'ON');
         
 INSERT INTO MEMBER (mID, mPW, mNAME,mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('qwer', '1', '최고', '1992-07-11', 'M', '010-4123-7432', 'N',
-        '경기도', 'N', NULL, NULL, NULL, 7, '국민', '1002-51262-512');
+        '경기도', 'N', NULL, NULL, NULL, 7, '국민', '1002-51262-512', 'ON');
 
 INSERT INTO MEMBER (mID, mPW, mNAME,pNUMREG, mBIRTH, mGENDER, mPHONE, mORIGIN,
-        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT) 
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
     VALUES('gasdf', '1', '최고',3,  '1992-07-11', 'M', '010-4123-7432', 'N',
-        '경기도', 'N', NULL, NULL, NULL, 8, '국민', '1002-51262-512');
+        '경기도', 'N', NULL, NULL, NULL, 8, '국민', '1002-51262-512', 'ON');
 
 --------------------------------------------------------------------------------
 ----------------------------------FREEBOARD-------------------------------------

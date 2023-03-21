@@ -52,19 +52,8 @@ CREATE TABLE MEMBER(
     rCNT        NUMBER(3)       DEFAULT 0 NOT NULL,
     mBANK       VARCHAR2(30)    NOT NULL,
     mACCOUNT    VARCHAR2(30)    NOT NULL,
+    mACTIVATE    VARCHAR2(10)    NOT NULL,
     FOREIGN KEY(pNUM) REFERENCES PROJECT(pNUM)
-);
-
---------------------------------------------------------------------------------
-----------------------------------MEMBERSHIP------------------------------------
---------------------------------------------------------------------------------
--- DROP & CREATE
-DROP TABLE MEMBERSHIP CASCADE CONSTRAINTS;
-CREATE TABLE MEMBERSHIP(
-    mNO         NUMBER(1)       PRIMARY KEY,
-    LOWrCNT     NUMBER(3)       NOT NULL,
-    HIGHrCNT    NUMBER(3)       NOT NULL,
-    mGRADE      VARCHAR2(30)    NOT NULL
 );
 
 --------------------------------------------------------------------------------
@@ -109,7 +98,7 @@ CREATE TABLE FREEBOARD_REPLY(
 DROP TABLE UPLOADBOARD CASCADE CONSTRAINTS;
 CREATE TABLE UPLOADBOARD(
     uNUM        NUMBER(4)       PRIMARY KEY,
-    rID         VARCHAR2(30),
+    rID         VARCHAR2(30)    NOT NULL,
     uTITLE      VARCHAR2(100)   NOT NULL,
     uCONTENT    CLOB,
     uFILENAME   VARCHAR2(100),

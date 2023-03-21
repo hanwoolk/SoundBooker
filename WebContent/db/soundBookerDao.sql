@@ -5,6 +5,8 @@
 -- dao에 들어갈 query
 -- (1) 회원id 중복체크
 SELECT * FROM MEMBER WHERE MID='aaa';
+SELECT * FROM MEMBER WHERE MBIRTH = '900606';
+SELECT * FROM MEMBER WHERE MNAME = '김녹음';
 -- (2) 회원가입
 INSERT INTO MEMBER (mID, mPW, mNAME, pNUM,mBIRTH, mGENDER, mPHONE, mORIGIN,
         mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, mBANK, mACCOUNT) 
@@ -28,149 +30,266 @@ UPDATE MEMBER
         MBANK     = '농협',
         MACCOUNT  = '11-3341-2451'
     WHERE MID = 'fff';
--- (6)회원 리스트(TOP-N) -- 프로젝트 없는 사람중 경험 많은 순
-SELECT *
-    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM MEMBER ORDER BY PNUM DESC,  RCNT DESC) A)
-    WHERE RN BETWEEN 1 AND 10;
--- (7) 전체 등록된 회원수
+-- (6) 프로젝트 신청
+UPDATE MEMBER SET PNUMREG = 2
+        WHERE MID = 'aaa';
+-- (7) 신청 취소
+UPDATE MEMBER SET PNUMREG = NULL
+        WHERE MID = 'aaa';
+-- (8) 전체 등록된 회원수
 SELECT COUNT(*) CNT FROM MEMBER;
--- (8) 회원탈퇴
-DELETE FROM MEMBER WHERE MID='aaa';
+
+
+SELECT *
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM MEMBER ORDER BY RCNT DESC) A)
+    WHERE RN BETWEEN 1 AND 10;
+
+-- (9) 회원탈퇴
+UPDATE MEMBER SET mACTIVATE = 'OFF'
+    WHERE mID ='aaa';
+-- (10) 계정 활성화
+UPDATE MEMBER SET mACTIVATE = 'ON'
+    WHERE mID ='aaa' and mACTIVATE = 'OFF';
+ROLLBACK;
 COMMIT;
 
 -------------------------------------------------------------------------------
 -------------------------------- RecteamDao query------------------------------
 -------------------------------------------------------------------------------
 -- dao에 들어갈 query
---------- 공통
+--------------------------------------공통--------------------------------------
 -- (1) 로그인
 SELECT * FROM RECTEAM WHERE rID='OP5' and rPW='1';
 
--- (2) rid로 dto가져오기(로그인 성공시 session에 넣기 위함)
-SELECT * FROM RECTEAM WHERE rID='PMKIM1';    
+-- (2) rID로 dto가져오기(로그인 성공시 session에 넣기 위함)
+SELECT * FROM RECTEAM WHERE rID='PMKIM1';
     
     
----------프로젝트 관리자
--- (1) id 중복체크
-SELECT * FROM RECTEAM WHERE rID='OP4';
--- (2) 작업자 등록
-INSERT INTO RECTEAM (rID, rPW, rNAME, rJOB) 
-    VALUES('OP5', '1', '박진영','OPERATOR');
-COMMIT;
--- (3) 작업자 정보 수정
+--------------------------------프로젝트 관리자-----------------------------------
+-- (1) 작업자 id 중복체크
+SELECT * FROM RECTEAM WHERE rID='OP4' AND RNAME='김오피';
+-- (2) 작업자 등록 & 작업자 정보 수정
 UPDATE RECTEAM 
     SET RPW       = '1',
         RNAME     = '송중기'
     WHERE RID = 'OP5';
--- (4) 작업자 삭제
-DELETE FROM RECTEAM WHERE rID = 'OP1';
-
+-- (3) 작업자 삭제
+UPDATE UPLOADBOARD SET RID = '없는 회원'
+    WHERE rID='OP1';
+UPDATE UPLOADBOARD_REPLY SET RID = '없는 회원'
+    WHERE rID='OP1';
+UPDATE FREEBOARD SET RID = '없는 회원'
+    WHERE rID='OP1';
+UPDATE FREEBOARD_REPLY SET RID = '없는 회원'
+    WHERE rID='OP1';
+UPDATE RECTEAM SET rNAME = '0',
+                   rPW   = '0'
+            WHERE rID='OP1';
+            
 SELECT * FROM RECTEAM;
--- (4) 프로젝트 목록(최신 등록순)
+-- (4)프로젝트 등록
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'공원내 소음 측정','2022-01-01','2023-04-20','공원내에서 소음 측정');
+-- (5) 프로젝트 수정
+UPDATE PROJECT SET pNAME        = '버스내 소음 측정',
+                   pSTARTDATE   = '23-03-21',
+                   pENDDATE     = '23-05-22',
+                   pCONTENT     = '버스내 소음 측정하는 프로젝트'
+            WHERE PNUM = 3;
+COMMIT;
+ROLLBACK;
+-- (10-1) 녹음 작업자 전체 수
+SELECT COUNT(*) CNT FROM RECTEAM WHERE rJOB='OPERATOR';
+-- (10-2) 녹음 작업자 리스트(TOP-N)-- 프로젝트 없는사람부터
 SELECT *
-    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT ORDER BY PNUM DESC) A)
-    WHERE RN BETWEEN 1 AND 10;
--- (5) 프로젝트 검색
-SELECT * FROM PROJECT WHERE pNAME LIKE '%'||'차량'||'%';
--- (5) 프로젝트 상세보기
-SELECT * FROM PROJECT WHERE PNUM=1;
--- (6) 작업자 프로젝트 퇴출
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)
+    WHERE RN BETWEEN 1 AND 10 AND RJOB = 'OPERATOR'; 
+
+-- (10-3) 녹음 작업자 리스트(TOP-N)-- 프로젝트 없는 녹음 작업자
+SELECT *
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)
+    WHERE RN BETWEEN 1 AND 10 AND PNUM IS NULL AND RJOB = 'OPERATOR';
+
+-- (10-4) 녹음 작업자 리스트(TOP-N)-- 해당 프로젝트 진행중인 녹음 작업자(PNUM)으로 검색
+SELECT *
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)
+    WHERE RN BETWEEN 1 AND 10 AND PNUM = 1 AND RJOB = 'OPERATOR';
+SELECT RID, RNAME, RJOB, P.PNAME
+    FROM PROJECT P, RECTEAM R 
+    WHERE P.PNUM = R.PNUM AND P.PNUM=1 AND RJOB = 'OPERATOR';
+-- (11) 작업자 프로젝트 퇴출
 UPDATE RECTEAM SET PNUM = NULL WHERE RID = 'OP3';
--- (7) 작업자 프로젝트 배치
+-- (12) 작업자 프로젝트 배치
 UPDATE RECTEAM SET PNUM = 2 WHERE RID = 'OP3' AND PNUM IS NULL;
--- (8) 프로젝트 완료시(전체 member rcnt +1씩, 멤버 ,직원 PNUM => NULL로, PROJECT PNUM=>0으로)
+-- (13) 프로젝트 완료시(전체 member rcnt +1씩, 멤버 ,직원 PNUM => NULL로, PROJECT PNUM=>0으로)
 UPDATE MEMBER SET rCNT = rCNT +1 WHERE PNUM=1;
 UPDATE RECTEAM SET PNUM = NULL WHERE PNUM = 1;
 UPDATE MEMBER SET PNUM = NULL WHERE PNUM = 1;
 UPDATE PROJECT SET PNUM = 0 WHERE PNUM=1;
--- (9) 날짜 지난 프로젝트 PNUM = 0 으로 변경()
-UPDATE PROJECT SET PNUM = 0 WHERE SYSDATE>PENDDATE;
-SELECT * FROM PROJECT;
 
----------일정 관리자
 
--- (1)MEMBER 리스트(TOP-N)
-SELECT * FROM RECTEAM ORDER BY pNUM DESC; -- 프로젝트 없는사람부터
+-----------------------------------일정 관리자------------------------------------
+
+-- (1) 전체 등록된 회원수
+SELECT COUNT(*) CNT FROM MEMBER WHERE PNUMREG = 2;
+-- (2) MEMBER 리스트(TOP-N) -- 프로젝트 상세 페이지에서 신청한 사람중 프로젝트 없는 사람만 녹음횟수 순으로
 SELECT *
-    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM MEMBER WHERE PNUM IS NULL ORDER BY PNUM DESC,  RCNT DESC) A)
+    WHERE RN BETWEEN 1 AND 10 AND PNUMREG = 2;
+    
+    
+---
+SELECT *
+    FROM (SELECT ROWNUM RN, A.* 
+        FROM(SELECT PNAME, P.PNUM PNUM,M.PNUM MPNUM,PNUMREG, MID, MNAME,
+                MBIRTH, MGENDER, MPHONE, MORIGIN, MADDRESS, MDRIVE, MPREFER1,
+                MPREFER2, MPREFER3, RCNT, MBANK, MACCOUNT 
+            FROM MEMBER M, PROJECT P 
+                WHERE P.PNUM = M.PNUMREG AND M.PNUM IS NULL
+                ORDER BY M.PNUM DESC, RCNT DESC) 
+            A)
+    WHERE RN BETWEEN 1 AND 10 AND PNUM = 2;
+---
+SELECT PNAME, P.PNUM PNUM,M.PNUM MPNUM,PNUMREG,PNAME, MID, MNAME,
+        MBIRTH, MGENDER, MPHONE, MORIGIN, MADDRESS, MDRIVE, MPREFER1,
+        MPREFER2, MPREFER3, RCNT, MBANK, MACCOUNT
+    FROM MEMBER M, PROJECT P WHERE P.PNUM = M.PNUMREG AND M.PNUM IS NULL AND P.PNUM=2 ORDER BY M.PNUM DESC, RCNT DESC;
+SELECT * FROM MEMBER;
+-- (2-2) 프로젝트 상세보기에 들어갈 신청한 인원 (PNUM으로 검색)
+SELECT M.*, P.PNUM PNUM, PNAME, PSTARTDATE, PENDDATE, PMEMBER, POP, PCONTENT, PRDATE, MID, M.PNUM "MPNUM",RCNT 
+    FROM PROJECT P, MEMBER M 
+    WHERE P.PNUM = M.PNUMREG AND P.PNUM  = 2;
+-- (2-3)MEMBER 리스트(TOP-N) -- 전체(프로젝트 없는 사람 먼저, 녹음 횟수 많은순)
+SELECT *
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM MEMBER ORDER BY PNUM DESC,  RCNT DESC) A)
     WHERE RN BETWEEN 1 AND 10;
--- (2) 신청한 신청자들 등록으로 (pNUMREG => pNUM)
+-- (3) 신청한 MEMBER 등록으로 (pNUMREG => pNUM)
 UPDATE MEMBER SET pNUM = pNUMREG , pNUMREG=NULL WHERE mID = 'ddd' AND pNUM IS NULL;
 ROLLBACK;
--- (3) 신청자 프로젝트 중 퇴출
+-- (4) 신청자 프로젝트 중 퇴출
 UPDATE MEMBER SET PNUM = NULL WHERE mID = 'ddd';
--- (4) 전체 등록된 회원수
-SELECT COUNT(*) CNT FROM MEMBER;
 
----------녹음 작업자
 
--- (4) 프로젝트 목록(최신 등록순)
+-------------------------------------녹음 작업자----------------------------------
+
+-- (1) 프로젝트 목록(최신 등록순)
 SELECT *
     FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT ORDER BY PNUM DESC) A)
     WHERE RN BETWEEN 1 AND 10;
--- (2) 자신의 진행중 프로젝트
+-- (2) 자신이 진행중인 프로젝트
 SELECT R.PNUM PNUM, PNAME, PSTARTDATE, PENDDATE, PMEMBER, POP, PCONTENT, PRDATE
     FROM PROJECT P, RECTEAM R WHERE R.PNUM = P.PNUM AND rID='OP3';
 
-
-
-
-
-
-
-
-
-
-
-
-
+-------------------------------------------------------------------------------
+-------------------------------- UploadBoard query------------------------------
+-------------------------------------------------------------------------------
 -- (1) 글 목록(startRow ~ endRow)
 SELECT * 
     FROM (SELECT ROWNUM RN, A.* 
         FROM (SELECT * 
-            FROM FILEBOARD ORDER BY FGROUP DESC, FSTEP) A)
+            FROM UPLOADBOARD ORDER BY UGROUP DESC, USTEP) A)
     WHERE RN BETWEEN 1 AND 3;
 -- (2) 글 갯수
-SELECT COUNT(*) FROM FILEBOARD;
+SELECT COUNT(*) FROM UPLOADBOARD;
 -- (3) 글 쓰기(원글쓰기)
-INSERT INTO FILEBOARD (fID, mID, fTITLE, fCONTENT, fFILENAME,
-    fRDATE, fHIT, fGROUP, fSTEP, fINDENT, fIP)
-    VALUES ((SELECT NVL(MAX(fID),0)+1 FROM FILEBOARD), 'go','글 제목','본문',
-    'NOIMAGE.JPG',null,0,(SELECT NVL(MAX(fID),0)+1 FROM FILEBOARD),0,0,'192.0.0.1');
--- (4) hit 1회 올리기
-UPDATE FILEBOARD SET fHIT = fHIT+1 WHERE fID = 1;
--- (5) 글 번호(fid)로 글전체 내용(BoardDto) 가져오기
-SELECT MNAME, M.MID MID, FTITLE, FCONTENT, FFILENAME , FRDATE, FHIT, FGROUP, FSTEP ,FINDENT ,FIP FROM FILEBOARD F, MVC_MEMBER M WHERE F.mID = M.mID AND fID = 100;
+INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
+        uRDATE, uIP, uGROUP, uSTEP, uINDENT)
+VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMKIM1', '업로드 제목1', '업로드 내용1', NULL, 
+        SYSDATE, '192.168.0.4', (SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 0, 0);
+
+-- (5) 글 번호(uid)로 글전체 내용(BoardDto) 가져오기
+SELECT uNUM, rID, uTITLE, uCONTENT, uFILENAME, uRDATE, uIP
+    FROM UPLOADBOARD WHERE uNUM = 3;
 -- (6) 글 수정하기(fid, ftitle, fcontent, ffilename, frdate(SYSDATE), fip 수정)
-UPDATE FILEBOARD SET ftitle     = '수정된 제목',
-                     fcontent   = NULL,
-                     ffilename  = 'kim.JPG',
-                     fip        = '190.0.0.1'
-            WHERE fID = 1;
+UPDATE UPLOADBOARD SET uTITLE     = '수정된 제목',
+                       uCONTENT   = NULL,
+                       uFILENAME  = 'kim.JPG',
+                       uIP        = '190.0.0.1'
+            WHERE uNUM = 3;
+ROLLBACK;
 -- (7) 글 삭제하기(fid로)
-DELETE FROM FILEBOARD WHERE fID = 1;
+DELETE FROM UPLOADBOARD WHERE uNUM = 1;
 ROLLBACK;
 -- (8) 답변글 쓰기 전 단계(원글의 fgroup과 같고, 원글의 fstep보다 크면 fstep을 하나 증가하기)
-UPDATE FILEBOARD SET FSTEP = FSTEP + 1 WHERE FGROUP = 2 AND FSTEP > 0;
+UPDATE UPLOADBOARD SET uSTEP = uSTEP + 1 WHERE uGROUP = 2 AND uSTEP > 0;
 -- (9) 답변글 쓰기
-INSERT INTO FILEBOARD (fID, mID, fTITLE, fCONTENT, fFILENAME,
-    fRDATE, fHIT, fGROUP, fSTEP, fINDENT, fIP)
-    VALUES ((SELECT NVL(MAX(fID),0)+1 FROM FILEBOARD), 'go','글 제목','본문',
-    'NOIMAGE.JPG',null,0,1,1,1,'192.0.0.1');
--- (10) 회원탈퇴(mid로 작성글 삭제) return값 void
-DELETE FROM FILEBOARD WHERE MID = 'go';
-ROLLBACK;
+
+INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
+        uRDATE, uIP, uGROUP, uSTEP, uINDENT)
+VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMKIM1', '답변 제목1', '답변 내용1', NULL, 
+        SYSDATE, '192.168.0.4', 1, 1, 1);
+
+
+-------------------------------------------------------------------------------
+-------------------------------- UploadBoard_Reply query-----------------------
+-------------------------------------------------------------------------------
+-- (1) 댓글 달기
+INSERT INTO UPLOADBOARD_REPLY (urNUM, rID, urCONTENT,
+        urRDATE, urIP,uNUM)
+VALUES ((SELECT NVL(MAX(urNUM),0)+1 FROM UPLOADBOARD_REPLY), 'PMKIM1', '댓글 내용1',
+        SYSDATE, '192.168.0.4',1);
+-- (2) 댓글 전체 목록(최신순)
+SELECT * FROM UPLOADBOARD_REPLY ORDER BY urRDATE DESC;
+-------------------------------------------------------------------------------
+-------------------------------- FreeBoard query------------------------------
+-------------------------------------------------------------------------------
+-- (1) 글 목록(startRow ~ endRow)
+SELECT * 
+    FROM (SELECT ROWNUM RN, A.* 
+        FROM (SELECT * 
+            FROM FREEBOARD ORDER BY FGROUP DESC, FSTEP) A)
+    WHERE RN BETWEEN 1 AND 3;
+-- (2) 글 갯수
+SELECT COUNT(*) FROM FREEBOARD;
+-- (3) 글 쓰기(원글쓰기)
+INSERT INTO FREEBOARD (fNUM, mID, rID, fTITLE, fCONTENT, fIP)
+VALUES ((SELECT NVL(MAX(fNUM),0)+1 FROM FREEBOARD), NULL,'PMKIM1', '업로드 제목1', '업로드 내용1', '192.168.0.4');
+
 COMMIT;
+-- (5) 글 번호(uid)로 글전체 내용(BoardDto) 가져오기
+SELECT V.*, 
+  (SELECT mNAME FROM MEMBER WHERE V.mID=mID) mNAME,
+  (SELECT rNAME FROM RECTEAM WHERE V.rID=rID) rNAME
+  FROM (SELECT * FROM FREEBOARD ORDER BY fRDATE DESC) V
+  WHERE fNUM=2;
+  
+-- (6) 글 수정하기(fid, ftitle, fcontent, frdate(SYSDATE), fip 수정)
+UPDATE FREEBOARD SET fTITLE     = '수정된 제목',
+                     fCONTENT   = NULL,
+                     fIP        = '190.0.0.1'
+            WHERE fNUM = 1;
+ROLLBACK;
+-- (7) 글 삭제하기(fNUM로)
+DELETE FROM FREEBOARD_REPLY WHERE fNUM = 1;
+DELETE FROM FREEBOARD WHERE fNUM = 1;
+ROLLBACK;
+
 
 -------------------------------------------------------------------------------
--------------------------------- AdminDao query--------------------------------
+-------------------------------- FreeBoard_Reply query-----------------------
+-------------------------------------------------------------------------------
+--(1) 댓글달기
+INSERT INTO FREEBOARD_REPLY (frNUM, mID, rID, frCONTENT,
+        frRDATE, frIP,fNUM)
+VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_REPLY), NULL, 'PMKIM1', '댓글 내용1',
+        SYSDATE, '192.168.0.4',1);
+
+-- (2) 댓글 전체 목록(최신순)
+SELECT V.*, 
+  (SELECT mNAME FROM MEMBER WHERE V.mID=mID) mNAME,
+  (SELECT rNAME FROM RECTEAM WHERE V.rID=rID) rNAME
+  FROM (SELECT ROWNUM RN, B.* 
+        FROM (SELECT * FROM FREEBOARD_REPLY ORDER BY frRDATE DESC) B) V
+  WHERE RN BETWEEN 1 AND 4;
+-------------------------------------------------------------------------------
+-------------------------------- Project query---------------------------------
 -------------------------------------------------------------------------------
 
--- (1) admin 로그인
-SELECT * FROM ADMIN WHERE aID = 'admin' AND aPW = 1;
--- (2) 로그인 후 세션에 넣을 AdiminDto 를 admin aid로 가져오기
-SELECT * FROM ADMIN WHERE aID = 'admin';
-
-
-
-
+-- (7) 프로젝트 목록(최신 등록순)
+SELECT *
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT ORDER BY PNUM DESC) A)
+    WHERE RN BETWEEN 1 AND 10;
+-- (8) 프로젝트 검색
+SELECT * FROM PROJECT WHERE pNAME LIKE '%'||'차량'||'%';
+-- (9) 프로젝트 상세보기
+SELECT * FROM PROJECT WHERE PNUM=1;
