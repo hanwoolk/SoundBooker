@@ -22,6 +22,7 @@ public class MemberDao {
 	public static final int LOGIN_SUCCESS = 1;
 	public static final int ACTIVATE = 1;
 	public static final int ALREADYACTIVATE = 0;
+	public static final int SUCCESS = 1;
 	private static MemberDao instance = new MemberDao();
 	public	static MemberDao getInstance() {
 		return instance;
@@ -60,39 +61,18 @@ public class MemberDao {
 		}
 		return result;
 	}
-	// (1-2) 회원 이름 mNAME  중복체크
-	public int mnameConfirm(String mname) {
+	// (1-2) 회원 이름 mNAME, 생년월일mBIRTH  중복체크
+	public int mnamePhoneConfirm(String mname, String mphone) {
 		int result = EXIST;
 		Connection			conn	= null;
 		PreparedStatement	pstmt	= null;
 		ResultSet			rs		=null;
-		String sql = "SELECT * FROM MEMBER WHERE MNAME=?";
+		String sql = "SELECT * FROM MEMBER WHERE MNAME = ? AND MPHONE=?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mname);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				result = EXIST;
-			}else {
-				result = NOTEXIST;
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return result;
-	}
-	// (1-3) 회원 생년월일(mBIRTH) 중복체크
-	public int mbirthConfirm(String mbirth) {
-		int result = EXIST;
-		Connection			conn	= null;
-		PreparedStatement	pstmt	= null;
-		ResultSet			rs		= null;
-		String sql = "SELECT * FROM MEMBER WHERE MBIRTH=?";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mbirth);
+			pstmt.setString(2, mphone);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				result = EXIST;
@@ -145,22 +125,16 @@ public class MemberDao {
 	}	
 	// (3-1) 계정 활성화
 	public int activateId(String mid) {
-		int result = FAIL;
+		int result = ALREADYACTIVATE;
 		Connection 			conn 	= null;
 		PreparedStatement 	pstmt 	= null;
-		ResultSet			rs		= null;
 		String sql = "UPDATE MEMBER SET mACTIVATE = 'ON'" + 
 				"    WHERE mID =? and mACTIVATE = 'OFF'";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				result = ACTIVATE;
-			}else {
-				result = ALREADYACTIVATE;
-			}
+			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -173,7 +147,7 @@ public class MemberDao {
 		}
 		return result;
 	}
-	// (3) 로그인
+	// (3-2) 로그인
 	public int loginCheck(String mid, String mpw) {
 		int result = LOGIN_FAIL;
 		Connection        conn  = null;
@@ -350,7 +324,7 @@ public class MemberDao {
 		ResultSet         rs    = null;
 		String sql = "SELECT *" + 
 				"    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM MEMBER ORDER BY RCNT DESC) A)" + 
-				"    WHERE RN BETWEEN ? AND ?";
+				"    WHERE RN BETWEEN ? AND ? AND WHERE mACTIVATE = 'ON'";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -397,7 +371,7 @@ public class MemberDao {
 		Connection        conn  = null;
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
-		String sql = "SELECT COUNT(*) CNT FROM MEMBER";
+		String sql = "SELECT COUNT(*) CNT FROM MEMBER WHERE mACTIVATE = 'ON'";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);

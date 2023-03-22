@@ -83,6 +83,10 @@ INSERT INTO MEMBER (mID, mPW, mNAME,pNUMREG, mBIRTH, mGENDER, mPHONE, mORIGIN,
     VALUES('gasdf', '1', '최고',3,  '1992-07-11', 'M', '010-4123-7432', 'N',
         '경기도', 'N', NULL, NULL, NULL, 8, '국민', '1002-51262-512', 'ON');
 
+INSERT INTO MEMBER (mID, mPW, mNAME,pNUMREG, mBIRTH, mGENDER, mPHONE, mORIGIN,
+        mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, rCNT, mBANK, mACCOUNT, mACTIVATE) 
+    VALUES('km', '1', '김민',2,  '1991-05-17', 'M', '010-6135-8376', 'N',
+        '경기도', 'N', NULL, NULL, NULL, 1, '우리', '10-51126-836', 'OFF');
 --------------------------------------------------------------------------------
 ----------------------------------FREEBOARD-------------------------------------
 --------------------------------------------------------------------------------
@@ -100,20 +104,20 @@ INSERT INTO FREEBOARD (fNUM, mID, rID, fTITLE, fCONTENT, fRDATE, fIP)
 VALUES ((SELECT NVL(MAX(fNUM),0)+1 FROM FREEBOARD), 'ccc', NULL, '원글4', '내용4', SYSDATE, '192.168.0.4');
 
 --------------------------------------------------------------------------------
-----------------------------------FREEBOARD_REPLY-------------------------------
+----------------------------------FREEBOARD_COMMENT-------------------------------
 --------------------------------------------------------------------------------
 
-INSERT INTO FREEBOARD_REPLY (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_REPLY), 'bbb', NULL, '댓글1', SYSDATE, '192.168.0.1',1);
+INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
+VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'bbb', NULL, '댓글1', SYSDATE, '192.168.0.1',1);
 
-INSERT INTO FREEBOARD_REPLY (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_REPLY), 'ccc', NULL, '글1-댓글2', SYSDATE, '192.168.0.4',1);
+INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
+VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', NULL, '글1-댓글2', SYSDATE, '192.168.0.4',1);
 
-INSERT INTO FREEBOARD_REPLY (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_REPLY), 'ccc', NULL, '글2-댓글1', SYSDATE, '192.168.0.4',2);
+INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
+VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', NULL, '글2-댓글1', SYSDATE, '192.168.0.4',2);
 
-INSERT INTO FREEBOARD_REPLY (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_REPLY), 'ccc', NULL, '글1-댓글3', SYSDATE, '192.168.0.4',1);
+INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
+VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', NULL, '글1-댓글3', SYSDATE, '192.168.0.4',1);
 
 --------------------------------------------------------------------------------
 ----------------------------------UPLOADBOARD-----------------------------------
@@ -149,5 +153,6 @@ SELECT * FROM PROJECT;
 SELECT * FROM RECTEAM;
 SELECT * FROM MEMBER;
 SELECT * FROM FREEBOARD;
-SELECT * FROM FREEBOARD_REPLY;
+SELECT * FROM FREEBOARD_COMMENT;
 SELECT * FROM UPLOADBOARD ORDER BY UGROUP DESC, USTEP;
+SELECT * FROM UPLOADBOARD_COMMENT;

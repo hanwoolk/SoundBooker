@@ -2,15 +2,15 @@ package com.lec.soundbooker.dto;
 
 import java.sql.Date;
 
-public class UploadboardReplyDto {
+public class UploadBoardCommentDto {
 	private		int		urnum;
 	private		String	rid;
 	private		String	urcontent;
 	private		Date	urrdate;
 	private		String	urip;
 	private		int		unum;
-	public UploadboardReplyDto() {}
-	public UploadboardReplyDto(int urnum, String rid, String urcontent, Date urrdate, String urip, int unum) {
+	public UploadBoardCommentDto() {}
+	public UploadBoardCommentDto(int urnum, String rid, String urcontent, Date urrdate, String urip, int unum) {
 		this.urnum = urnum;
 		this.rid = rid;
 		this.urcontent = urcontent;

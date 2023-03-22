@@ -21,6 +21,30 @@ public class MemberDto {
 	private		String	mbank;
 	private		String	maccount;
 	private		String	mactivate;
+	private		String	pname;
+	private		int		mpnum;
+	public MemberDto(String mid, String mname, int pnumreg, Date mbirth, String mgender, String mphone, String morigin,
+			String maddress, String mdrive, String mprefer1, String mprefer2, String mprefer3, int rcnt, String mbank,
+			String maccount, String pname, int mpnum) {
+		super();
+		this.mid = mid;
+		this.mname = mname;
+		this.pnumreg = pnumreg;
+		this.mbirth = mbirth;
+		this.mgender = mgender;
+		this.mphone = mphone;
+		this.morigin = morigin;
+		this.maddress = maddress;
+		this.mdrive = mdrive;
+		this.mprefer1 = mprefer1;
+		this.mprefer2 = mprefer2;
+		this.mprefer3 = mprefer3;
+		this.rcnt = rcnt;
+		this.mbank = mbank;
+		this.maccount = maccount;
+		this.pname = pname;
+		this.mpnum = mpnum;
+	}
 	public MemberDto() {}
 	public MemberDto(String mid, String mpw, String mname, int pnum, int pnumreg, Date mbirth, String mgender,
 			String mphone, String morigin, String maddress, String mdrive, String mprefer1, String mprefer2,
@@ -151,6 +175,18 @@ public class MemberDto {
 	}
 	public void setMactivate(String mactivate) {
 		this.mactivate = mactivate;
+	}
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+	public int getMpnum() {
+		return mpnum;
+	}
+	public void setMpnum(int mpnum) {
+		this.mpnum = mpnum;
 	}
 	@Override
 	public String toString() {

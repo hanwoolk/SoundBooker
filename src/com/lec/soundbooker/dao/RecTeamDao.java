@@ -418,91 +418,6 @@ public class RecTeamDao {
 		}
 		return result;
 	}	
-	
-	// (7-1) 프로젝트 완료시(전체 member rcnt +1씩)
-	private void projectFinishStep1(int pnum) {
-		Connection 			conn 	= null;
-		PreparedStatement 	pstmt 	= null;
-		String sql = "UPDATE MEMBER SET rCNT = rCNT +1 WHERE PNUM=?";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, pnum);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			try {
-				if(pstmt != null) pstmt.close();
-				if(conn  != null) conn.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}	
-	// (7-2) 프로젝트 완료시(직원 PNUM => NULL로)
-	private void projectFinishStep2(int pnum) {
-		Connection 			conn 	= null;
-		PreparedStatement 	pstmt 	= null;
-		String sql = "UPDATE RECTEAM SET PNUM = NULL WHERE PNUM = ?";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, pnum);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			try {
-				if(pstmt != null) pstmt.close();
-				if(conn  != null) conn.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}	
-	// (7-3) 프로젝트 완료시(멤버  PNUM => NULL로)
-	private void projectFinishStep3(int pnum) {
-		Connection 			conn 	= null;
-		PreparedStatement 	pstmt 	= null;
-		String sql = "UPDATE MEMBER SET PNUM = NULL WHERE PNUM = ?";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, pnum);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			try {
-				if(pstmt != null) pstmt.close();
-				if(conn  != null) conn.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}	
-	// (7-4) 프로젝트 완료시(PROJECT PNUM=>0으로)
-	private void projectFinish(int pnum) {
-		Connection 			conn 	= null;
-		PreparedStatement 	pstmt 	= null;
-		String sql = "UPDATE PROJECT SET PNUM = 0 WHERE PNUM=?";
-		projectFinishStep1(pnum);
-		projectFinishStep2(pnum);
-		projectFinishStep3(pnum);
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, pnum);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			try {
-				if(pstmt != null) pstmt.close();
-				if(conn  != null) conn.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}	
-
 	//-------------------------일정 관리자-----------------------------
 	// (1) 특정 프로젝트에 신청한 회원 수
 	public int getRegisteredMemberTotCnt() {
@@ -510,7 +425,7 @@ public class RecTeamDao {
 		Connection        conn  = null;
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
-		String sql = "SELECT COUNT(*) CNT FROM MEMBER WHERE PNUMREG = ?";
+		String sql = "SELECT COUNT(*) CNT FROM MEMBER WHERE PNUMREG = ? AND mACTIVATE = 'ON'";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -542,7 +457,7 @@ public class RecTeamDao {
 				"                MBIRTH, MGENDER, MPHONE, MORIGIN, MADDRESS, MDRIVE, MPREFER1," + 
 				"                MPREFER2, MPREFER3, RCNT, MBANK, MACCOUNT " + 
 				"            FROM MEMBER M, PROJECT P " + 
-				"                WHERE P.PNUM = M.PNUMREG AND M.PNUM IS NULL" + 
+				"                WHERE P.PNUM = M.PNUMREG AND M.PNUM IS NULL AND MACTIVATE = 'ON'" + 
 				"                ORDER BY M.PNUM DESC, RCNT DESC) " + 
 				"            A)" + 
 				"    WHERE RN BETWEEN ? AND ? AND PNUM = ?";
@@ -551,14 +466,14 @@ public class RecTeamDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, endRow);
-			pstmt.setInt(2, pnum);
+			pstmt.setInt(3, pnum);
 			rs = pstmt.executeQuery();
-			while(rs.next()) {//////////////////////프로젝트 dto에서 pname 등을 가져와야하는지 질문하기//////////////////////프로젝트 dto에서 pname 등을 가져와야하는지 질문하기
-				String	pname	 =rs.getString(ProjectDto.getPname());
-				String	mpnum    =rs.getInt("mpnum");
+			while(rs.next()) {
+				String	pname	 =rs.getString("pname");
+				int		mpnum    =rs.getInt("mpnum");
 				int		pnumreg  =rs.getInt("pnumreg");    
-				int		mid  	 =rs.getString("mid"); 
-				int		mname    =rs.getString("mname"); 
+				String	mid  	 =rs.getString("mid"); 
+				String	mname    =rs.getString("mname"); 
 				Date	mbirth   =rs.getDate("mbirth");  
 				String	mgender  =rs.getString("mgender"); 
 				String	mphone   =rs.getString("mphone");  
@@ -571,9 +486,8 @@ public class RecTeamDao {
 				int		rcnt     =rs.getInt("rcnt");
 				String	mbank    =rs.getString("mbank");   
 				String	maccount =rs.getString("maccount");
-				members.add(new MemberDto(mid, mname, pnum, pnumreg, mbirth, mgender, mphone, morigin, maddress, mdrive, mprefer1, mprefer2, mprefer3, rcnt, mbank, maccount));
+				members.add(new MemberDto(mid, mname, pnumreg, mbirth, mgender, mphone, morigin, maddress, mdrive, mprefer1, mprefer2, mprefer3, rcnt, mbank, maccount, pname, mpnum));
 			}
-//////////////////////프로젝트 dto에서 pname 등을 가져와야하는지 질문하기//////////////////////프로젝트 dto에서 pname 등을 가져와야하는지 질문하기
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -588,11 +502,52 @@ public class RecTeamDao {
 		return members;
 	}
 	// (3) 신청한 MEMBER 등록으로 (pNUMREG => pNUM)
+	public int memberConfirm(String mid) {
+		int result = FAIL;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE MEMBER SET pNUM    = pNUMREG , " + 
+				"                       pNUMREG = NULL " + 
+				"        WHERE mID = mid AND pNUM IS NULL";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 	// (4) 신청자 프로젝트 중 퇴출
-	//-------------------------녹음 작업자-----------------------------
-	// (1) 자신이 진행중인 프로젝트
-	
-	
-	
-	
+	public int memberOut(String mid) {
+		int result = FAIL;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE MEMBER SET PNUM = NULL WHERE mID = ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 }
+

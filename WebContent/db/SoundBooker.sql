@@ -52,7 +52,7 @@ CREATE TABLE MEMBER(
     rCNT        NUMBER(3)       DEFAULT 0 NOT NULL,
     mBANK       VARCHAR2(30)    NOT NULL,
     mACCOUNT    VARCHAR2(30)    NOT NULL,
-    mACTIVATE    VARCHAR2(10)    NOT NULL,
+    mACTIVATE    VARCHAR2(10)    DEFAULT 0 NOT NULL,
     FOREIGN KEY(pNUM) REFERENCES PROJECT(pNUM)
 );
 
@@ -74,11 +74,11 @@ CREATE TABLE FREEBOARD(
 );
 
 --------------------------------------------------------------------------------
-----------------------------------FREEBOARD_REPLY-------------------------------
+----------------------------------FREEBOARD_COMMENT-------------------------------
 --------------------------------------------------------------------------------
 -- DROP & CREATE
-DROP TABLE FREEBOARD_REPLY CASCADE CONSTRAINTS;
-CREATE TABLE FREEBOARD_REPLY(
+DROP TABLE FREEBOARD_COMMENT CASCADE CONSTRAINTS;
+CREATE TABLE FREEBOARD_COMMENT(
     frNUM       NUMBER(4)       PRIMARY KEY,
     mID         VARCHAR2(30),
     rID         VARCHAR2(30),
@@ -111,11 +111,11 @@ CREATE TABLE UPLOADBOARD(
 );
 
 --------------------------------------------------------------------------------
-----------------------------------UPLOADBOARD_REPLY-----------------------------
+----------------------------------UPLOADBOARD_COMMENT-----------------------------
 --------------------------------------------------------------------------------
 -- DROP & CREATE
-DROP TABLE UPLOADBOARD_REPLY CASCADE CONSTRAINTS;
-CREATE TABLE UPLOADBOARD_REPLY(
+DROP TABLE UPLOADBOARD_COMMENT CASCADE CONSTRAINTS;
+CREATE TABLE UPLOADBOARD_COMMENT(
     urNUM       NUMBER(4)       PRIMARY KEY,
     rID         VARCHAR2(30),
     urCONTENT   CLOB            NOT NULL,

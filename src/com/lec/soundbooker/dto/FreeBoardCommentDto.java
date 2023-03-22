@@ -2,7 +2,7 @@ package com.lec.soundbooker.dto;
 
 import java.sql.Date;
 
-public class FreeBoardReplyDto {
+public class FreeBoardCommentDto {
 	private		int		frnum;
 	private		String	mid;
 	private		String	rid;
@@ -10,8 +10,8 @@ public class FreeBoardReplyDto {
 	private		Date	frrdate;
 	private		String	frip;
 	private		int		fnum;
-	public FreeBoardReplyDto() {}
-	public FreeBoardReplyDto(int frnum, String mid, String rid, String frcontent, Date frrdate, String frip, int fnum) {
+	public FreeBoardCommentDto() {}
+	public FreeBoardCommentDto(int frnum, String mid, String rid, String frcontent, Date frrdate, String frip, int fnum) {
 		this.frnum = frnum;
 		this.mid = mid;
 		this.rid = rid;

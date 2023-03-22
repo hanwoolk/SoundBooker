@@ -2,27 +2,27 @@ package com.lec.soundbooker.dto;
 
 import java.sql.Date;
 
-public class UploadboardDto {
+public class UploadBoardDto {
 	private		int		unum;
 	private		String	rid;
 	private		String	utitle;
 	private		String	ucontent;
 	private		String	ufilename;
 	private		Date	urdate;
-	private		String	fip;
-	private		String	ugroup;
-	private		String	ustep;
-	private		String	uindent;
-	public UploadboardDto() {}
-	public UploadboardDto(int unum, String rid, String utitle, String ucontent, String ufilename, Date urdate,
-			String fip, String ugroup, String ustep, String uindent) {
+	private		String	uip;
+	private		int	ugroup;
+	private		int	ustep;
+	private		int	uindent;
+	public UploadBoardDto() {}
+	public UploadBoardDto(int unum, String rid, String utitle, String ucontent, String ufilename, Date urdate,
+			String uip, int ugroup, int ustep, int uindent) {
 		this.unum = unum;
 		this.rid = rid;
 		this.utitle = utitle;
 		this.ucontent = ucontent;
 		this.ufilename = ufilename;
 		this.urdate = urdate;
-		this.fip = fip;
+		this.uip = uip;
 		this.ugroup = ugroup;
 		this.ustep = ustep;
 		this.uindent = uindent;
@@ -63,34 +63,34 @@ public class UploadboardDto {
 	public void setUrdate(Date urdate) {
 		this.urdate = urdate;
 	}
-	public String getFip() {
-		return fip;
+	public String getUip() {
+		return uip;
 	}
-	public void setFip(String fip) {
-		this.fip = fip;
+	public void setUip(String uip) {
+		this.uip = uip;
 	}
-	public String getUgroup() {
+	public int getUgroup() {
 		return ugroup;
 	}
-	public void setUgroup(String ugroup) {
+	public void setUgroup(int ugroup) {
 		this.ugroup = ugroup;
 	}
-	public String getUstep() {
+	public int getUstep() {
 		return ustep;
 	}
-	public void setUstep(String ustep) {
+	public void setUstep(int ustep) {
 		this.ustep = ustep;
 	}
-	public String getUindent() {
+	public int getUindent() {
 		return uindent;
 	}
-	public void setUindent(String uindent) {
+	public void setUindent(int uindent) {
 		this.uindent = uindent;
 	}
 	@Override
 	public String toString() {
 		return "UploadboardDto [unum=" + unum + ", rid=" + rid + ", utitle=" + utitle + ", ucontent=" + ucontent
-				+ ", ufilename=" + ufilename + ", urdate=" + urdate + ", fip=" + fip + ", ugroup=" + ugroup + ", ustep="
+				+ ", ufilename=" + ufilename + ", urdate=" + urdate + ", uip=" + uip + ", ugroup=" + ugroup + ", ustep="
 				+ ustep + ", uindent=" + uindent + "]";
 	}
 	
