@@ -10,6 +10,18 @@ public class FreeBoardDto {
 	private		String	fcontent;
 	private		Date	frdate;
 	private		String	fip;
+	private		int		fbCommentCnt;
+	public FreeBoardDto(int fnum, String mid, String rid, String ftitle, String fcontent, Date frdate, String fip,
+			int fbCommentCnt) {
+		this.fnum = fnum;
+		this.mid = mid;
+		this.rid = rid;
+		this.ftitle = ftitle;
+		this.fcontent = fcontent;
+		this.frdate = frdate;
+		this.fip = fip;
+		this.fbCommentCnt = fbCommentCnt;
+	}
 	public FreeBoardDto() {}
 	public FreeBoardDto(int fnum, String mid, String rid, String ftitle, String fcontent, Date frdate, String fip) {
 		this.fnum = fnum;
@@ -62,10 +74,15 @@ public class FreeBoardDto {
 	public void setFip(String fip) {
 		this.fip = fip;
 	}
+	public int getFbCommentCnt() {
+		return fbCommentCnt;
+	}
+	public void setFbCommentCnt(int fbCommentCnt) {
+		this.fbCommentCnt = fbCommentCnt;
+	}
 	@Override
 	public String toString() {
-		return "FreeboardDto [fnum=" + fnum + ", mid=" + mid + ", rid=" + rid + ", ftitle=" + ftitle + ", fcontent="
+		return "FreeBoardDto [fnum=" + fnum + ", mid=" + mid + ", rid=" + rid + ", ftitle=" + ftitle + ", fcontent="
 				+ fcontent + ", frdate=" + frdate + ", fip=" + fip + "]";
 	}
-	
 }

@@ -9,6 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lec.soundbooker.service.FBCommentDeleteService;
+import com.lec.soundbooker.service.FBoardCommentService;
+import com.lec.soundbooker.service.FBoardContentService;
+import com.lec.soundbooker.service.FBoardDeleteService;
+import com.lec.soundbooker.service.FBoardListService;
+import com.lec.soundbooker.service.FBoardModifyService;
+import com.lec.soundbooker.service.FBoardModifyViewService;
+import com.lec.soundbooker.service.FBoardWriteService;
 import com.lec.soundbooker.service.MJoinService;
 import com.lec.soundbooker.service.MLoginService;
 import com.lec.soundbooker.service.MLogoutService;
@@ -37,10 +45,9 @@ public class FrontController extends HttpServlet {
 		Service service = null;
 		if(command.equals("/main.do")) {
 			viewPage = "main/main.jsp";
-////////////////////////////////////////////////////////////////
-//////////////////////member 관련 요청////////////////////////////
+/////////////////////////////////////////////////////////////////
+//////////////////////member 관련 요청/////////////////////////////
 ////////////////////////////////////////////////////////////////	
-			
 		}else if(command.equals("/joinView.do")) {
 			viewPage = "member/join.jsp";
 		}else if(command.equals("/midConfirm.do")) {
@@ -75,6 +82,64 @@ public class FrontController extends HttpServlet {
 			service = new MWithdrawalService();
 			service.execute(request, response);
 			viewPage = "main/main.jsp";
+/////////////////////////////////////////////////////////////////
+//////////////////////freeboard 관련 요청//////////////////////////
+////////////////////////////////////////////////////////////////			
+		}else if(command.equals("/freeBoardList.do")) {
+			service = new FBoardListService();
+			service.execute(request, response);
+			viewPage = "board/freeBoardList.jsp";
+			
+		}else if(command.equals("/freeBoardWriteView.do")) {
+			viewPage = "board/freeBoardWrite.jsp";
+			
+		}else if(command.equals("/freeBoardWrite.do")) {
+			service = new FBoardWriteService();
+			service.execute(request, response);
+			viewPage = "/freeBoardList.do";
+			
+		}else if(command.equals("/freeBoardContent.do")) {
+			service = new FBoardContentService();
+			service.execute(request, response);
+			viewPage = "board/freeBoardContent.jsp";
+			
+		}else if(command.equals("/freeBoardModifyView.do")) {
+			service = new FBoardModifyViewService();
+			service.execute(request, response);
+			viewPage = "board/freeBoardModify.jsp";
+		}else if(command.equals("/freeBoardDelete.do")) {
+			service = new FBoardDeleteService();
+			service.execute(request, response);
+			viewPage = "/freeBoardList.do";
+/////////////////////////////////////////////////////////////////
+//////////////////////freeboard_comment 관련 요청//////////////////////////
+////////////////////////////////////////////////////////////////			
+		}else if(command.equals("/commentWrite.do")) {
+			service = new FBoardCommentService();
+			service.execute(request, response);
+			viewPage = "/freeBoardContent.do";
+			
+		}else if(command.equals("/freeCommentDelete.do")) {
+			service = new FBCommentDeleteService();
+			service.execute(request, response);
+			viewPage = "/freeBoardContent.do";
+			
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
 		}else if(command.equals("")) {
 			viewPage = "";
 		}else if(command.equals("")) {

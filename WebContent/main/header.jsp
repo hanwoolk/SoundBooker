@@ -77,12 +77,12 @@
 					회사 소개
 				</li>
 				<li>프로젝트<ol class="subMenu">
-							<li><a href="#">프로젝트 목록</a></li>
-							<li><a href="#">마이 프로젝트</a></li>
+							<li><a href="${conPath }/loginView.do">프로젝트 목록</a></li>
+							<li><a href="${conPath }/loginView.do">마이 프로젝트</a></li>
 						</ol>
 				</li>
 				<li>
-					자유 게시판
+					<a href="${conPath }/loginView.do" >자유 게시판</a>
 				</li>
 			</ul>
 		</div>
@@ -92,7 +92,12 @@
 			<ul>
 				<li><a href="${conPath }/logout.do">로그아웃</a></li>
 				<li><a href="${conPath }/modifyView.do">정보수정</a></li>
-				<li><a href="${conPath }/내정보 상세보기.do">${member.mname or recteam.rname }님 &nbsp; ▶</a></li>	
+				<c:if test="${not empty member }">
+					<li><a href="${conPath }/내정보 상세보기.do">${member.mname}님 &nbsp; ▶</a></li>	
+				</c:if>
+				<c:if test="${not empty recteam }">
+					<li><a href="${conPath }/내정보 상세보기.do">${recteam.rname}님 &nbsp; ▶</a></li>	
+				</c:if>
 			</ul>
 		</div>
 		<div class="logo" onclick="location.href='${conPath}/main.do'">
@@ -109,11 +114,11 @@
 						</ol>
 				</li>
 				<li>
-					자유 게시판
+					<a href="${conPath }/freeBoardList.do" >자유 게시판</a>
 				</li>
 				<c:if test="${not empty recteam}">
 					<li>
-						업로드 게시판
+						<a href="${conPath }/uploadBoardList.do" >업로드 게시판</a>
 					</li>
 				</c:if>
 			</ul>

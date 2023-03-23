@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-----------------------------------RECTEAM---------------------------------------
+----------------------------------PROJECT---------------------------------------
 --------------------------------------------------------------------------------
 INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
     VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'차량내 소음 측정','2023-01-01','2023-06-06','차량내에서 소음 측정');
@@ -92,32 +92,35 @@ INSERT INTO MEMBER (mID, mPW, mNAME,pNUMREG, mBIRTH, mGENDER, mPHONE, mORIGIN,
 --------------------------------------------------------------------------------
 
 INSERT INTO FREEBOARD (fNUM, mID, rID, fTITLE, fCONTENT, fRDATE, fIP)
-VALUES ((SELECT NVL(MAX(fNUM),0)+1 FROM FREEBOARD), 'aaa',NULL,'원글1', '내용1',SYSDATE, '192.168.0.1');
+VALUES (1, 'aaa',NULL,'원글1', '내용1',SYSDATE, '192.168.0.1');
 
 INSERT INTO FREEBOARD (fNUM, mID, rID, fTITLE, fCONTENT, fRDATE, fIP)
-VALUES ((SELECT NVL(MAX(fNUM),0)+1 FROM FREEBOARD), NULL, 'PMKIM1', '원글2', '내용2', SYSDATE, '192.168.0.2');
+VALUES (2, NULL, 'PMKIM1', '원글2', '내용2', SYSDATE, '192.168.0.2');
 
 INSERT INTO FREEBOARD (fNUM, mID, rID, fTITLE, fCONTENT, fRDATE, fIP)
-VALUES ((SELECT NVL(MAX(fNUM),0)+1 FROM FREEBOARD), 'bbb', NULL, '원글3', '내용3', SYSDATE, '192.168.0.3');
+VALUES (3, 'bbb', NULL, '원글3', '내용3', SYSDATE, '192.168.0.3');
 
 INSERT INTO FREEBOARD (fNUM, mID, rID, fTITLE, fCONTENT, fRDATE, fIP)
-VALUES ((SELECT NVL(MAX(fNUM),0)+1 FROM FREEBOARD), 'ccc', NULL, '원글4', '내용4', SYSDATE, '192.168.0.4');
+VALUES (4, 'ccc', NULL, '원글4', '내용4', SYSDATE, '192.168.0.4');
 
 --------------------------------------------------------------------------------
 ----------------------------------FREEBOARD_COMMENT-------------------------------
 --------------------------------------------------------------------------------
 
 INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'bbb', NULL, '댓글1', SYSDATE, '192.168.0.1',1);
+VALUES (1 , 'bbb', NULL, '댓글1', SYSDATE, '192.168.0.1',1);
 
 INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', NULL, '글1-댓글2', SYSDATE, '192.168.0.4',1);
+VALUES (2 , 'ccc', NULL, '글1-댓글2', SYSDATE, '192.168.0.4',1);
 
 INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', NULL, '글2-댓글1', SYSDATE, '192.168.0.4',2);
+VALUES (3 , 'ccc', NULL, '글2-댓글1', SYSDATE, '192.168.0.4',2);
 
 INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', NULL, '글1-댓글3', SYSDATE, '192.168.0.4',1);
+VALUES (4 , 'ccc', NULL, '글1-댓글3', SYSDATE, '192.168.0.4',1);
+
+INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT, frRDATE, frIP,fNUM)
+VALUES (5 ,  NULL,'PMKIM1', '글1-댓글4', SYSDATE, '192.168.0.4',1);
 
 --------------------------------------------------------------------------------
 ----------------------------------UPLOADBOARD-----------------------------------
@@ -125,29 +128,29 @@ VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', NULL, '글1-
 
 INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
         uRDATE, uIP, uGROUP, uSTEP, uINDENT)
-VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMKIM1', '업로드 제목1', '업로드 내용1', NULL, 
-        SYSDATE, '192.168.0.4', (SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 0, 0);
+VALUES (1, 'PMKIM1', '업로드 제목1', '업로드 내용1', NULL, 
+        SYSDATE, '192.168.0.4', 1, 0, 0);
 
 INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
         uRDATE, uIP, uGROUP, uSTEP, uINDENT)
-VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMHONG2', '업로드 제목2', '업로드 내용2', 'NOIMG.JGP',
-        SYSDATE, '192.148.0.1', (SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 0, 0);
+VALUES (2, 'PMHONG2', '업로드 제목2', '업로드 내용2', 'NOIMG.JGP',
+        SYSDATE, '192.148.0.1', 2, 0, 0);
 
 INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
         uRDATE, uIP, uGROUP, uSTEP, uINDENT)
-VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMPARK3', '글1의 답변글1', '답변 내용1', NULL, 
+VALUES (3, 'PMPARK3', '글1의 답변글1', '답변 내용1', NULL, 
         SYSDATE, '192.168.0.2', 1, 1, 1);
         
 INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
         uRDATE, uIP, uGROUP, uSTEP, uINDENT)
-VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'OP1', '업로드 제목3', '업로드 내용1', 'NOIMG.JPG', 
-        SYSDATE, '192.0.0.2', (SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 0, 0);
+VALUES (4, 'OP1', '업로드 제목3', '업로드 내용1', 'NOIMG.JPG', 
+        SYSDATE, '192.0.0.2', 4, 0, 0);
 
 INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
         uRDATE, uIP, uGROUP, uSTEP, uINDENT)
-VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMKIM1', '글3의 답변글1', '답변 내용1', NULL, 
+VALUES (5, 'PMKIM1', '글3의 답변글1', '답변 내용1', NULL, 
         SYSDATE, '192.168.0.4', 4, 1, 1);
-        
+
 COMMIT;
 SELECT * FROM PROJECT;
 SELECT * FROM RECTEAM;

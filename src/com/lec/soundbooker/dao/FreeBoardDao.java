@@ -36,7 +36,34 @@ public class FreeBoardDao {
 		}
 		return conn;
 	}
-	//(1) 글 목록(startRow ~ endRow)
+	// (1-1) 글의 댓글 갯수
+	public int getFreeCommentTotCnt(int fnum) {
+		int totCnt = 0;
+		Connection			conn 	= null;
+		PreparedStatement	pstmt 	= null;
+		ResultSet			rs		= null;
+		String sql = "SELECT COUNT(*) FROM FREEBOARD_COMMENT WHERE FNUM = ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, fnum);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totCnt = rs.getInt(1);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs	!= null) rs.close();
+				if(pstmt!= null) pstmt.close();
+				if(conn	!= null) conn.close();
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return totCnt;
+	}
+	//(1-2) 글 목록(startRow ~ endRow)
 	public ArrayList<FreeBoardDto> getFreeBoardlist(int startRow, int endRow){
 		ArrayList<FreeBoardDto> dtos = new ArrayList<FreeBoardDto>();
 		Connection			conn 	= null;
@@ -62,7 +89,8 @@ public class FreeBoardDao {
 				String	fcontent	= rs.getString("fcontent");
 				Date	frdate		= rs.getDate("frdate");
 				String	fip			= rs.getString("fip");
-				dtos.add(new FreeBoardDto(fnum, mid, rid, ftitle, fcontent, frdate, fip));
+				int		fbCommentCnt = getFreeCommentTotCnt(fnum);
+				dtos.add(new FreeBoardDto(fnum, mid, rid, ftitle, fcontent, frdate, fip, fbCommentCnt));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -104,7 +132,7 @@ public class FreeBoardDao {
 		return totCnt;
 	}
 	//(3) 글 쓰기(원글쓰기)
-	public int uploadWrite(String mid, String rid, String ftitle, String fcontent, String fip) {
+	public int freeBoardWrite(String mid, String rid, String ftitle, String fcontent, String fip) {
 		int result = FAIL;
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
@@ -210,6 +238,7 @@ public class FreeBoardDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, fnum);
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage() + "댓글 삭제 실패");
 		} finally {
@@ -248,13 +277,14 @@ public class FreeBoardDao {
 	}	
 
 	// (7) 특정에 댓글 달기
-	public int freeComment(String mid, String rid, String frcontent, String frip, int fnum) {
+	public int freeCommentWrite(String mid, String rid, String frcontent, String frip, int fnum) {
 		int result = FAIL;
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
 		String sql = "INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT," + 
-				"        frIP,fNUM)" + 
-				"VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), ?, ?, ?, ?, ?";
+				"             frIP,fNUM)" + 
+				"    VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), ?, ?, ?," + 
+				"             ?,?)";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -262,7 +292,7 @@ public class FreeBoardDao {
 			pstmt.setString(2, rid);
 			pstmt.setString(3, frcontent);
 			pstmt.setString(4, frip);
-			pstmt.setInt(4, fnum);
+			pstmt.setInt(5, fnum);
 			pstmt.executeUpdate();
 			result = SUCCESS;
 			System.out.println("댓글쓰기 성공");
@@ -279,17 +309,12 @@ public class FreeBoardDao {
 		return result;
 	}
 	// (8) 특정글의 댓글 fnum으로 가져오기
-	public ArrayList<FreeBoardCommentDto> getFreeBoardCommentlist(int fnum){
+	public ArrayList<FreeBoardCommentDto> getFreeCommentlist(int fnum){
 		ArrayList<FreeBoardCommentDto> dtos = new ArrayList<FreeBoardCommentDto>();
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
 		ResultSet			rs		= null;
-		String sql = "SELECT V.*, " + 
-				"  (SELECT mID FROM MEMBER WHERE V.mID=mID) mID," + 
-				"  (SELECT rID FROM RECTEAM WHERE V.rID=rID) rID" + 
-				"  FROM (SELECT ROWNUM RN, B.* " + 
-				"        FROM (SELECT * FROM FREEBOARD_COMMENT ORDER BY frRDATE DESC) B) V" + 
-				"    WHERE fNUM = ?";
+		String sql = "SELECT * FROM FREEBOARD_COMMENT WHERE FNUM = ? ORDER BY frRDATE DESC";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -304,6 +329,7 @@ public class FreeBoardDao {
 				String	frip		= rs.getString("frip");
 				dtos.add(new FreeBoardCommentDto(frnum, mid, rid, frcontent, frrdate, frip, fnum));
 			}
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -316,5 +342,32 @@ public class FreeBoardDao {
 			}
 		}
 		return dtos;
+	}
+
+	// (9) 댓글 삭제
+	public int freeCommentDelete(int fnum, int frnum) {
+		int result = FAIL;
+		Connection			conn 	= null;
+		PreparedStatement	pstmt 	= null;
+		String sql = "DELETE FROM FREEBOARD_COMMENT WHERE FNUM = ? AND FRNUM = ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, fnum);
+			pstmt.setInt(2, frnum);
+			pstmt.executeUpdate();
+			result = SUCCESS;
+			System.out.println("댓글삭제 성공");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage() + "댓글삭제 실패");
+		} finally {
+			try {
+				if(pstmt!= null) pstmt.close();
+				if(conn	!= null) conn.close();
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
 	}
 }

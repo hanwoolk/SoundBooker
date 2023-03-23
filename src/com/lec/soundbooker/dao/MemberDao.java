@@ -239,7 +239,7 @@ public class MemberDao {
 				"        MPREFER3  = ?," + 
 				"        MBANK     = ?," + 
 				"        MACCOUNT  = ?" + 
-				"    WHERE MID = ?;";
+				"    WHERE MID = ?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -253,7 +253,7 @@ public class MemberDao {
 			pstmt.setString(8, member.getMprefer3());
 			pstmt.setString(9, member.getMbank());
 			pstmt.setString(10, member.getMaccount());
-			pstmt.setString(10, member.getMid());
+			pstmt.setString(11, member.getMid());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

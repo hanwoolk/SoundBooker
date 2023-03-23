@@ -5,8 +5,7 @@
 -- dao에 들어갈 query
 -- (1) 회원id 중복체크
 SELECT * FROM MEMBER WHERE MID='aaa' AND MBIRTH = '900606' AND MNAME = '김녹음';
-SELECT * FROM MEMBER WHERE ;
-SELECT * FROM MEMBER WHERE ;
+
 -- (2) 회원가입
 INSERT INTO MEMBER (mID, mPW, mNAME, pNUM,mBIRTH, mGENDER, mPHONE, mORIGIN,
         mADDRESS, mDRIVE, mPREFER1, mPREFER2, mPREFER3, mBANK, mACCOUNT) 
@@ -231,6 +230,7 @@ VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMKIM1', '답변 제목1'
 -------------------------------------------------------------------------------
 -------------------------------- UploadBoard_COMMENT query-----------------------
 -------------------------------------------------------------------------------
+SELECT * FROM FREEBOARD_COMMENT;
 -- (1) 댓글 달기
 INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT,
         urIP,uNUM)
@@ -246,7 +246,8 @@ SELECT *
     FROM (SELECT ROWNUM RN, A.* 
         FROM (SELECT * 
             FROM FREEBOARD ORDER BY FRDATE DESC) A)
-    WHERE RN BETWEEN 1 AND 3;
+    WHERE RN BETWEEN 1 AND 20;
+
 SELECT V.*, 
   (SELECT MNAME FROM MEMBER WHERE V.mID=mID) MNAME,
   (SELECT RNAME FROM RECTEAM WHERE V.rID=rID) RNAME
@@ -284,9 +285,9 @@ ROLLBACK;
 -------------------------------------------------------------------------------
 --(1) 댓글달기
 INSERT INTO FREEBOARD_COMMENT (frNUM, mID, rID, frCONTENT,
-        frRDATE, frIP,fNUM)
-VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), NULL, 'PMKIM1', '댓글 내용1',
-        SYSDATE, '192.168.0.4',1);
+            frRDATE, frIP,fNUM)
+    VALUES ((SELECT NVL(MAX(frNUM),0)+1 FROM FREEBOARD_COMMENT), 'ccc', null, '댓글 내용1',
+            SYSDATE, '192.168.0.4',1);
 
 -- (2) 댓글 전체 목록(최신순)
 SELECT V.*, 
@@ -295,6 +296,11 @@ SELECT V.*,
   FROM (SELECT ROWNUM RN, B.* 
         FROM (SELECT * FROM FREEBOARD_COMMENT ORDER BY frRDATE DESC) B) V
     WHERE fNUM = 1;
+SELECT COUNT(*) FROM FREEBOARD_COMMENT WHERE FNUM = 1;
+DELETE FROM FREEBOARD_COMMENT WHERE FNUM = 1 AND FRNUM = 1;
+SELECT COUNT(*) FROM FREEBOARD_COMMENT WHERE FNUM = 1;
+ROLLBACK;
+commit;
 -------------------------------------------------------------------------------
 -------------------------------- Project query---------------------------------
 -------------------------------------------------------------------------------

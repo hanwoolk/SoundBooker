@@ -1,3 +1,4 @@
+<%@page import="com.lec.soundbooker.dto.MemberDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,9 +19,21 @@
 	</style>
 </head>
 <body>
+	<%!String mbank; %>
+	<%
+		MemberDto member = (MemberDto)session.getAttribute("member");
+		mbank = member.getMbank();
+	%>
 	<jsp:include page="../main/header.jsp"/>
-	<form action="${conPath }/modify.do" method="post" enctype="multipart/form-data">
+	<form action="${conPath }/modify.do" method="post">
 		<input type="hidden" name="dbMpw" value="${member.mpw }">
+		<input type="hidden" name="pnum" value="${member.pnum }">
+		<input type="hidden" name="pnumreg" value="${member.pnumreg }">
+		<input type="hidden" name="mbirth" value="${member.mbirth }">
+		<input type="hidden" name="mgender" value="${member.mgender }">
+		<input type="hidden" name="morigin" value="${member.morigin }">
+		<input type="hidden" name="rcnt" value="${member.rcnt }">
+		<input type="hidden" name="mactivate" value="${member.mactivate }">
 		<div id="content_form">
 			<table>
 				<caption>정보수정</caption>
@@ -75,33 +88,33 @@
 			<td>
 				<select name="mbank" id="mbank">
 	        <option value="">은행명을 선택하세요</option>
-	        <option value="경남은행">경남은행</option>
-	        <option value="광주은행">광주은행</option>
-	        <option value="국민은행">국민은행</option>
-	        <option value="기업은행">기업은행</option>
-	        <option value="농협중앙회">농협중앙회</option>
-	        <option value="농협회원조합">농협회원조합</option>
-	        <option value="대구은행">대구은행</option>
-	        <option value="도이치은행">도이치은행</option>
-	        <option value="부산은행">부산은행</option>
-	        <option value="산업은행">산업은행</option>
-	        <option value="상호저축">상호저축은행</option>
-	        <option value="새마을금고">새마을금고</option>
-	        <option value="수협중앙회">수협중앙회</option>
-	        <option value="신한금융투자">신한금융투자</option>
-	        <option value="신한은행">신한은행</option>
-	        <option value="신협중앙회">신협중앙회</option>
-	        <option value="외환은행">외환은행</option>
-	        <option value="우리은행">우리은행</option>
-	        <option value="우체국">우체국</option>
-	        <option value="전북은행">전북은행</option>
-	        <option value="제주은행">제주은행</option>
-	        <option value="카카오뱅크">카카오뱅크</option>
-	        <option value="케이뱅크">케이뱅크</option>
-	        <option value="하나은행">하나은행</option>
-	        <option value="한국씨티은행">한국씨티은행</option>
-	        <option value="HSBC은행">HSBC은행</option>
-	        <option value="제일은행">SC제일은행</option>
+	        <option <%if("경남은행".equals(mbank)){out.print("selected='selected'");} %>value="경남은행">경남은행</option>
+	        <option <%if("광주은행".equals(mbank)){out.print("selected='selected'");} %>value="광주은행">광주은행</option>
+	        <option <%if("국민은행".equals(mbank)){out.print("selected='selected'");} %>value="국민은행">국민은행</option>
+	        <option <%if("기업은행".equals(mbank)){out.print("selected='selected'");} %>value="기업은행">기업은행</option>
+	        <option <%if("농협중앙회".equals(mbank)){out.print("selected='selected'");} %>value="농협중앙회">농협중앙회</option>
+	        <option <%if("농협회원조합".equals(mbank)){out.print("selected='selected'");} %>value="농협회원조합">농협회원조합</option>
+	        <option <%if("대구은행".equals(mbank)){out.print("selected='selected'");} %>value="대구은행">대구은행</option>
+	        <option <%if("도이치은행".equals(mbank)){out.print("selected='selected'");} %>value="도이치은행">도이치은행</option>
+	        <option <%if("부산은행".equals(mbank)){out.print("selected='selected'");} %>value="부산은행">부산은행</option>
+	        <option <%if("산업은행".equals(mbank)){out.print("selected='selected'");} %>value="산업은행">산업은행</option>
+	        <option <%if("상호저축".equals(mbank)){out.print("selected='selected'");} %>value="상호저축">상호저축은행</option>
+	        <option <%if("새마을금고".equals(mbank)){out.print("selected='selected'");} %>value="새마을금고">새마을금고</option>
+	        <option <%if("수협중앙회".equals(mbank)){out.print("selected='selected'");} %>value="수협중앙회">수협중앙회</option>
+	        <option <%if("신한금융투".equals(mbank)){out.print("selected='selected'");} %>value="신한금융투자">신한금융투자</option>
+	        <option <%if("신한은행".equals(mbank)){out.print("selected='selected'");} %>value="신한은행">신한은행</option>
+	        <option <%if("신협중앙회".equals(mbank)){out.print("selected='selected'");} %>value="신협중앙회">신협중앙회</option>
+	        <option <%if("외환은행".equals(mbank)){out.print("selected='selected'");} %>value="외환은행">외환은행</option>
+	        <option <%if("우리은행".equals(mbank)){out.print("selected='selected'");} %>value="우리은행">우리은행</option>
+	        <option <%if("우체국".equals(mbank)){out.print("selected='selected'");} %>value="우체국">우체국</option>
+	        <option <%if("전북은행".equals(mbank)){out.print("selected='selected'");} %>value="전북은행">전북은행</option>
+	        <option <%if("제주은행".equals(mbank)){out.print("selected='selected'");} %>value="제주은행">제주은행</option>
+	        <option <%if("카카오뱅크".equals(mbank)){out.print("selected='selected'");} %>value="카카오뱅크">카카오뱅크</option>
+	        <option <%if("케이뱅크".equals(mbank)){out.print("selected='selected'");} %>value="케이뱅크">케이뱅크</option>
+	        <option <%if("하나은행".equals(mbank)){out.print("selected='selected'");} %>value="하나은행">하나은행</option>
+	        <option <%if("한국씨티은".equals(mbank)){out.print("selected='selected'");} %>value="한국씨티은행">한국씨티은행</option>
+	        <option <%if("HSBC은행".equals(mbank)){out.print("selected='selected'");} %>value="HSBC은행">HSBC은행</option>
+	        <option <%if("SC제일은행".equals(mbank)){out.print("selected='selected'");} %>value="SC제일은행">SC제일은행</option>
 				</select>
 			</td>
 		</tr>
