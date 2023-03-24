@@ -13,26 +13,25 @@
 <body>
 	<jsp:include page="../main/header.jsp"/>
 	<div id="content_form">
-		<c:if test="${member eq null}">
+		<c:if test="${member eq null  and recteam eq null}">
 		<script>
 			alert('로그인이 필요합니다')
 			location.href="${conPath }/member/login.jsp?fnum=${param.fnum}&method=modify";
 		</script>
 	</c:if>
-	<!-- requestScope.modifyBoard, param.bid, param.pageNum가 있음 -->
 		<form action="${conPath }/freeBoardModify.do" method="post">
-			<input type="hidden" name="pageNum" value="${pageNum }">
+			<input type="hidden" name="pageNum" value="${param.pageNum }">
 			<input type="hidden" name="fnum" value="${param.fnum }">
 			<table>
 				<caption>${param.fnum }번 글 수정</caption>
 				<c:if test="${not empty modifyBoard.mid}">
 					<tr>
-						<th>작성자</th><td><input type="text" name="mname" value="${modifyBoard.mid }" required="required" autofocus="autofocus" readonly="readonly"></td>
+						<th>작성자</th><td><input type="text" name="mid" value="${modifyBoard.mid }" required="required" autofocus="autofocus" readonly="readonly"></td>
 					</tr>
 				</c:if>
 				<c:if test="${not empty modifyBoard.rid}">
 					<tr>
-						<th>작성자</th><td><input type="text" name="mname" value="${modifyBoard.rid }" required="required" autofocus="autofocus" readonly="readonly"></td>
+						<th>작성자</th><td><input type="text" name="rid" value="${modifyBoard.rid }" required="required" autofocus="autofocus" readonly="readonly"></td>
 					</tr>
 				</c:if>
 				<tr>

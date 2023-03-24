@@ -12,7 +12,7 @@
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
-	<c:if test="${member eq null}">
+	<c:if test="${member eq null and recteam eq null}">
 		<script>
 			alert('로그인이 필요합니다')
 			location.href="${conPath }/member/login.jsp?method=write";

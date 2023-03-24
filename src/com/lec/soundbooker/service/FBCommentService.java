@@ -7,7 +7,7 @@ import com.lec.soundbooker.dao.FreeBoardDao;
 import com.lec.soundbooker.dto.MemberDto;
 import com.lec.soundbooker.dto.RecTeamDto;
 
-public class FBoardCommentService implements Service {
+public class FBCommentService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {

@@ -16,7 +16,7 @@ public class FBCommentDeleteService implements Service {
 		FreeBoardDao fbDao = FreeBoardDao.getInstance();
 		result = fbDao.freeCommentDelete(fnum, frnum);
 		request.setAttribute("pageNum", pageNum);
-		request.setAttribute("freeBoardDeleteResult", result);
+		request.setAttribute("freeCommentDelete", result);
 
 	}
 

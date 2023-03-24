@@ -58,6 +58,14 @@ public class MemberDao {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs	 !=	null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		return result;
 	}
@@ -81,6 +89,14 @@ public class MemberDao {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs	 !=	null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		return result;
 	}

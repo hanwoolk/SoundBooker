@@ -13,6 +13,23 @@ public class UploadBoardDto {
 	private		int	ugroup;
 	private		int	ustep;
 	private		int	uindent;
+	private		int	ubCommentCnt;
+
+	public UploadBoardDto(int unum, String rid, String utitle, String ucontent, String ufilename, Date urdate,
+			String uip, int ugroup, int ustep, int uindent, int ubCommentCnt) {
+		super();
+		this.unum = unum;
+		this.rid = rid;
+		this.utitle = utitle;
+		this.ucontent = ucontent;
+		this.ufilename = ufilename;
+		this.urdate = urdate;
+		this.uip = uip;
+		this.ugroup = ugroup;
+		this.ustep = ustep;
+		this.uindent = uindent;
+		this.ubCommentCnt = ubCommentCnt;
+	}
 	public UploadBoardDto() {}
 	public UploadBoardDto(int unum, String rid, String utitle, String ucontent, String ufilename, Date urdate,
 			String uip, int ugroup, int ustep, int uindent) {
@@ -86,6 +103,12 @@ public class UploadBoardDto {
 	}
 	public void setUindent(int uindent) {
 		this.uindent = uindent;
+	}
+	public int getUbCommentCnt() {
+		return ubCommentCnt;
+	}
+	public void setUploadCnt(int ubCommentCnt) {
+		this.ubCommentCnt = ubCommentCnt;
 	}
 	@Override
 	public String toString() {

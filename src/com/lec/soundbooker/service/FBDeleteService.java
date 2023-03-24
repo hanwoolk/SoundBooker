@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lec.soundbooker.dao.FreeBoardDao;
 
-public class FBoardDeleteService implements Service {
+public class FBDeleteService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -15,5 +15,4 @@ public class FBoardDeleteService implements Service {
 		result = fbDao.delete(fnum);
 		request.setAttribute("freeBoardDeleteResult", result);
 	}
-
 }

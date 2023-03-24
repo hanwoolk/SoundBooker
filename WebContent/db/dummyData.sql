@@ -150,6 +150,27 @@ INSERT INTO UPLOADBOARD (uNUM, rID, uTITLE, uCONTENT, uFILENAME,
         uRDATE, uIP, uGROUP, uSTEP, uINDENT)
 VALUES (5, 'PMKIM1', '글3의 답변글1', '답변 내용1', NULL, 
         SYSDATE, '192.168.0.4', 4, 1, 1);
+--------------------------------------------------------------------------------
+----------------------------------UPLOADBOARD-----------------------------------
+--------------------------------------------------------------------------------
+INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT, urRDATE, urIP,uNUM)
+VALUES (1 , 'PMKIM1', '글1-댓글1', SYSDATE, '192.168.0.4',1);
+
+INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT, urRDATE, urIP,uNUM)
+VALUES (2 , 'OP1', '글1-댓글1', SYSDATE, '192.168.0.4',1);
+
+INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT, urRDATE, urIP,uNUM)
+VALUES (3 , 'PMHONG2', '글1-댓글1', SYSDATE, '192.168.0.4',1);
+
+INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT, urRDATE, urIP,uNUM)
+VALUES (4 , 'OP3', '글1-댓글1', SYSDATE, '192.168.0.4',1);
+
+INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT, urRDATE, urIP,uNUM)
+VALUES (5 , 'PMKIM1', '글1-댓글1', SYSDATE, '192.168.0.4',2);
+
+
+SELECT * FROM UPLOADBOARD_COMMENT;
+
 
 COMMIT;
 SELECT * FROM PROJECT;

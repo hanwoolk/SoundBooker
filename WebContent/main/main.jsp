@@ -37,6 +37,12 @@
 			history.back();
 		</script>
 	</c:if>
+	<c:if test="${not empty rtLoginErrorMsg }">
+		<script>
+			alert('${rtLoginErrorMsg}');
+			history.back();
+		</script>
+	</c:if>
 	<c:if test="${not empty withdrawalResult }">
 		<script>
 			alert('${withdrawalResult}');

@@ -101,10 +101,15 @@ ROLLBACK;
 -- (10-1) 녹음 작업자 전체 수
 SELECT COUNT(*) CNT FROM RECTEAM WHERE rJOB='OPERATOR';
 -- (10-2) 녹음 작업자 리스트(TOP-N)-- 프로젝트 없는사람부터
+SELECT * FROM PROJECT;
+
+ROLLBACK;
 SELECT *
     FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)
     WHERE RN BETWEEN 1 AND 10 AND RJOB = 'OPERATOR'; 
-
+SELECT *
+    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)
+    WHERE RN BETWEEN 1 AND 10;
 -- (10-3) 녹음 작업자 리스트(TOP-N)-- 프로젝트 없는 녹음 작업자
 SELECT *
     FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)
@@ -232,10 +237,9 @@ VALUES ((SELECT NVL(MAX(uNUM),0)+1 FROM UPLOADBOARD), 'PMKIM1', '답변 제목1'
 -------------------------------------------------------------------------------
 SELECT * FROM FREEBOARD_COMMENT;
 -- (1) 댓글 달기
-INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT,
-        urIP,uNUM)
-VALUES ((SELECT NVL(MAX(urNUM),0)+1 FROM UPLOADBOARD_COMMENT), 'PMKIM1', '댓글 내용2',
-        '192.168.0.4',1);
+INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT,urIP,uNUM)
+VALUES ((SELECT NVL(MAX(urNUM),0)+1 FROM UPLOADBOARD_COMMENT), 'PMKIM1', '댓글 내용2','192.168.0.4',1);
+COMMIT;
 -- (2) 댓글 전체 목록(최신순)
 SELECT * FROM UPLOADBOARD_COMMENT WHERE uNUM = 1 ORDER BY urRDATE DESC;
 -------------------------------------------------------------------------------
@@ -270,10 +274,13 @@ SELECT V.*,
   
 -- (6) 글 수정하기(fid, ftitle, fcontent, frdate(SYSDATE), fip 수정)
 UPDATE FREEBOARD SET fTITLE     = '수정된 제목',
-                     fCONTENT   = NULL,
+                     fCONTENT   = 'test11',
                      fIP        = '190.0.0.1'
-            WHERE fNUM = 1;
+            WHERE fNUM = 14;
+            commit;
+            SELECT * FROM FREEBOARD WHERE FNUM = 14;
 ROLLBACK;
+SELECT * FROM UPLOADBOARD WHERE uNUM = 1;
 -- (7) 글 삭제하기(fNUM로)
 DELETE FROM FREEBOARD_COMMENT WHERE fNUM = 1;
 DELETE FROM FREEBOARD WHERE fNUM = 1;
@@ -301,6 +308,14 @@ DELETE FROM FREEBOARD_COMMENT WHERE FNUM = 1 AND FRNUM = 1;
 SELECT COUNT(*) FROM FREEBOARD_COMMENT WHERE FNUM = 1;
 ROLLBACK;
 commit;
+-- (3) 댓글 수정
+UPDATE FREEBOARD_COMMENT SET FRCONTENT = '~~'
+        WHERE FNUM=2 AND FRNUM=5;
+SELECT * FROM FREEBOARD_COMMENT WHERE FNUM=3 AND FRNUM=4;
+SELECT * FROM FREEBOARD_COMMENT ;
+        ROLLBACK;
+        commit;
+SELECT * FROM FREEBOARD WHERE FNUM = 14;
 -------------------------------------------------------------------------------
 -------------------------------- Project query---------------------------------
 -------------------------------------------------------------------------------

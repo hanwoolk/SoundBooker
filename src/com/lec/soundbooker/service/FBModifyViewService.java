@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lec.soundbooker.dao.FreeBoardDao;
 
-public class FBoardModifyViewService implements Service {
+public class FBModifyViewService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {

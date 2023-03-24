@@ -204,17 +204,17 @@ public class FreeBoardDao {
 		int result = FAIL;
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
-		String sql = "UPDATE FREEBOARD SET fTITLE   = ?," + 
-				"                     	   fCONTENT = ?," + 
-				"                     	   fIP      = ?" + 
+		String sql = "UPDATE FREEBOARD SET fTITLE     = ?," + 
+				"                     	   fCONTENT   = ?," + 
+				"                     	   fIP        = ?" + 
 				"            WHERE fNUM = ?";
 		try {
 			conn  = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ftitle);
 			pstmt.setString(2, fcontent);
-			pstmt.setString(4, fip);
-			pstmt.setInt(5, fnum);
+			pstmt.setString(3, fip);
+			pstmt.setInt(4, fnum);
 			result = pstmt.executeUpdate();
 			System.out.println(result == SUCCESS ? "글 수정 성공" : "글번호(fnum) 오류");
 		} catch (SQLException e) {
@@ -343,8 +343,36 @@ public class FreeBoardDao {
 		}
 		return dtos;
 	}
-
-	// (9) 댓글 삭제
+	// (9) 댓글 수정
+	public int freeCommentModify(String frcontent, int fnum, int frnum) {
+		int result = FAIL;
+		Connection			conn 	= null;
+		PreparedStatement	pstmt 	= null;
+		String sql = "UPDATE FREEBOARD_COMMENT SET FRCONTENT = ?" + 
+				"        WHERE FNUM=? AND FRNUM=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, frcontent);
+			pstmt.setInt(2, fnum);
+			pstmt.setInt(3, frnum);
+			pstmt.executeUpdate();
+			result = SUCCESS;
+			System.out.println("댓글삭제 성공");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage() + "댓글삭제 실패");
+		} finally {
+			try {
+				if(pstmt!= null) pstmt.close();
+				if(conn	!= null) conn.close();
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	// (10) 댓글 삭제
 	public int freeCommentDelete(int fnum, int frnum) {
 		int result = FAIL;
 		Connection			conn 	= null;

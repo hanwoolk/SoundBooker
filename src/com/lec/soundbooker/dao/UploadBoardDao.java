@@ -62,7 +62,8 @@ public class UploadBoardDao {
 				int		ugroup		= rs.getInt("ugroup");
 				int		ustep		= rs.getInt("ustep");
 				int		uindent		= rs.getInt("uindent");
-				dtos.add(new UploadBoardDto(unum, rid, utitle, ucontent, ufilename, urdate, uip, ugroup, ustep, uindent));
+				int		ubCommentCnt	= getUploadCommentTotCnt(unum);
+				dtos.add(new UploadBoardDto(unum, rid, utitle, ucontent, ufilename, urdate, uip, ugroup, ustep, uindent, ubCommentCnt ));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -141,8 +142,7 @@ public class UploadBoardDao {
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
 		ResultSet			rs		= null;
-		String sql = "SELECT uNUM, rID, uTITLE, uCONTENT, uFILENAME, uRDATE, uIP" + 
-				"    FROM UPLOADBOARD WHERE uNUM = ?";
+		String sql = "SELECT * FROM UPLOADBOARD WHERE uNUM = ?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -215,6 +215,7 @@ public class UploadBoardDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, unum);
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage() + "글 삭제 실패");
 		} finally {
@@ -291,9 +292,9 @@ public class UploadBoardDao {
 			pstmt.setString(3, ucontent);
 			pstmt.setString(4, ufilename);
 			pstmt.setString(5, uip);
-			pstmt.setInt(5, ugroup);
-			pstmt.setInt(5, ustep);
-			pstmt.setInt(5, uindent);
+			pstmt.setInt(6, ugroup);
+			pstmt.setInt(7, ustep+1);
+			pstmt.setInt(8, uindent+1);
 			pstmt.executeUpdate();
 			result = SUCCESS;
 			System.out.println("답변글쓰기 성공");
@@ -314,9 +315,8 @@ public class UploadBoardDao {
 		int result = FAIL;
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
-		String sql = "INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT," + 
-				"        urIP,uNUM)" + 
-				"VALUES ((SELECT NVL(MAX(urNUM),0)+1 FROM UPLOADBOARD_COMMENT), ?, ?, ?, ?";
+		String sql = "INSERT INTO UPLOADBOARD_COMMENT (urNUM, rID, urCONTENT,urIP,uNUM)" + 
+				"VALUES ((SELECT NVL(MAX(urNUM),0)+1 FROM UPLOADBOARD_COMMENT), ?, ?, ?, ?)";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -339,7 +339,90 @@ public class UploadBoardDao {
 		}
 		return result;
 	}
-	// (10) 특정글의 댓글 UNUM으로 가져오기
+	// (10) 글의 댓글 갯수
+	public int getUploadCommentTotCnt(int unum) {
+		int totCnt = 0;
+		Connection			conn 	= null;
+		PreparedStatement	pstmt 	= null;
+		ResultSet			rs		= null;
+		String sql = "SELECT COUNT(*) FROM UPLOADBOARD_COMMENT WHERE UNUM = ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, unum);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totCnt = rs.getInt(1);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs	!= null) rs.close();
+				if(pstmt!= null) pstmt.close();
+				if(conn	!= null) conn.close();
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return totCnt;
+	}
+	
+	// (9) 댓글 수정
+	public int uploadCommentModify(String urcontent, int unum, int urnum) {
+		int result = FAIL;
+		Connection			conn 	= null;
+		PreparedStatement	pstmt 	= null;
+		String sql = "UPDATE UPLOADBOARD_COMMENT SET URCONTENT = ?" + 
+				"        WHERE UNUM=? AND URNUM=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, urcontent);
+			pstmt.setInt(2, unum);
+			pstmt.setInt(3, urnum);
+			pstmt.executeUpdate();
+			result = SUCCESS;
+			System.out.println("댓글수정 성공");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage() + "댓글수정 실패");
+		} finally {
+			try {
+				if(pstmt!= null) pstmt.close();
+				if(conn	!= null) conn.close();
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	
+	// (10) 댓글 삭제
+	public int uploadCommentDelete(int unum, int urnum) {
+		int result = FAIL;
+		Connection			conn 	= null;
+		PreparedStatement	pstmt 	= null;
+		String sql = "DELETE FROM UPLOADBOARD_COMMENT WHERE UNUM = ? AND URNUM = ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, unum);
+			pstmt.setInt(2, urnum);
+			pstmt.executeUpdate();
+			result = SUCCESS;
+			System.out.println("댓글삭제 성공");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage() + "댓글삭제 실패");
+		} finally {
+			try {
+				if(pstmt!= null) pstmt.close();
+				if(conn	!= null) conn.close();
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
+	// (11) 특정글의 댓글 UNUM으로 가져오기
 	public ArrayList<UploadBoardCommentDto> getUploadBoardCommentlist(int unum){
 		ArrayList<UploadBoardCommentDto> dtos = new ArrayList<UploadBoardCommentDto>();
 		Connection			conn 	= null;
@@ -356,7 +439,7 @@ public class UploadBoardDao {
 				String 	rid			= rs.getString("rid");
 				String	urcontent	= rs.getString("urcontent");
 				Date	urrdate		= rs.getDate("urrdate");
-				String	urip			= rs.getString("urip");
+				String	urip		= rs.getString("urip");
 				dtos.add(new UploadBoardCommentDto(urnum, rid, urcontent, urrdate, urip, unum));
 			}
 		} catch (SQLException e) {

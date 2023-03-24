@@ -5,14 +5,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lec.soundbooker.dao.FreeBoardDao;
 
-public class FBContentService implements Service {
+public class FBCommentModifyService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		int fnum = Integer.parseInt(request.getParameter("fnum"));
+		String 	frcontent 	= request.getParameter("frcontent");
+		int		fnum		= Integer.parseInt(request.getParameter("fnum"));
+		int		frnum		= Integer.parseInt(request.getParameter("frnum"));
 		FreeBoardDao fbDao = FreeBoardDao.getInstance();
-		FreeBoardDao fbComments = FreeBoardDao.getInstance();
-		request.setAttribute("freeBoardContent", fbDao.freeBoardContent(fnum));
-		request.setAttribute("freeComments", fbComments.getFreeCommentlist(fnum));
+		fbDao.freeCommentModify(frcontent, fnum, frnum);
 	}
+
 }

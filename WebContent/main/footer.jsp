@@ -27,7 +27,7 @@
 	<footer>
 		<div id="footer_conts">
 			<p>(주)좋은시스템 402</p> 
-			<p>서울특별시 어떤구 어떤로 9 좋은빌딩 1-5F | <b><a href="${conPath }/adminLoginView.do">관리자 모드</a></b></p>
+			<p>서울특별시 어떤구 어떤로 9 좋은빌딩 1-5F | <b><a href="${conPath }/rtLoginView.do">관리자 모드</a></b></p>
 			<p>Copyright© 2022 tj . All rights reserved.</p>
 		</div>
 	</footer>

@@ -77,7 +77,7 @@
 					회사 소개
 				</li>
 				<li>프로젝트<ol class="subMenu">
-							<li><a href="${conPath }/loginView.do">프로젝트 목록</a></li>
+							<li><a href="${conPath }/projectList.do">프로젝트 목록</a></li>
 							<li><a href="${conPath }/loginView.do">마이 프로젝트</a></li>
 						</ol>
 				</li>
@@ -109,8 +109,8 @@
 					회사 소개
 				</li>
 				<li>프로젝트<ol class="subMenu">
-							<li><a href="#">프로젝트 목록</a></li>
-							<li><a href="#">마이 프로젝트</a></li>
+							<li><a href="${conPath }/projectList.do">프로젝트 목록</a></li>
+							<li><a href="${conPath }/loginView.do">마이 프로젝트</a></li>
 						</ol>
 				</li>
 				<li>
@@ -118,7 +118,7 @@
 				</li>
 				<c:if test="${not empty recteam}">
 					<li>
-						<a href="${conPath }/uploadBoardList.do" >업로드 게시판</a>
+						<a href="${conPath }/uploadList.do" >업로드 게시판</a>
 					</li>
 				</c:if>
 			</ul>

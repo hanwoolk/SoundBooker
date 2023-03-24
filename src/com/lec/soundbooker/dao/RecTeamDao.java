@@ -121,16 +121,24 @@ public class RecTeamDao {
 			}else {
 				result = NOTEXIST;
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(rs	 !=	null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		return result;
 	}
 	// (2) 작업자 등록 & 작업자 정보 수정
 	public int join_modifyRecTeam(String rpw, String rname, String rid) {
 		int result = FAIL;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
 		String sql = "UPDATE RECTEAM " + 
 				"    SET RPW       = ?," + 
 				"        RNAME     = ?" + 
@@ -157,8 +165,8 @@ public class RecTeamDao {
 	
 	// (3-1) 작업자 삭제 (업데이트 게시판)
 	private void deleteRecTeamStep1(String rid) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
 		String sql = "UPDATE UPLOADBOARD SET RID = '없는 회원'" + 
 				"    WHERE rID=?";
 		try {
@@ -178,8 +186,8 @@ public class RecTeamDao {
 	}		
 	// (3-2) 작업자 삭제 (업데이트_댓글 )
 	private void deleteRecTeamStep2(String rid) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
 		String sql = "UPDATE UPLOADBOARD_REPLY SET RID = '없는 회원'" + 
 				"    WHERE rID=?";
 		try {
@@ -199,8 +207,8 @@ public class RecTeamDao {
 	}		
 	// (3-3) 작업자 삭제 (자유게시판 )
 	private void deleteRecTeamStep3(String rid) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
 		String sql = "UPDATE FREEBOARD SET RID = '없는 회원'" + 
 				"    WHERE rID=?";
 		try {
@@ -221,8 +229,8 @@ public class RecTeamDao {
 	// (3-4) 작업자 삭제 (자유게시판-댓글 )
 	private int deleteRecTeamStep4(String rid) {
 		int result = FAIL;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
 		String sql = "UPDATE FREEBOARD_REPLY SET RID = '없는 회원'" + 
 				"    WHERE rID=?";
 		try {
@@ -373,8 +381,8 @@ public class RecTeamDao {
 	// (5) 작업자 프로젝트 퇴출
 	public int opOut(String rid) {
 		int result = FAIL;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
 		String sql = "UPDATE RECTEAM SET PNUM = NULL WHERE RID = ?";
 		try {
 			conn = getConnection();

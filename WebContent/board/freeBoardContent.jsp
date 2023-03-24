@@ -12,6 +12,16 @@
   <style>
 
   </style>
+  <script src="https://code.jquery.com/jquery-3.6.4.js"></Script>
+  <script>
+   	$(function(){//댓글 수정버튼 클릭시 글 내용이 수정 창으로 변겅
+  		$('#comment_modify').click(function(){
+  			var frcontent = $('#frcontent').text();
+				$('#frcontent').replaceWith('<pre><textarea rows="5" cols="20" name="frcontent">'+frcontent+'</textarea></pre>');
+				$('#comment_modify').replaceWith('<button>수정</button>');
+  		});
+  	});
+  </script>
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
@@ -66,21 +76,21 @@
 		</form>
 	</div>
 	<%----------------------------------- 댓글 보기 ------------------------------%>
-	<c:if test="${not empty freeComments}">
-		<div id="comment">
 			<c:forEach var="dto" items="${freeComments}">
-				<hr>
-					${dto.mid }${dto.rid } 님 | <fmt:formatDate value="${dto.frrdate }" pattern="yy-MM-dd hh:mm"/>
-				<br>
-					<pre>${dto.frcontent }</pre>
+				<form action="${conPath}/freeCommentmodify.do" method="post">
+					<input type="hidden" name="fnum" value=${dto.fnum }>
+					<input type="hidden" name="frnum" value=${dto.frnum }>
+					<input type="hidden" name="pageNum" value=${param.pageNum }>
+					<hr>
+					${dto.mid }${dto.rid } 님 | <fmt:formatDate value="${dto.frrdate }" pattern="yy-MM-dd hh:mm"/><br>
+						<pre id="frcontent">${dto.frcontent }</pre>
 					<br>
 					<c:if test="${(not empty dto.mid and dto.mid eq member.mid) or (not empty dto.rid and dto.rid eq recteam.rid)}">
-						<span><a href="${conPath}/freeCommentmodify.do?fnum=${dto.fnum}&frnum=${dto.frnum}">수정</a></span>
+						<span><a id="comment_modify">수정 </a></span>
 						<span><a href="${conPath}/freeCommentDelete.do?fnum=${dto.fnum}&frnum=${dto.frnum}">삭제</a></span><br>
 					</c:if>
+				</form>
 			</c:forEach>
-		</div>
-	</c:if>
 	<jsp:include page="../main/footer.jsp"/>
 </body>
 </html>
