@@ -9,10 +9,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	#content_form {
-		width: 800px; height:500px; line-height:500px;
-		margin: 0 auto; text-align: center; font-size: 3em;
+	#wrapper {
+		height: auto;
+	  min-height: 100%;
+	  padding-bottom: 100px;
 	}
+  
 </style>
 </head>
 <body>
@@ -49,8 +51,8 @@
 		</script>
 	</c:if>
 	<jsp:include page="../main/header.jsp"/>
-	<div id="content_form">
-		main
+	<div id="wrapper">
+			main
 	</div>
 	<jsp:include page="../main/footer.jsp"/>
 </body>

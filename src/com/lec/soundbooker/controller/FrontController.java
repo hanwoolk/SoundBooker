@@ -225,10 +225,10 @@ public class FrontController extends HttpServlet {
 /////////////////////////////////////////////////////////////////
 //////////////////////project 관련 요청////////////////////////////
 ////////////////////////////////////////////////////////////////			
-		}else if(command.equals("projectList.do")) {
+		}else if(command.equals("/projectList.do")) {
 			service = new ProjectListService();
 			service.execute(request, response);
-			viewPage = "board/projectList.jsp ";
+			viewPage = "board/projectList.jsp";
 		}else if(command.equals("")) {
 			viewPage = "";
 		}else if(command.equals("")) {

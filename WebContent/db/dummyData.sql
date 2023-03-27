@@ -2,6 +2,8 @@
 ----------------------------------PROJECT---------------------------------------
 --------------------------------------------------------------------------------
 INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES(0,'길거리 노이즈 수집','2021-05-01','2022-06-01','길거리 노이즈 수집(초회차)');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
     VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'차량내 소음 측정','2023-01-01','2023-06-06','차량내에서 소음 측정');
 INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
     VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'가정환경 음성녹음','2022-08-01','2023-08-01','가정환경 내에서 음성 녹음');
@@ -9,9 +11,36 @@ INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT)
     VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'길거리 노이즈 수집','2023-05-01','2023-06-01','길거리 노이즈 수집');
 INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
     VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'END','2022-05-01','2023-01-01','TEST');
-
-
-
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'길거리 노이즈 수집 경기','2023-05-01','2023-06-01','거주지:겅기');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'길거리 노이즈 수집 서울','2023-05-01','2023-06-01','거주지:서울');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'길거리 노이즈 수집 성남','2023-05-01','2023-06-01','거주지:성남');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'가정환경 음성녹음 아파트','2022-08-01','2023-08-01','주거형태:아파트, 유자녀 우대');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'가정환경 음성녹음 빌라','2022-08-01','2023-08-01','주거형태:아파트, 유자녀 우대');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'가정환경 음성녹음 오피스텔','2022-08-01','2023-08-01','주거형태:아파트, 무자녀 우대');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'가정환경 음성녹음 옥탑','2022-08-01','2023-08-01','주거형태:아파트, 유자녀 우대');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'길거리 노이즈 수집(도보)','2023-05-01','2023-06-01','거주지:경기도');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'길거리 노이즈 수집(전동킥보드)','2023-05-01','2023-06-01','거주지:서울');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'길거리 노이즈 수집(자전거)','2023-05-01','2023-06-01','거주지:경기도');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'일상대화(영어)','2023-05-01','2023-06-01','출신지:미국,영국');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'일상대화(영어)','2023-05-01','2023-06-01','출신지:중국,몽골');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'일상대화(영어)','2023-05-01','2023-06-01','출신지:필리핀,대만');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'일상대화(일어)','2023-05-01','2023-06-01','출신지:일본');
+INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
+    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),'일상대화(일어)','2023-05-01','2023-06-01','출신지:한국,중국');
 --------------------------------------------------------------------------------
 ----------------------------------RECTEAM---------------------------------------
 --------------------------------------------------------------------------------

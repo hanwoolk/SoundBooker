@@ -20,6 +20,43 @@
 	  	});
 	  });
   </script>
+  <style>
+  	#content_form{
+  		width:1000px;
+  		margin:0 auto;
+  		text-align:center;
+  	}
+  	.board_list{
+  		border-spacing: 30px;
+  		width:1000px;
+  		margin: 0 auto;
+  		text-align:center;
+  		argin: 20px auto;
+  		border: 1px solid gray;
+  		box-shadow: 1px 1px gray;
+  	}
+  	
+  	table tr {width:100%; cursor:pointer; background-color:white;/* #f7f3ba */;}
+  	table tr:hover{background-color:#dedaa4;}
+  	table tr:first-child { background-color:#b5b391;}
+  	table tr .num{width:15%;}
+  	table tr .id{width:15%;}
+  	table tr .title{width:30%; text-align:left;}
+  	table tr .ip{width:15%;}
+  	table tr .rdate{width:15%;}
+  	.paging {
+  		width:100%;
+  		position:absolute;
+  		bottom:150px;
+  		text-align:center;
+  	}
+  	
+  	.posting{
+  	width:800px;
+  	margin:0 auto;
+  	text-align:left;
+  	}
+  </style>
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
@@ -55,42 +92,39 @@
 				history.go(-1);
 			</script>
 		</c:if>
-		
-		<table>
-			<caption>자유 게시판</caption>
-			<tr><td><a href="${conPath}/freeBoardWriteView.do">글쓰기</a></td></tr>
-		</table>
-		<table>
+		<h3>자유 게시판</h3>
+		<table class="board_list">
 			<tr>
 				<th>글번호</th><th>작성자ID</th><th>글제목</th>
 				<th>IP</th><th>작성일</th>
 			</tr>
 			<c:if test="${fbList.size() eq 0 }">
 				<tr>
-					<td colspan="5">해당 페이지의 글이 없습니다</td>
+					<td colspan="5">해당 페이지에 글이 없습니다</td>
 				</tr>
 			</c:if>
 			<c:if test="${fbList.size() != 0 }">
 				<c:forEach var="dto" items="${fbList }">
 					<tr>
-						<td>${dto.fnum }</td>
+						<td class="num">${dto.fnum }</td>
 						<c:if test="${not empty dto.mid }">
-							<td>${dto.mid }</td>
+							<td class="id" >${dto.mid }</td>
 						</c:if>
 						<c:if test="${not empty dto.rid }">
-							<td>${dto.rid }</td>
+							<td class="id" >${dto.rid }</td>
 						</c:if>
-						<td class="left">
+						<td class="title" >
 							${dto.ftitle} [${dto.fbCommentCnt}]
 						</td>
-						<td>${dto.fip }</td>
-						<td>
+						<td class="ip" >${dto.fip }</td>
+						<td class="rdate" >
 							<fmt:formatDate value="${dto.frdate }" pattern="yy/MM/dd(E)"/>
 						</td>
 					</tr>
 				</c:forEach>
 			</c:if>
 		</table>
+	</div>
 		<div class="paging">
 			<c:if test="${startPage > BLOCKSIZE}">
 				[ <a href="${conPath }/freeBoardList.do?pageNum=${startPage-1}">이전</a> ]
@@ -107,6 +141,9 @@
 				[ <a href="${conPath }/freeBoardList.do?pageNum=${endPage+1}">다음</a> ]
 			</c:if>
 		</div>
+	<br>
+	<div class="posting">
+		<button  onclick='location.href="${conPath}/freeBoardWriteView.do"'>글쓰기</button>
 	</div>
 	<jsp:include page="../main/footer.jsp"/>
 </body>

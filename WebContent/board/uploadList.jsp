@@ -20,6 +20,44 @@
 	  	});
 	  });
   </script>
+  <style>
+    	#content_form{
+  		width:1000px;
+  		margin:0 auto;
+  		text-align:center;
+  	}
+  	.board_list {
+  		border-spacing: 30px;
+  		width:100%;
+  		margin: 0 auto;
+  		text-align :center;
+  		argin: 20px auto;
+  		border: 1px solid gray;
+  		box-shadow: 1px 1px gray;
+  	}
+  	table tr { width:100%; cursor:pointer; background-color:white;/* #f7f3ba */;}
+  	table tr:hover{background-color:#dedaa4;}
+  	table tr:first-child { background-color:#b5b391;}
+  	table tr .num{width:15%;}
+  	table tr .id{width:15%;}
+  	table tr .title{width:30%; text-align:left;}
+  	table tr .ip{width:15%;}
+  	table tr .rdate{width:15%;}
+  	
+  	.paging {
+  		width:100%;
+  		position:absolute;
+  		bottom:150px;
+  		text-align:center;
+  		margin:0 auto;
+  	}
+  	
+  	.posting{
+  	width:800px;
+  	margin:0 auto;
+  	text-align:left;
+  	}
+  </style>
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
@@ -46,27 +84,23 @@
 				history.go(-1);
 			</script>
 		</c:if>
-		
-		<table>
-			<caption>게시판</caption>
-			<tr><td><a href="${conPath}/uploadWriteView.do">글쓰기</a></td></tr>
-		</table>
-		<table>
+		<h3>업로드 게시판</h3>
+		<table class="board_list">
 			<tr>
 				<th>글번호</th><th>작성자ID</th><th>글제목</th>
 				<th>IP</th><th>작성일</th>
 			</tr>
 			<c:if test="${uploadList.size() eq 0 }">
 				<tr>
-					<td colspan="5">해당 페이지의 글이 없습니다</td>
+					<td colspan="5">해당 페이지에 글이 없습니다</td>
 				</tr>
 			</c:if>
 			<c:if test="${uploadList.size() != 0 }">
 				<c:forEach var="dto" items="${uploadList }">
 					<tr>
-						<td>${dto.unum }</td>
-						<td>${dto.rid }</td>
-						<td class="left">
+						<td class="num">${dto.unum }</td>
+						<td class="id">${dto.rid }</td>
+						<td class="title">
 							<c:forEach var="i" begin="1" end="${dto.uindent }">
 								<c:if test="${i != dto.uindent}">
 									&nbsp; &nbsp;
@@ -77,14 +111,15 @@
 							</c:forEach> <!-- 답글 들여쓰기 처리 -->
 							${dto.utitle} [${dto.ubCommentCnt}]
 						</td>
-						<td>${dto.uip }</td>
-						<td>
+						<td class="ip">${dto.uip }</td>
+						<td class="rdate">
 							<fmt:formatDate value="${dto.urdate }" pattern="yy/MM/dd(E)"/>
 						</td>
 					</tr>
 				</c:forEach>
 			</c:if>
 		</table>
+	</div>
 		<div class="paging">
 			<c:if test="${startPage > BLOCKSIZE}">
 				[ <a href="${conPath }/uploadList.do?pageNum=${startPage-1}">이전</a> ]
@@ -101,6 +136,9 @@
 				[ <a href="${conPath }/uploadList.do?pageNum=${endPage+1}">다음</a> ]
 			</c:if>
 		</div>
+	<br>
+	<div class="posting">
+		<button onclick='location.href="${conPath}/uploadWriteView.do"'>글쓰기</button>
 	</div>
 	<jsp:include page="../main/footer.jsp"/>
 </body>

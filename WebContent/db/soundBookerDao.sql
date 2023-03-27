@@ -52,7 +52,8 @@ UPDATE MEMBER SET mACTIVATE = 'ON'
     WHERE mID ='aaa' and mACTIVATE = 'OFF';
 ROLLBACK;
 COMMIT;
-
+SELECT COUNT(*) FROM PROJECT WHERE NOT PNUM IN (0);
+SELECT *FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT WHERE NOT PNUM IN (0) ORDER BY PNUM DESC) A) WHERE RN BETWEEN 1 AND 30;
 -------------------------------------------------------------------------------
 -------------------------------- RecteamDao query------------------------------
 -------------------------------------------------------------------------------
