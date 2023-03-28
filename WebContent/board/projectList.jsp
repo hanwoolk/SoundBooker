@@ -8,22 +8,24 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.js"></Script>
   <style>
-		table {
-		  border-collapse: collapse;
+  	.project_Table {
+		  border-spacing:10px;
 		  width:1000px;
-		  margin : 0 auto;
-		}
+		  margin : 30px auto 0 auto;
+		  border-collapse: separate;
+	  }
 		table td {
 		  padding: 10px;
 		  border: 1px solid #ddd;
+		  border-radius:5px;
+		  cursor:pointer;
 		}
-		
-		 .projects{ cursor:pointer; margin:10px; box-shadow:1px 1px gray; height:100px;}
-		 .projects:hover{background-color:#f7f6df;}
-		 
-		#ptitle, #pcontent{
+		h3 {text-align:center; padding-top:30px; margin:0;}
+	 	.projects{ cursor:pointer; margin:10px; box-shadow:1px 1px gray; height:100px;}
+	 	.projects:hover{background-color:#f7f6df;}
+		.ptitle, .pcontent{
 			margin:0 auto;
 			width:250px;
 			overflow: hidden;
@@ -40,6 +42,7 @@
 		  font-size: 20px;
 		  font-weight: bold;
 		  margin-bottom: 10px;
+		  text-align:left;
 		}
 		
 		table td hr {
@@ -69,38 +72,40 @@
   		margin:0 auto;
   	}
    	.posting{
-	  	width:800px;
+	  	width:1000px;
 	  	margin:15px auto;
-	  	text-align:left;
+	  	text-align:center;
   	}
   </style>
-  <script src="https://code.jquery.com/jquery-3.6.4.js"></Script>
   <script>
-/*  	  $(document).ready(function(){
-	  	$('.projects').click(function(){
-	  		var pnum =$(this).$('#pnum').text().trim();
-	  		if(!isNaN(Number(pnum))){
-	  			location.href='${conPath }/projectContent.do?pnum='+pnum+'&pageNum=${pageNum}';
-	  		}
-	  	});
-	  }); */
+ 	  $(document).ready(function(){
+			$('td.project_content').click(function(){
+				var pnum =$(this).children().children().eq(0).text().trim();
+				if(!isNaN(Number(pnum))){
+					location.href='${conPath }/projectContent.do?pnum='+pnum+'&pageNum=${pageNum}';
+				}
+			});
+		});
   </script>
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
-	<div id="content_form">
+	<div id="wrapper">
 		<c:set var="SUCCESS" value="1"/>
 		<c:set var="FAIL" value="0"/>
-		<c:if test="${writeResult eq SUCCESS }">
-			<script>alert('글쓰기 성공');</script>
+		<c:if test="${registerResult eq SUCCESS }">
+			<script>alert('프로젝트 등록 성공');</script>
 		</c:if>
-		<c:if test="${not empty writeErrorMsg}">
-			<script>alert('${writeErrorMsg}');</script>
+		<c:if test="${registerResult eq FAIL}">
+			<script>
+				alert('프로젝트 등록 오류, 내용 확인부탁드립니다');
+				history.back();
+			</script>
 		</c:if>
-		<c:if test="${modifyResult eq SUCCESS }">
+		<c:if test="${projectModifyResult eq SUCCESS }">
 			<script>alert('수정 성공');</script>
 		</c:if>
-		<c:if test="${modifyResult eq FAIL }">
+		<c:if test="${projectModifyResult eq FAIL }">
 			<script>
 				alert('${param.pnum}번 글 수정 실패');
 				history.back();
@@ -120,31 +125,33 @@
 				history.go(-1);
 			</script>
 		</c:if>
-
-		<table>
+		<h3>모집중 프로젝트</h3>
+		<table class="project_Table">
 			<c:if test="${projectList.size() eq 0 }">
 				<tr class="content">
 					<td colspan="5">해당 페이지에 글이 없습니다</td>
 				</tr>
 			</c:if>
-			<c:if test="${projectList.size() != 0 }">   <%-- 1줄 3개씩 총 12개 프로젝트 리스트업  --%>
+			<%---------------------- 1줄 5개씩 총 15개 프로젝트 리스트업  ---------------%>
+			<c:if test="${projectList.size() != 0 }">   
 				<c:forEach var="dto" items="${projectList }" varStatus="loop">
-					<c:if test="${loop.index % 3 == 0 }">
-						<tr>
+					<c:if test="${loop.index % 5 == 0 }">
+						<tr >
 					</c:if>
-						<td class="projects" onclick="location.href=${conPath }/projectContent.do?pnum=${dto.pnum }&pageNum=${pageNum}">
-							<h3 id="ptitle" title="${dto.pnum }. ${dto.pname }"><span id="pnum">${dto.pnum }</span>. ${dto.pname }</h3>
+						<td class="project_content">
+							<h3 class="ptitle" title="${dto.pnum }. ${dto.pname }"><span class="pnum${dto.pnum }">${dto.pnum }</span>. ${dto.pname }</h3>
 							<hr>
-							<p><span id="pcontent">${dto.pcontent }</span></p>
+							<p><span class="pcontent">${dto.pcontent }</span></p>
 							<p class = "date">게시일 : <fmt:formatDate value="${dto.prdate }" pattern="yy/MM/dd(E)"/></p>
 						</td>
-					<c:if test="${(loop.index + 1) % 3 == 0 || loop.last }">
+					<c:if test="${(loop.index + 1) % 5 == 0 || loop.last }">
 						</tr>
-					</c:if>																	<%-- 1줄 3개씩 총 12개 프로젝트 리스트업 --%>
+					</c:if>																	
 				</c:forEach>
 			</c:if>
 		</table>
-		<div class="paging"> <%-- 게시판 페이징 --%>
+		<%--------------------------- 게시판 페이징 ------------------------------%>
+		<div class="paging"> 
 			<c:if test="${startPage > BLOCKSIZE}">
 				[ <a href="${conPath }/projectList.do?pageNum=${startPage-1}">이전</a> ]
 			</c:if>
@@ -160,12 +167,14 @@
 				[ <a href="${conPath }/projectList.do?pageNum=${endPage+1}">다음</a> ]
 			</c:if>
 		</div>
-	</div> 								<%-- 게시판 페이징 --%>
-	<c:if test="${recteam.rjob eq 'PROJECT_MANAGER'}"> <%-- 프로젝트 등록 버튼 --%>
+	</div>
+	<%------------------------------ 프로젝트 등록 버튼 ---------------------------%>								
+	<c:if test="${recteam.rjob eq 'PROJECT_MANAGER'}">
 		<div class="posting">
-			<button onclick='location.href="${conPath}/projectWriteView.do"'>프로젝트 등록</button>
+			<button onclick='location.href="${conPath}/projectRegisterView.do"'>프로젝트 등록</button>
 		</div>
 	</c:if>
+	<%------------------------------------------------------------------------%>								
 	<jsp:include page="../main/footer.jsp"/>
 </body>
 </html>

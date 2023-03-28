@@ -8,7 +8,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.4.js"></Script>
   <script>
 	  $(document).ready(function(){
@@ -21,11 +20,12 @@
 	  });
   </script>
   <style>
-  	#content_form{
+  	#wrapper{
   		width:1000px;
   		margin:0 auto;
   		text-align:center;
   	}
+  	h3{padding-top:30px; padding-bottom:30px;}
   	.board_list{
   		border-spacing: 30px;
   		width:1000px;
@@ -54,13 +54,13 @@
   	.posting{
   	width:800px;
   	margin:0 auto;
-  	text-align:left;
+  	text-align:center;
   	}
   </style>
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
-	<div id="content_form">
+	<div id="wrapper">
 		<c:set var="SUCCESS" value="1"/>
 		<c:set var="FAIL" value="0"/>
 		<c:if test="${writeResult eq SUCCESS }">

@@ -9,7 +9,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
  	<style>
 
 		p{margin-top: 30px;}
@@ -34,7 +33,7 @@
 		<input type="hidden" name="morigin" value="${member.morigin }">
 		<input type="hidden" name="rcnt" value="${member.rcnt }">
 		<input type="hidden" name="mactivate" value="${member.mactivate }">
-		<div id="content_form">
+		<div id="wrapper">
 			<table>
 				<caption>정보수정</caption>
 				<tr>

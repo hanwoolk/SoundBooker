@@ -8,7 +8,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
@@ -18,7 +17,7 @@
 			location.href="${conPath }/member/login.jsp?method=write";
 		</script>
 	</c:if>
-	<div id="content_form">
+	<div id="wrapper">
 		<form action="${conPath }/freeBoardWrite.do" method="post">
 			<table>
 				<caption>원글 쓰기</caption>

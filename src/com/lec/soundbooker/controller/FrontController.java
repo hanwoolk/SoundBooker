@@ -25,6 +25,9 @@ import com.lec.soundbooker.service.MModifyService;
 import com.lec.soundbooker.service.MWithdrawalService;
 import com.lec.soundbooker.service.MidConfirmService;
 import com.lec.soundbooker.service.MnamePhoneConfirmService;
+import com.lec.soundbooker.service.PModifyService;
+import com.lec.soundbooker.service.PRegisterService;
+import com.lec.soundbooker.service.ProjectContentService;
 import com.lec.soundbooker.service.ProjectListService;
 import com.lec.soundbooker.service.RTLoginService;
 import com.lec.soundbooker.service.Service;
@@ -39,6 +42,7 @@ import com.lec.soundbooker.service.UBContentService;
 import com.lec.soundbooker.service.UBDeleteService;
 import com.lec.soundbooker.service.UBListService;
 import com.lec.soundbooker.service.UBWriteService;
+import com.lec.soundbooker.service.PModifyViewService;
 
 @WebServlet("*.do")
 public class FrontController extends HttpServlet {
@@ -229,16 +233,29 @@ public class FrontController extends HttpServlet {
 			service = new ProjectListService();
 			service.execute(request, response);
 			viewPage = "board/projectList.jsp";
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
+			
+		}else if(command.equals("/projectContent.do")) {
+			service = new ProjectContentService();
+			service.execute(request, response);
+			viewPage = "board/projectContent.jsp";
+			
+		}else if(command.equals("/projectRegisterView.do")) {
+			viewPage = "board/projectRegisterView.jsp";
+			
+		}else if(command.equals("/projectRegister.do")) {
+			service = new PRegisterService();
+			service.execute(request, response);
+			viewPage = "/projectList.do";
+			
+		}else if(command.equals("/projectModifyView.do")) {
+			service = new PModifyViewService();
+			service.execute(request, response);
+			viewPage = "board/projectModifyView.jsp";
+			
+		}else if(command.equals("/projectModify.do")) {
+			service = new PModifyService();
+			service.execute(request, response);
+			viewPage = "/projectList.do";
 		}else if(command.equals("")) {
 			viewPage = "";
 		}else if(command.equals("")) {

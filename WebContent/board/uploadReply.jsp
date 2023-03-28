@@ -8,11 +8,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
-	<div id="content_form">
+	<div id="wrapper">
 		<form action="${conPath }/uploadReply.do" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="unum" value="${param.unum }">
 			<input type="hidden" name="pageNum" value="${param.pageNum }">

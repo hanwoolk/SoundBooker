@@ -8,11 +8,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
-	<div id="content_form">
+	<div id="wrapper">
 		<c:if test="${recteam eq null}">
 		<script>
 			alert('로그인이 필요합니다')

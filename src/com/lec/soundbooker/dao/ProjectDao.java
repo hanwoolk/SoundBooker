@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 import com.lec.soundbooker.dto.MemberDto;
 import com.lec.soundbooker.dto.ProjectDto;
+import com.lec.soundbooker.dto.RecTeamDto;
 
 public class ProjectDao {
 	public static final int FAIL = 0;
@@ -222,7 +223,7 @@ public class ProjectDao {
 				int		pmember  	=rs.getInt("pmember"); 
 				int		pop   	 	=rs.getInt("pop");  
 				String	pcontent 	=rs.getString("pcontent"); 
-				Date	prdate   	=rs.getDate("prdate");  
+				Date	prdate   	=rs.getDate("prdate");
 				project = new ProjectDto(pnum, pname, pstartdate, penddate, pmember, pop, pcontent, prdate);
 			}
 		} catch (Exception e) {
@@ -238,6 +239,7 @@ public class ProjectDao {
 		}
 		return project;
 	}	
+
 	// (4-2) 자신이 진행중인 프로젝트 (녹음작업자용)
 	public ProjectDto opMyProject(String rid) {
 		ProjectDto project = null;
@@ -280,15 +282,17 @@ public class ProjectDao {
 		int result = FAIL;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) " + 
-				"    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),?,?,?,?)";
+		String sql = "INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pMEMBER, pOP, pCONTENT) " + 
+				"    VALUES((SELECT NVL(MAX(pNUM),0)+1 FROM PROJECT),?,?,?,?,?,?)";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, project.getPname());
 			pstmt.setDate(2, project.getPstartdate());
 			pstmt.setDate(3, project.getPenddate());
-			pstmt.setString(4, project.getPcontent());
+			pstmt.setInt(4, project.getPmember());
+			pstmt.setInt(5, project.getPop());
+			pstmt.setString(6, project.getPcontent());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -303,14 +307,16 @@ public class ProjectDao {
 		return result;
 	}
 	// (6) 프로젝트 수정
-	public int modifyProject(int pnum, String pname, Date pstartdate, Date penddate, String pcontent) {
+	public int modifyProject(int pnum, String pname, Date pstartdate, Date penddate, String pcontent, int pmember, int pop) {
 		int result = FAIL;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = "UPDATE PROJECT SET pNAME        = ?," + 
 				"                   	 pSTARTDATE   = ?," + 
 				"                   	 pENDDATE     = ?," + 
-				"                   	 pCONTENT     = ?" + 
+				"						 pMEMBER	  = ?," +
+				"						 pOP		  = ?," +
+				"                   	 pCONTENT     = ?"  + 
 				"            WHERE PNUM = ?";
 		try {
 			conn = getConnection();
@@ -318,8 +324,10 @@ public class ProjectDao {
 			pstmt.setString(1, pname);
 			pstmt.setDate(2, pstartdate);
 			pstmt.setDate(3, penddate);
-			pstmt.setString(4, pcontent);
-			pstmt.setInt(5, pnum);
+			pstmt.setInt(4, pmember);
+			pstmt.setInt(5, pop);
+			pstmt.setString(6, pcontent);
+			pstmt.setInt(7, pnum);
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

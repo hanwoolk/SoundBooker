@@ -280,7 +280,38 @@ public class RecTeamDao {
 		}
 		return result;
 	}	
-
+	// (4) 프로젝트 번호로 담당 PM 상세보기
+	public RecTeamDto getPM(int pnum) {
+		RecTeamDto projectManager = new RecTeamDto();
+		Connection        conn  = null;
+		PreparedStatement pstmt = null;
+		ResultSet         rs    = null;
+		String sql = "SELECT * FROM RECTEAM WHERE PNUM=? AND RJOB='PROJECT_MANAGER'";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pnum);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				String	rid			=rs.getString("rid");
+				String	rpw  		=rs.getString("rpw");   
+				String	rname    	=rs.getString("rname");    
+				String	rjob  		=rs.getString("rjob"); 
+				projectManager = new RecTeamDto(rid, rpw, rname, rjob, pnum);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs    != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return projectManager;
+	}	
 	// (4-1) 프로젝트 없는 녹음 작업자 전체 수
 	public int getOperatorTotCnt() {
 		int totCnt = 0;

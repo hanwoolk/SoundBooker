@@ -8,7 +8,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
 	<style>
 		h1,p {text-align: center;}
 		h1 {padding :50px;}
@@ -24,8 +23,9 @@
 		  font-family: system-ui, serif;
 		  font-size: 2rem;
 		  padding: 3rem;
-		  border-radius: 1rem;
-		  background: #ff6e6c;
+		  border-radius: 10px;
+		  border:1px solid gray;
+		  background: whtie;
 		}
 	</style>
 </head>

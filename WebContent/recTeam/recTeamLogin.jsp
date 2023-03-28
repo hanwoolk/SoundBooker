@@ -8,7 +8,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-  <link href="${conPath }/css/style.css" rel="stylesheet">
 	<style>
 		h1, p {text-align: center;}
 		h1 {padding :50px;}
@@ -19,15 +18,14 @@
 		  min-height: 100px;
 		  background: ;
 		}
-		tr {
-		text-align: center;
-		}
+		
 		.content {
 		  font-family: system-ui, serif;
 		  font-size: 2rem;
 		  padding: 3rem;
-		  border-radius: 1rem;
-		  background: #ff6e6c;
+		  border-radius: 10px;
+		  border:1px solid gray;
+		  background: whtie;
 		}
 	</style>
 </head>
@@ -49,7 +47,7 @@
 		<input type="hidden" name="fnum" value="${param.fnum }">
 		<input type="hidden" name="unum" value="${param.unum }">
 		<h1>직원 로그인</h1>
-		<div class="wrapper">
+		<div id="wrapper">
 			<div class="content">
 				<table>
 					<tr>
@@ -59,7 +57,7 @@
 						<th>PW</th><td><input type="password" name="rpw" required="required"></td>
 					</tr>
 					<tr>
-						<td>
+						<td colspan="2">
 							<p>
 								<input type="submit" value="로그인" class="btn">
 							</p>

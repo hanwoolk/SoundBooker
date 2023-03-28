@@ -12,6 +12,14 @@ public class ProjectDto {
 	private		String	pcontent;
 	private		Date	prdate;
 	public ProjectDto() {}
+	public ProjectDto(String pname, Date pstartdate, Date penddate, int pmember, int pop, String pcontent) {
+		this.pname = pname;
+		this.pstartdate = pstartdate;
+		this.penddate = penddate;
+		this.pmember = pmember;
+		this.pop = pop;
+		this.pcontent = pcontent;
+	}
 	public ProjectDto(int pnum, String pname, Date pstartdate, Date penddate, int pmember, int pop, String pcontent,
 			Date prdate) {
 		this.pnum = pnum;
