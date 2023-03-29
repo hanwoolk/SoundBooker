@@ -103,24 +103,19 @@ public class RecTeamDao {
 		return recTeam;
 	}	
 	//-------------------------프로젝트 관리자--------------------------
-	// (1) 작업자 id 중복 체크 
-	public int ridConfirm(String rid, String rname) {
-		int result = EXIST;
+	// (1) 퇴사 직원의 빈 ID 출력
+	public String getOpId() {
+		String OpId = null;
 		Connection			conn	= null;
 		PreparedStatement	pstmt	= null;
 		ResultSet			rs		=null;
-		String sql = "SELECT * FROM RECTEAM WHERE rID=? AND RNAME=?";
+		String sql = "SELECT rID FROM RECTEAM WHERE rNAME='0' AND rJOB='OPERATOR' ORDER BY rID";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, rid);
-			pstmt.setString(2, rname);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				result = EXIST;
-			}else {
-				result = NOTEXIST;
-			}
+			rs.next();
+			OpId = rs.getString(1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -132,7 +127,7 @@ public class RecTeamDao {
 				System.out.println(e.getMessage());
 			}
 		}
-		return result;
+		return OpId;
 	}
 	// (2) 작업자 등록 & 작업자 정보 수정
 	public int join_modifyRecTeam(String rpw, String rname, String rid) {
@@ -173,6 +168,7 @@ public class RecTeamDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, rid);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -194,6 +190,7 @@ public class RecTeamDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, rid);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -215,6 +212,7 @@ public class RecTeamDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, rid);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -237,7 +235,7 @@ public class RecTeamDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, rid);
-			result = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -253,10 +251,15 @@ public class RecTeamDao {
 	// (3-5) 작업자 삭제
 	public int opWithdrawal(String rid) {
 		int result = FAIL;
+		System.out.println(1);
 		deleteRecTeamStep1(rid);
+		System.out.println(2);
 		deleteRecTeamStep2(rid);
+		System.out.println(3);
 		deleteRecTeamStep3(rid);
+		System.out.println(4);
 		deleteRecTeamStep4(rid);
+		System.out.println(5);
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = "UPDATE RECTEAM " + 
@@ -265,9 +268,13 @@ public class RecTeamDao {
 				"    WHERE RID = ?";
 		try {
 			conn = getConnection();
+			System.out.println(6);
 			pstmt = conn.prepareStatement(sql);
+			System.out.println(7);
 			pstmt.setString(1, rid);
+			System.out.println(8);
 			result = pstmt.executeUpdate();
+			System.out.println(9);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -318,6 +325,32 @@ public class RecTeamDao {
 		Connection        conn  = null;
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
+		String sql = "SELECT COUNT(*) CNT FROM RECTEAM WHERE rJOB='OPERATOR'";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totCnt = rs.getInt("cnt");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs    != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return totCnt;
+	}
+	// (4-2) 프로젝트 없는 녹음 작업자 전체 수
+	public int getAvailOperatorTotCnt() {
+		int totCnt = 0;
+		Connection        conn  = null;
+		PreparedStatement pstmt = null;
+		ResultSet         rs    = null;
 		String sql = "SELECT COUNT(*) CNT FROM RECTEAM WHERE rJOB='OPERATOR' AND PNUM IS NULL";
 		try {
 			conn = getConnection();
@@ -338,15 +371,18 @@ public class RecTeamDao {
 		}
 		return totCnt;
 	}
-	// (4-2) 녹음 작업자 리스트(TOP-N)-- 프로젝트 없는 녹음 작업자
+	// (4-3) 녹음 작업자 리스트(TOP-N)-- 프로젝트 없는 녹음 작업자
 	public ArrayList<RecTeamDto> getOperatorList(int startRow, int endRow) {
 		ArrayList<RecTeamDto> recteams = new ArrayList<RecTeamDto>();
 		Connection        conn  = null;
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
-		String sql = "SELECT *" + 
-				"    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM RECTEAM ORDER BY pNUM DESC) A)" + 
-				"    WHERE RN BETWEEN ? AND ? AND PNUM IS NULL AND RJOB = 'OPERATOR'";
+		String sql = "SELECT * " + 
+				"    FROM (SELECT ROWNUM RN, A.* FROM" + 
+				"        (SELECT * " + 
+				"            FROM RECTEAM WHERE PNUM IS NULL AND RJOB = 'OPERATOR' " + 
+				"                            AND RNAME NOT IN ('0')ORDER BY RID DESC) A) " + 
+				"    WHERE RN BETWEEN ? AND ?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -375,13 +411,13 @@ public class RecTeamDao {
 		return recteams;
 	}
 
-	// (4-3) 녹음 작업자 리스트-- 해당 프로젝트 진행중인 녹음 작업자를(PNUM)으로 검색
+	// (4-4) 녹음 작업자 리스트-- 해당 프로젝트 진행중인 녹음 작업자를(PNUM)으로 검색
 	public ArrayList<RecTeamDto> getOperatorList(int pnum) {
 		ArrayList<RecTeamDto> recteams = new ArrayList<RecTeamDto>();
 		Connection        conn  = null;
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
-		String sql = "SELECT RID, RNAME, RJOB, P.PNAME" + 
+		String sql = "SELECT RID, RNAME, RJOB" + 
 				"    FROM PROJECT P, RECTEAM R" + 
 				"    WHERE P.PNUM = R.PNUM AND P.PNUM=? AND RJOB = 'OPERATOR'";
 		try {
@@ -391,9 +427,45 @@ public class RecTeamDao {
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				String	rid		 =rs.getString("rid");
+				String	rname    =rs.getString("rname");   
+				String	rjob     =rs.getString("rjob");   
+				recteams.add(new RecTeamDto(rid, rname, rjob));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs    != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return recteams;
+	}
+	// (4-5) 전체 녹음 작업자 리스트(TOP-N)-- 빈 ID 제외
+	public ArrayList<RecTeamDto> getAllOperatorList(int startRow, int endRow) {
+		ArrayList<RecTeamDto> recteams = new ArrayList<RecTeamDto>();
+		Connection        conn  = null;
+		PreparedStatement pstmt = null;
+		ResultSet         rs    = null;
+		String sql = "SELECT * " + 
+				"    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * " + 
+				"        FROM RECTEAM WHERE RJOB = 'OPERATOR' AND RNAME NOT IN ('0') ORDER BY RID DESC) A) " + 
+				"    WHERE RN BETWEEN ? AND ?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String	rid		 =rs.getString("rid");
 				String	rpw      =rs.getString("rpw");     
 				String	rname    =rs.getString("rname");   
 				String	rjob     =rs.getString("rjob");   
+				int		pnum     =rs.getInt("pnum");   
 				recteams.add(new RecTeamDto(rid, rpw, rname, rjob, pnum));
 			}
 		} catch (Exception e) {
@@ -409,6 +481,33 @@ public class RecTeamDao {
 		}
 		return recteams;
 	}
+	// (4-6) 전체 녹음자 숫자 (빈ID제외)
+	public int getAllOperatorTotCnt() {
+		int totCnt = 0;
+		Connection        conn  = null;
+		PreparedStatement pstmt = null;
+		ResultSet         rs    = null;
+		String sql = "SELECT COUNT(*) CNT FROM RECTEAM WHERE rJOB='OPERATOR' AND NOT rNAME IN('0')";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totCnt = rs.getInt("cnt");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs    != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return totCnt;
+	}
+
 	// (5) 작업자 프로젝트 퇴출
 	public int opOut(String rid) {
 		int result = FAIL;
@@ -443,7 +542,7 @@ public class RecTeamDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, pnum);
-			pstmt.setString(1, rid);
+			pstmt.setString(2, rid);
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -490,22 +589,22 @@ public class RecTeamDao {
 		Connection        conn  = null;
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
-		String sql = "SELECT *" + 
-				"    FROM (SELECT ROWNUM RN, A.* " + 
-				"        FROM(SELECT PNAME, P.PNUM PNUM,M.PNUM MPNUM,PNUMREG, MID, MNAME," + 
-				"                MBIRTH, MGENDER, MPHONE, MORIGIN, MADDRESS, MDRIVE, MPREFER1," + 
-				"                MPREFER2, MPREFER3, RCNT, MBANK, MACCOUNT " + 
-				"            FROM MEMBER M, PROJECT P " + 
-				"                WHERE P.PNUM = M.PNUMREG AND M.PNUM IS NULL AND MACTIVATE = 'ON'" + 
-				"                ORDER BY M.PNUM DESC, RCNT DESC) " + 
-				"            A)" + 
-				"    WHERE RN BETWEEN ? AND ? AND PNUM = ?";
+		String sql = "SELECT * " + 
+				"  FROM (SELECT ROWNUM RN, A.*  " + 
+				"      FROM(SELECT PNAME, P.PNUM PNUM,M.PNUM MPNUM,PNUMREG, MID, MNAME, " + 
+				"              MBIRTH, MGENDER, MPHONE, MORIGIN, MADDRESS, MDRIVE, MPREFER1, " + 
+				"              MPREFER2, MPREFER3, RCNT, MBANK, MACCOUNT  " + 
+				"          FROM MEMBER M, PROJECT P  " + 
+				"              WHERE P.PNUM = M.PNUMREG AND M.PNUM IS NULL AND P.PNUM = ? AND MACTIVATE = 'ON' " + 
+				"              ORDER BY M.PNUM DESC, RCNT DESC)  " + 
+				"          A) " + 
+				"  WHERE RN BETWEEN ? AND ?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, endRow);
-			pstmt.setInt(3, pnum);
+			pstmt.setInt(1, pnum);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				String	pname	 =rs.getString("pname");
@@ -539,54 +638,6 @@ public class RecTeamDao {
 			}
 		}
 		return members;
-	}
-	// (3) 신청한 MEMBER 등록으로 (pNUMREG => pNUM)
-	public int memberConfirm(String mid) {
-		int result = FAIL;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		String sql = "UPDATE MEMBER SET pNUM    = pNUMREG , " + 
-				"                       pNUMREG = NULL " + 
-				"        WHERE mID = mid AND pNUM IS NULL";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mid);
-			result = pstmt.executeUpdate();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			try {
-				if(pstmt != null) pstmt.close();
-				if(conn  != null) conn.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-		return result;
-	}
-	// (4) 신청자 프로젝트 중 퇴출
-	public int memberOut(String mid) {
-		int result = FAIL;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		String sql = "UPDATE MEMBER SET PNUM = NULL WHERE mID = ?";
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, mid);
-			result = pstmt.executeUpdate();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			try {
-				if(pstmt != null) pstmt.close();
-				if(conn  != null) conn.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-		return result;
 	}
 }
 

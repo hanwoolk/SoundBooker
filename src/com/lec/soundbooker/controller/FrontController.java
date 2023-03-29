@@ -22,9 +22,18 @@ import com.lec.soundbooker.service.MJoinService;
 import com.lec.soundbooker.service.MLoginService;
 import com.lec.soundbooker.service.MLogoutService;
 import com.lec.soundbooker.service.MModifyService;
+import com.lec.soundbooker.service.MRegisterService;
 import com.lec.soundbooker.service.MWithdrawalService;
+import com.lec.soundbooker.service.MemberOutService;
 import com.lec.soundbooker.service.MidConfirmService;
 import com.lec.soundbooker.service.MnamePhoneConfirmService;
+import com.lec.soundbooker.service.OpAllViewService;
+import com.lec.soundbooker.service.OpJoinService;
+import com.lec.soundbooker.service.OpOutService;
+import com.lec.soundbooker.service.OpRegisterService;
+import com.lec.soundbooker.service.OpWithdrawalService;
+import com.lec.soundbooker.service.PDeleteService;
+import com.lec.soundbooker.service.PFinishService;
 import com.lec.soundbooker.service.PModifyService;
 import com.lec.soundbooker.service.PRegisterService;
 import com.lec.soundbooker.service.ProjectContentService;
@@ -42,6 +51,10 @@ import com.lec.soundbooker.service.UBContentService;
 import com.lec.soundbooker.service.UBDeleteService;
 import com.lec.soundbooker.service.UBListService;
 import com.lec.soundbooker.service.UBWriteService;
+import com.lec.soundbooker.service.MAllView;
+import com.lec.soundbooker.service.OpJoinViewService;
+import com.lec.soundbooker.service.OpModifyService;
+import com.lec.soundbooker.service.OpModifyViewService;
 import com.lec.soundbooker.service.PModifyViewService;
 
 @WebServlet("*.do")
@@ -68,38 +81,71 @@ public class FrontController extends HttpServlet {
 ////////////////////////////////////////////////////////////////	
 		}else if(command.equals("/joinView.do")) {
 			viewPage = "member/join.jsp";
+			
 		}else if(command.equals("/midConfirm.do")) {
 			service = new MidConfirmService();
 			service.execute(request, response);
 			viewPage = "member/midConfirm.jsp";
+			
 		}else if(command.equals("/mnamePhoneConfirm.do")) {
 			service = new MnamePhoneConfirmService();
 			service.execute(request, response);
+			
 			viewPage = "member/mnamePhoneConfirm.jsp";
 		}else if(command.equals("/join.do")) {
 			service = new MJoinService();
 			service.execute(request, response);
 			viewPage = "/loginView.do";
+			
 		}else if(command.equals("/loginView.do")) {
 			viewPage = "member/login.jsp";
+			
 		}else if(command.equals("/login.do")) {
 			service = new MLoginService();
 			service.execute(request, response);
 			viewPage = "main/main.jsp";
+			
 		}else if(command.equals("/logout.do")) {//로그아웃 - 세션 날리기
 			service = new MLogoutService();
 			service.execute(request, response);
 			viewPage = "main/main.jsp";
+			
 		}else if(command.equals("/modifyView.do")) { //정보 수정하기 위한 view
 			viewPage = "member/modify.jsp";
+			
 		}else if(command.equals("/modify.do")) { // db의 정보 수정
 			service = new MModifyService();
 			service.execute(request, response);
 			viewPage = "main/main.jsp";
+			
 		}else if(command.equals("/withdrawal.do")) {
 			service = new MWithdrawalService();
 			service.execute(request, response);
 			viewPage = "main/main.jsp";
+
+		}else if(command.equals("/memberRegister.do")) {
+			service = new MRegisterService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
+			
+		}else if(command.equals("/memberOut.do")) {
+			service = new MemberOutService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
+			
+		}else if(command.equals("/opOut.do")) {
+			service = new OpOutService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
+		
+		}else if(command.equals("/memberList.do")) {
+			service = new MAllView();
+			service.execute(request, response);
+			viewPage = "member/memberList.jsp";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
 /////////////////////////////////////////////////////////////////
 //////////////////////freeboard 관련 요청//////////////////////////
 ////////////////////////////////////////////////////////////////			
@@ -158,11 +204,54 @@ public class FrontController extends HttpServlet {
 ////////////////////////////////////////////////////////////////
 		}else if(command.equals("/rtLoginView.do")) {
 			viewPage = "recTeam/recTeamLogin.jsp";
+			
 		}else if(command.equals("/rtLogin.do")) {
 			service = new RTLoginService();
 			service.execute(request, response);
 			viewPage = "/main.do";
 			
+		}else if(command.equals("/opJoinView.do")) {
+			service = new OpJoinViewService();
+			service.execute(request, response);
+			viewPage="recTeam/opJoin.jsp";
+			
+		}else if(command.equals("/opJoin.do")) {
+			service = new OpJoinService();
+			service.execute(request, response);
+			viewPage = "/opAllView.do";
+			
+		}else if(command.equals("/opAllView.do")) {
+			service = new OpAllViewService();
+			service.execute(request, response);
+			viewPage = "recTeam/opAllView.jsp";
+			
+		}else if(command.equals("/opRegister.do")) {
+			service = new OpRegisterService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
+
+		}else if(command.equals("/opModifyView.do")) {
+			service = new OpModifyViewService();
+			service.execute(request, response);
+			viewPage = "recTeam/opModify.jsp";
+			
+		}else if(command.equals("/opModify.do")) {
+			service = new OpModifyService();
+			service.execute(request, response);
+			viewPage = "/opAllView.do";
+		}else if(command.equals("/opWithdrawal.do")) {
+			service = new OpWithdrawalService();
+			service.execute(request, response);
+			viewPage = "/opAllView.do";
+
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
 /////////////////////////////////////////////////////////////////
 //////////////////////uploadboard 관련 요청////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -256,6 +345,28 @@ public class FrontController extends HttpServlet {
 			service = new PModifyService();
 			service.execute(request, response);
 			viewPage = "/projectList.do";
+			
+		}else if(command.equals("/projectFinish.do")) {
+			service = new PFinishService();
+			service.execute(request, response);
+			viewPage = "/projectList.do";
+			
+		}else if(command.equals("/projectDelete.do")) {
+			service = new PDeleteService();
+			service.execute(request, response);
+			viewPage = "/projectList.do";
+		
+
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
+		}else if(command.equals("")) {
+			viewPage = "";
 		}else if(command.equals("")) {
 			viewPage = "";
 		}else if(command.equals("")) {

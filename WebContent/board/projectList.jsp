@@ -102,6 +102,7 @@
 				history.back();
 			</script>
 		</c:if>
+		
 		<c:if test="${projectModifyResult eq SUCCESS }">
 			<script>alert('수정 성공');</script>
 		</c:if>
@@ -111,9 +112,13 @@
 				history.back();
 			</script>
 		</c:if>
-		<c:if test="${not empty deleteResult }">
+		<c:if test="${projectFinishResult eq SUCCESS }">
+			<script>alert('프로젝트 완료, 고생하셨습니다');</script>
+		</c:if>
+		<c:if test="${projectFinishResult eq FAIL }">
 			<script>
-				alert('${deleteResult}');
+				alert('${param.pnum}번 프로젝트 완료 과정에서 오류가 있습니다 다시 한번 확인해주세요');
+				history.back();
 			</script>
 		</c:if>
 		<c:if test="${replyResult eq SUCCESS }">
@@ -121,7 +126,7 @@
 		</c:if>
 		<c:if test="${replyResult eq FAIL }">
 			<script>
-				alert('${param.fid}번 글의 답변글 쓰기 실패')
+				alert('${param.pnum}번 글의 답변글 쓰기 실패')
 				history.go(-1);
 			</script>
 		</c:if>

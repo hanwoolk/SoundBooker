@@ -7,6 +7,11 @@ public class RecTeamDto {
 	private		String	rjob;
 	private		int		pnum;
 	public RecTeamDto() {}
+	public RecTeamDto(String rid, String rname, String rjob) {
+		this.rid = rid;
+		this.rname = rname;
+		this.rjob = rjob;
+	}
 	public RecTeamDto(String rid, String rpw, String rname, String rjob, int pnum) {
 		this.rid = rid;
 		this.rpw = rpw;

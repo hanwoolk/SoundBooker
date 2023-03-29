@@ -17,11 +17,11 @@ public class PRegisterService implements Service {
 		Date	penddate		=null;
 		String	pname			= request.getParameter("pname");
 		String	pcontent		= request.getParameter("pcontent");
-		String	pstartdateStr	= request.getParameter("pstartdate");
+		String	pstartdateStr	= request.getParameter("pstartdate"); //"2023-04-05";
 		if(!pstartdateStr.equals("")) {
 			pstartdate = Date.valueOf(pstartdateStr);
 		}
-		String	penddateStr		= request.getParameter("penddate");
+		String	penddateStr		= request.getParameter("penddate"); //"2023-04-06";
 		if(!penddateStr.equals("")) {
 			penddate = Date.valueOf(penddateStr);
 		}

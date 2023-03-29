@@ -12,9 +12,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.lec.soundbooker.dto.MemberDto;
 import com.lec.soundbooker.dto.ProjectDto;
-import com.lec.soundbooker.dto.RecTeamDto;
 
 public class ProjectDao {
 	public static final int FAIL = 0;
@@ -41,7 +39,7 @@ public class ProjectDao {
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
 		String sql = "SELECT *" + 
-				"    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT WHERE NOT PNUM IN (0) ORDER BY PNUM DESC) A)" + 
+				"    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT WHERE NOT pSTATUS IN ('완료') ORDER BY pNUM DESC) A)" + 
 				"    WHERE RN BETWEEN ? AND ?";
 		try {
 			conn = getConnection();
@@ -80,7 +78,7 @@ public class ProjectDao {
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
 		String sql = "SELECT *" + 
-				"    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT WHERE PNUM = 0 ORDER BY PRDATE DESC) A)" + 
+				"    FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM PROJECT WHERE pSTATUS = '완료' ORDER BY pNUM DESC) A)" + 
 				"    WHERE RN BETWEEN ? AND ?";
 		try {
 			conn = getConnection();
@@ -118,7 +116,7 @@ public class ProjectDao {
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
 		ResultSet			rs		= null;
-		String sql = "SELECT COUNT(*) FROM PROJECT WHERE NOT PNUM IN (0)";
+		String sql = "SELECT COUNT(*) FROM PROJECT WHERE NOT pSTATUS IN ('완료')";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -144,7 +142,7 @@ public class ProjectDao {
 		Connection			conn 	= null;
 		PreparedStatement	pstmt 	= null;
 		ResultSet			rs		= null;
-		String sql = "SELECT COUNT(*) FROM PROJECT WHERE PNUM = 0";
+		String sql = "SELECT COUNT(*) FROM PROJECT WHERE pSTATUS = '완료'";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -172,7 +170,7 @@ public class ProjectDao {
 		ResultSet         rs    = null;
 		String sql = "SELECT *" + 
 				"    FROM (SELECT ROWNUM RN, A.* " + 
-				"	 	FROM(SELECT * FROM PROJECT WHERE LOWER(pNAME) LIKE '%'||LOWER(?)||'%') A) AND NOT PNUM IN (0)" + 
+				"	 	FROM(SELECT * FROM PROJECT WHERE LOWER(pNAME) LIKE '%'||LOWER(?)||'%') A) AND NOT pSTATUS IN ('완료')" + 
 				"    WHERE RN BETWEEN ? AND ?";
 		try {
 			conn = getConnection();
@@ -224,7 +222,8 @@ public class ProjectDao {
 				int		pop   	 	=rs.getInt("pop");  
 				String	pcontent 	=rs.getString("pcontent"); 
 				Date	prdate   	=rs.getDate("prdate");
-				project = new ProjectDto(pnum, pname, pstartdate, penddate, pmember, pop, pcontent, prdate);
+				String	pstatus		=rs.getString("pstatus");
+				project = new ProjectDto(pnum, pname, pstartdate, penddate, pmember, pop, pcontent, prdate, pstatus);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -350,6 +349,7 @@ public class ProjectDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, pnum);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -370,6 +370,7 @@ public class ProjectDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, pnum);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -390,6 +391,7 @@ public class ProjectDao {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, pnum);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -402,17 +404,19 @@ public class ProjectDao {
 		}
 	}	
 	// (7-4) 프로젝트 완료시(PROJECT PNUM=>0으로)
-	private void projectFinish(int pnum) {
-		Connection 			conn 	= null;
-		PreparedStatement 	pstmt 	= null;
-		String sql = "UPDATE PROJECT SET PNUM = 0 WHERE PNUM=?";
+	public int projectFinish(int pnum) {
 		projectFinishStep1(pnum);
 		projectFinishStep2(pnum);
 		projectFinishStep3(pnum);
+		int result = FAIL;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
+		String sql = "UPDATE PROJECT SET pSTATUS = '완료' WHERE PNUM=?";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, pnum);
+			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}finally {
@@ -423,5 +427,31 @@ public class ProjectDao {
 				System.out.println(e.getMessage());
 			}
 		}
-	}	
+		return result;
+	}
+	// (8) 프로젝트 삭제
+	public int projectDelete(int pnum) {
+		projectFinishStep2(pnum);
+		projectFinishStep3(pnum);
+		int result = FAIL;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
+		String sql = "DELETE FROM PROJECT WHERE pNUM =?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pnum);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 }

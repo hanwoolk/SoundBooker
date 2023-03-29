@@ -17,11 +17,11 @@ public class PModifyService implements Service {
 		Date	penddate		= null;
 		int		pnum			= Integer.parseInt(request.getParameter("pnum"));
 		String	pname			= request.getParameter("pname");
-		String	pstartdateStr	= request.getParameter("pstartdateStr");
-		if(!pstartdateStr.equals("")) {
+		String	pstartdateStr	= request.getParameter("pstartdate");
+		if(!(pstartdateStr).equals("")) {
 			pstartdate = Date.valueOf(pstartdateStr);
 		}
-		String	penddateStr		= request.getParameter("penddate");//date가 안넘어옴 /////////////////////////////////////////////////////////////////////
+		String	penddateStr		= request.getParameter("penddate");
 		if(!penddateStr.equals("")) {
 			penddate = Date.valueOf(penddateStr);
 		}

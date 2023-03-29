@@ -235,8 +235,9 @@
 						<td colspan="2">
 						<p class="explain">필수 입력사항<span class="must_fill">*</span></p>
 							<p>
-								<input type="submit" value="회원가입" class="btn">
-								<input type="button" value="로그인" onclick="location='${conPath}/loginView.do'" class="btn">
+								<input type="submit" value="회원가입">
+								<input type="reset" value="초기화">
+								<input type="button" value="로그인" onclick="location='${conPath}/loginView.do'">
 							</p>
 						</td>
 					</tr>

@@ -21,28 +21,28 @@
 <body>
 <header>
 <nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
+	<div class="container-fluid">
 		<img src="${conPath }/db/logo.PNG" onclick="location.href='${conPath}/main.do'">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    	<span class="navbar-toggler-icon"></span>
     </button>
  		<c:if test="${empty member and empty recteam}"> <%-- 로그인 전 화면 --%>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">회사 소개</a>
+    	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      	<li class="nav-item">
+        	<a class="nav-link active" aria-current="page" href="#">회사 소개</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-           	 프로젝트
+        	<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          	 프로젝트
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${conPath }/loginView.do">프로젝트 목록</a></li>
+          	<li><a class="dropdown-item" href="${conPath }/loginView.do">프로젝트 목록</a></li>
             <li><a class="dropdown-item" href="${conPath }/loginView.do">마이 프로젝트</a></li>
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="${conPath }/loginView.do">자유 게시판</a>
+        	<a class="nav-link active" aria-current="page" href="${conPath }/loginView.do">자유 게시판</a>
         </li>
       </ul>
       <ul class="d-flex">
@@ -50,29 +50,45 @@
 				<li><a href="${conPath }/loginView.do">로그인</a></li>
       </ul>
     </div>
-   </c:if>
-   <c:if test="${not empty member or not empty recteam}"> <%-- 사용자 모드 로그인 화면--%>
-   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-       <li class="nav-item">
-         <a class="nav-link active" aria-current="page" href="#">회사 소개</a>
-       </li>
-       <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          	 프로젝트
-         </a>
-         <ul class="dropdown-menu">
-           <li><a class="dropdown-item" href="${conPath }/projectList.do">프로젝트 목록</a></li>
-           <li><a class="dropdown-item" href="${conPath }/.do">마이 프로젝트</a></li>
-         </ul>
-       </li>
-       <li class="nav-item">
-         <a class="nav-link active" aria-current="page" href="${conPath }/freeBoardList.do">자유 게시판</a>
-       </li>
-       <c:if test="${not empty recteam}">
-					<li class="nav-item">
-						<a class="nav-link active" aria-current="page"  href="${conPath }/uploadList.do" >업로드 게시판</a>
+  </c:if>
+  <c:if test="${not empty member or not empty recteam}"> <%-- 사용자 모드 로그인 화면--%>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    	<li class="nav-item">
+      	<a class="nav-link active" aria-current="page" href="#">회사 소개</a>
+    	</li>
+      <li class="nav-item dropdown">
+      	<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        	 프로젝트
+        </a>
+        <ul class="dropdown-menu">
+        	<li><a class="dropdown-item" href="${conPath }/projectList.do">프로젝트 목록</a></li>
+          <li><a class="dropdown-item" href="${conPath }/.do">마이 프로젝트</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+      	<a class="nav-link active" aria-current="page" href="${conPath }/freeBoardList.do">자유 게시판</a>
+      </li>
+      <c:if test="${not empty recteam}">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page"  href="${conPath }/uploadList.do" >업로드 게시판</a>
+				</li>
+				<c:if test="${recteam.rjob eq 'PROJECT_MANAGER' }">
+		      <li class="nav-item dropdown">
+		      	<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+		        	 작업자 관리
+		        </a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="${conPath }/opJoinView.do">신규 작업자 등록</a></li>
+							<li><a class="dropdown-item" href="${conPath }/opAllView.do">작업자 목록</a></li>
+						</ul>
 					</li>
+				</c:if>
+				<c:if test="${recteam.rjob eq 'SCHEDULER' }">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page"  href="${conPath }/memberList.do" >신청자 목록</a>
+				</li>
+				</c:if>
 			</c:if>
    	</ul>
 		<ul class="d-flex">

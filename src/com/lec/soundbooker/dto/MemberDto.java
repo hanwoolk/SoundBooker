@@ -25,14 +25,6 @@ public class MemberDto {
 	private		int		mpnum;
 	public MemberDto() {}
 	
-	/*
-	 * public MemberDto(String mid, String mpw, String mname, String mphone, String
-	 * maddress, String mdrive, String mprefer1, String mprefer2, String mprefer3,
-	 * String mbank, String maccount) { this.mid = mid; this.mpw = mpw; this.mname =
-	 * mname; this.mphone = mphone; this.maddress = maddress; this.mdrive = mdrive;
-	 * this.mprefer1 = mprefer1; this.mprefer2 = mprefer2; this.mprefer3 = mprefer3;
-	 * this.mbank = mbank; this.maccount = maccount; }
-	 */
 
 	public MemberDto(String mid, String mname, int pnumreg, Date mbirth, String mgender, String mphone, String morigin,
 			String maddress, String mdrive, String mprefer1, String mprefer2, String mprefer3, int rcnt, String mbank,

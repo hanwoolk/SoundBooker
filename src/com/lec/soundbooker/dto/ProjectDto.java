@@ -11,7 +11,20 @@ public class ProjectDto {
 	private		int		pop;
 	private		String	pcontent;
 	private		Date	prdate;
+	private		String	pstatus;
 	public ProjectDto() {}
+	public ProjectDto(int pnum, String pname, Date pstartdate, Date penddate, int pmember, int pop, String pcontent,
+			Date prdate, String pstatus) {
+		this.pnum = pnum;
+		this.pname = pname;
+		this.pstartdate = pstartdate;
+		this.penddate = penddate;
+		this.pmember = pmember;
+		this.pop = pop;
+		this.pcontent = pcontent;
+		this.prdate = prdate;
+		this.pstatus = pstatus;
+	}
 	public ProjectDto(String pname, Date pstartdate, Date penddate, int pmember, int pop, String pcontent) {
 		this.pname = pname;
 		this.pstartdate = pstartdate;
@@ -79,10 +92,16 @@ public class ProjectDto {
 	public void setPrdate(Date prdate) {
 		this.prdate = prdate;
 	}
+	public String getPstatus() {
+		return pstatus;
+	}
+	public void setPstatus(String pstatus) {
+		this.pstatus = pstatus;
+	}
 	@Override
 	public String toString() {
 		return "ProjectDto [pnum=" + pnum + ", pname=" + pname + ", pstartdate=" + pstartdate + ", penddate=" + penddate
-				+ ", pmember=" + pmember + ", pop=" + pop + ", pcontent=" + pcontent + ", prdate=" + prdate + "]";
+				+ ", pmember=" + pmember + ", pop=" + pop + ", pcontent=" + pcontent + ", prdate=" + prdate
+				+ ", pstatus=" + pstatus + "]";
 	}
-	
 }

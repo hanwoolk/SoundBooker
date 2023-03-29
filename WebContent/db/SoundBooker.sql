@@ -11,7 +11,8 @@ CREATE TABLE PROJECT(
     pMEMBER     NUMBER(4)       DEFAULT 0 NOT NULL,
     pOP         NUMBER(2)       DEFAULT 0 NOT NULL,
     pCONTENT    CLOB            NOT NULL,
-    pRDATE      DATE            DEFAULT SYSDATE NOT NULL
+    pRDATE      DATE            DEFAULT SYSDATE NOT NULL,
+    pSTATUS     VARCHAR2(20)    DEFAULT '진행중' NOT NULL
 );
 
 --------------------------------------------------------------------------------
