@@ -9,9 +9,8 @@
 	<title>Insert title here</title>
 	<style>
 		#join_wrapper{
-		  height: auto;
-		  min-height: 100%;
-		  padding-bottom: 100px;
+		  height: 830px;
+		  /*padding-bottom: 100px;*/
 		}
 		#join_wrapper .container{
 			border: 1px solid gray;
@@ -62,22 +61,29 @@
   		
 	 		$('input[name="mphone"]').keyup(function(){
 	 			var mphone = $(this).val();
-	 			//if(mphone.length<11){
-				//		$('#mnamePhoneConfirmResult').text("");
-				//	}else{
-		 				var mname = $('input[name="mname"]').val();
-		 				$.ajax({
+				var mname = $('input[name="mname"]').val();
+	 			var regPhone= /^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
+	 			$('.mnamePhoneConfirmResult').html(mphone);
+	 			if (mphone.length < 10 || mphone.length >14){
+	 				$('.mPhoneError').text("'-'포함 12~14자리 작성해주세요");
+	 			}else{
+	 				if(mphone.indexOf('-')==-1){
+						$('.mPhoneError').text("'-'를 포함하여 작성해주세요");
+					}else if(regPhone.test(mphone)){
+						$.ajax({
 		 					url : '${conPath}/mnamePhoneConfirm.do',
 		 					type : 'get',
-		 					data : 'mphone='+mphone+'&mname='+mname,
+		 					//data : 'mphone='+mphone+'&mname='+mname,
+		 					data : {'mphone':mphone, 'mname':mname},
 		 					dataType : 'html',
 		 					success : function(data){
-		 						$('#mnamePhoneConfirmResult').html(data);
+		 						$('.mnamePhoneConfirmResult').html(data);
 		 					},
-		 				}); // ajax 함수
-					//}
-	  		});// keyup event
-  		
+		 				});  
+					}
+	 			}
+	 			
+  		});// keyup event
   		$('#mpw, #mpwChk').keyup(function(){
   			var mpw = $('#mpw').val();
   			var mpwChk = $('#mpwChk').val();
@@ -92,7 +98,7 @@
   		// "사용 가능한 ID입니다"(#idConfirmResult),"비밀번호 일치"(pwChkResult)가 출력 되었을때만 submit
 				var midConfirmResult = $('#midConfirmResult').text().trim();
   			var mpwChkResult = $('#mpwChkResult').text().trim();
-  			var mnamePhoneConfirmResult = $('#mnamePhoneConfirmResult').text().trim();
+  			var mnamePhoneConfirmResult = $('.mnamePhoneConfirmResult').text().trim();
   			if(midConfirmResult != '사용 가능한 ID입니다'){
   				alert('사용 가능한 ID가 아닙니다');
   				return false; //submit 제한
@@ -133,7 +139,7 @@
 </head>
 <body>
 	<jsp:include page="../main/header.jsp"/>
-	<div id="wrapper">
+	<div id="join_wrapper">
 		<div class="container">
 			<form action="${conPath }/join.do" method="post" id="content_form">
 				<h3>회원가입</h3>
@@ -161,7 +167,7 @@
 					<tr><th>이름<span class="must_fill">*</span></th>
 						<td>
 							<input type="text" name="mname" class="mname" id="mname" required="required">
-							<div id="mnamePhoneConfirmResult"> &nbsp; &nbsp; &nbsp;</div>
+							<div class="mnamePhoneConfirmResult"> &nbsp; &nbsp; &nbsp;</div>
 						</td>
 					</tr>
 					<tr><th>생년월일<span class="must_fill">*</span></th>
@@ -178,7 +184,7 @@
 					<tr><th>전화번호<span class="must_fill">*</span></th>
 						<td>
 							<input type="text" name="mphone" required="required">
-							<div id="mnamePhoneConfirmResult"> &nbsp; &nbsp; &nbsp;</div>
+							<div class="mnamePhoneConfirmResult mPhoneError"> &nbsp; &nbsp; &nbsp;</div>
 						</td>
 					</tr>
 					<tr><th>국적<span class="must_fill">*</span></th>
@@ -192,48 +198,49 @@
 							<input type="radio" name="mdrive" value="n" checked="checked">불가능
 							<input type="radio" name="mdrive" value="y">가능
 						<td>
+					</td>
 					<tr><th>선호 녹음 시간1 &nbsp;&nbsp;</th><td><input type="text" name="mprefer1"></td></tr>
 					<tr><th>선호 녹음 시간2</th><td><input type="text" name="mprefer2"></td></tr>
 					<tr><th>선호 녹음 시간3</th><td><input type="text" name="mprefer3"></td></tr>
 					<tr>
 						<th>은행<span class="must_fill">*</span></th>
-					<td>
-						<select name="mbank" required="required">
-					   <option value="">은행명을 선택하세요</option>
-					   <option value="경남은행">경남은행</option>
-					   <option value="광주은행">광주은행</option>
-					   <option value="국민은행">국민은행</option>
-					   <option value="기업은행">기업은행</option>
-					   <option value="농협중앙회">농협중앙회</option>
-					   <option value="농협회원조합">농협회원조합</option>
-					   <option value="대구은행">대구은행</option>
-					   <option value="도이치은행">도이치은행</option>
-					   <option value="부산은행">부산은행</option>
-					   <option value="산업은행">산업은행</option>
-					   <option value="상호저축">상호저축은행</option>
-					   <option value="새마을금고">새마을금고</option>
-					   <option value="수협중앙회">수협중앙회</option>
-					   <option value="신한금융투자">신한금융투자</option>
-					   <option value="신한은행">신한은행</option>
-					   <option value="신협중앙회">신협중앙회</option>
-					   <option value="외환은행">외환은행</option>
-					   <option value="우리은행">우리은행</option>
-					   <option value="우체국">우체국</option>
-					   <option value="전북은행">전북은행</option>
-					   <option value="제주은행">제주은행</option>
-					   <option value="카카오뱅크">카카오뱅크</option>
-					   <option value="케이뱅크">케이뱅크</option>
-					   <option value="하나은행">하나은행</option>
-					   <option value="한국씨티은행">한국씨티은행</option>
-					   <option value="HSBC은행">HSBC은행</option>
-					   <option value="SC제일은행">SC제일은행</option>
-						</select>
-					</td>
-				</tr>
-				<tr><th>계좌번호<span class="must_fill">*</span></th><td><input type="text" name="maccount" placeholder="-없이 입력" required="required"></td></tr>
+						<td>
+							<select name="mbank" required="required">
+						   <option value="">은행명을 선택하세요</option>
+						   <option value="경남은행">경남은행</option>
+						   <option value="광주은행">광주은행</option>
+						   <option value="국민은행">국민은행</option>
+						   <option value="기업은행">기업은행</option>
+						   <option value="농협중앙회">농협중앙회</option>
+						   <option value="농협회원조합">농협회원조합</option>
+						   <option value="대구은행">대구은행</option>
+						   <option value="도이치은행">도이치은행</option>
+						   <option value="부산은행">부산은행</option>
+						   <option value="산업은행">산업은행</option>
+						   <option value="상호저축">상호저축은행</option>
+						   <option value="새마을금고">새마을금고</option>
+						   <option value="수협중앙회">수협중앙회</option>
+						   <option value="신한금융투자">신한금융투자</option>
+						   <option value="신한은행">신한은행</option>
+						   <option value="신협중앙회">신협중앙회</option>
+						   <option value="외환은행">외환은행</option>
+						   <option value="우리은행">우리은행</option>
+						   <option value="우체국">우체국</option>
+						   <option value="전북은행">전북은행</option>
+						   <option value="제주은행">제주은행</option>
+						   <option value="카카오뱅크">카카오뱅크</option>
+						   <option value="케이뱅크">케이뱅크</option>
+						   <option value="하나은행">하나은행</option>
+						   <option value="한국씨티은행">한국씨티은행</option>
+						   <option value="HSBC은행">HSBC은행</option>
+						   <option value="SC제일은행">SC제일은행</option>
+							</select>
+						</td>
+					</tr>
+					<tr><th>계좌번호<span class="must_fill">*</span></th><td><input type="text" name="maccount" placeholder="-없이 입력" required="required"></td></tr>
 					<tr>
 						<td colspan="2">
-						<p class="explain">필수 입력사항<span class="must_fill">*</span></p>
+							<p class="explain">필수 입력사항<span class="must_fill">*</span></p>
 							<p>
 								<input type="submit" value="회원가입">
 								<input type="reset" value="초기화">

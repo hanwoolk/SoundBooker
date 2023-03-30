@@ -10,6 +10,12 @@
 	<title>Insert title here</title>
   <script src="https://code.jquery.com/jquery-3.6.4.js"></Script>
   <style>
+	  #wrapper {
+	    justify-content: center;
+	    align-items: center;
+	    height: 627px;
+	    margin: 70px auto 100px auto;
+		}
   	.project_Table {
 		  border-spacing:10px;
 		  width:1000px;
@@ -130,56 +136,58 @@
 				history.go(-1);
 			</script>
 		</c:if>
-		<h3>모집중 프로젝트</h3>
-		<table class="project_Table">
-			<c:if test="${projectList.size() eq 0 }">
-				<tr class="content">
-					<td colspan="5">해당 페이지에 글이 없습니다</td>
-				</tr>
-			</c:if>
-			<%---------------------- 1줄 5개씩 총 15개 프로젝트 리스트업  ---------------%>
-			<c:if test="${projectList.size() != 0 }">   
-				<c:forEach var="dto" items="${projectList }" varStatus="loop">
-					<c:if test="${loop.index % 5 == 0 }">
-						<tr >
+		<div class="content">
+			<h3>모집중 프로젝트</h3>
+			<table class="project_Table">
+				<c:if test="${projectList.size() eq 0 }">
+					<tr class="content">
+						<td colspan="5">해당 페이지에 글이 없습니다</td>
+					</tr>
+				</c:if>
+				<%---------------------- 1줄 5개씩 총 15개 프로젝트 리스트업  ---------------%>
+				<c:if test="${projectList.size() != 0 }">   
+					<c:forEach var="dto" items="${projectList }" varStatus="loop">
+						<c:if test="${loop.index % 5 == 0 }">
+							<tr >
+						</c:if>
+							<td class="project_content">
+								<h3 class="ptitle" title="${dto.pnum }. ${dto.pname }"><span class="pnum${dto.pnum }">${dto.pnum }</span>. ${dto.pname }</h3>
+								<hr>
+								<p><span class="pcontent">${dto.pcontent }</span></p>
+								<p class = "date">게시일 : <fmt:formatDate value="${dto.prdate }" pattern="yy/MM/dd(E)"/></p>
+							</td>
+						<c:if test="${(loop.index + 1) % 5 == 0 || loop.last }">
+							</tr>
+						</c:if>																	
+					</c:forEach>
+				</c:if>
+			</table>
+			<%--------------------------- 게시판 페이징 ------------------------------%>
+			<div class="paging"> 
+				<c:if test="${startPage > BLOCKSIZE}">
+					[ <a href="${conPath }/projectList.do?pageNum=${startPage-1}">이전</a> ]
+				</c:if>
+				<c:forEach var="i" begin="${startPage }" end="${endPage}">
+					<c:if test="${i eq pageNum }">
+						[ <b>${i }</b> ]
 					</c:if>
-						<td class="project_content">
-							<h3 class="ptitle" title="${dto.pnum }. ${dto.pname }"><span class="pnum${dto.pnum }">${dto.pnum }</span>. ${dto.pname }</h3>
-							<hr>
-							<p><span class="pcontent">${dto.pcontent }</span></p>
-							<p class = "date">게시일 : <fmt:formatDate value="${dto.prdate }" pattern="yy/MM/dd(E)"/></p>
-						</td>
-					<c:if test="${(loop.index + 1) % 5 == 0 || loop.last }">
-						</tr>
-					</c:if>																	
+					<c:if test="${i != pageNum }">
+						[ <a href="${conPath}/projectList.do?pageNum=${i }">${i}</a> ]
+					</c:if>
 				</c:forEach>
-			</c:if>
-		</table>
-		<%--------------------------- 게시판 페이징 ------------------------------%>
-		<div class="paging"> 
-			<c:if test="${startPage > BLOCKSIZE}">
-				[ <a href="${conPath }/projectList.do?pageNum=${startPage-1}">이전</a> ]
-			</c:if>
-			<c:forEach var="i" begin="${startPage }" end="${endPage}">
-				<c:if test="${i eq pageNum }">
-					[ <b>${i }</b> ]
+				<c:if test="${endPage < pageCnt }">
+					[ <a href="${conPath }/projectList.do?pageNum=${endPage+1}">다음</a> ]
 				</c:if>
-				<c:if test="${i != pageNum }">
-					[ <a href="${conPath}/projectList.do?pageNum=${i }">${i}</a> ]
-				</c:if>
-			</c:forEach>
-			<c:if test="${endPage < pageCnt }">
-				[ <a href="${conPath }/projectList.do?pageNum=${endPage+1}">다음</a> ]
-			</c:if>
+			</div>
 		</div>
-	</div>
-	<%------------------------------ 프로젝트 등록 버튼 ---------------------------%>								
-	<c:if test="${recteam.rjob eq 'PROJECT_MANAGER'}">
-		<div class="posting">
-			<button onclick='location.href="${conPath}/projectRegisterView.do"'>프로젝트 등록</button>
-		</div>
-	</c:if>
+		<%------------------------------ 프로젝트 등록 버튼 ---------------------------%>								
+		<c:if test="${recteam.rjob eq 'PROJECT_MANAGER'}">
+			<div class="posting">
+				<button onclick='location.href="${conPath}/projectRegisterView.do"'>프로젝트 등록</button>
+			</div>
+		</c:if>
 	<%------------------------------------------------------------------------%>								
+	</div>
 	<jsp:include page="../main/footer.jsp"/>
 </body>
 </html>

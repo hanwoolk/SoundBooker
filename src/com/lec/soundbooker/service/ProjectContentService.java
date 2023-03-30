@@ -2,6 +2,7 @@ package com.lec.soundbooker.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.lec.soundbooker.dao.MemberDao;
 import com.lec.soundbooker.dao.ProjectDao;
@@ -11,7 +12,15 @@ public class ProjectContentService implements Service {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		int	pnum	= Integer.parseInt(request.getParameter("pnum"));
+		HttpSession session = request.getSession();
+		int tempPnum = 0;
+		String	pnumStr	= request.getParameter("pnum");
+		if(pnumStr == null) {
+			tempPnum = (int) session.getAttribute("pnum");
+		}else {
+			tempPnum = Integer.parseInt(request.getParameter("pnum"));
+		}
+		int pnum = tempPnum;
 		ProjectDao pDao = ProjectDao.getInstance();
 		RecTeamDao rDao = RecTeamDao.getInstance();
 		MemberDao mDao	= MemberDao.getInstance();

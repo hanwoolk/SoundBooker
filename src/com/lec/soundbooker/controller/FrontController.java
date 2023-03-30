@@ -22,6 +22,9 @@ import com.lec.soundbooker.service.MJoinService;
 import com.lec.soundbooker.service.MLoginService;
 import com.lec.soundbooker.service.MLogoutService;
 import com.lec.soundbooker.service.MModifyService;
+import com.lec.soundbooker.service.MMyProjectService;
+import com.lec.soundbooker.service.MProjectCancelService;
+import com.lec.soundbooker.service.MProjectRegisetService;
 import com.lec.soundbooker.service.MRegisterService;
 import com.lec.soundbooker.service.MWithdrawalService;
 import com.lec.soundbooker.service.MemberOutService;
@@ -39,6 +42,7 @@ import com.lec.soundbooker.service.PRegisterService;
 import com.lec.soundbooker.service.ProjectContentService;
 import com.lec.soundbooker.service.ProjectListService;
 import com.lec.soundbooker.service.RTLoginService;
+import com.lec.soundbooker.service.RtMyProjectService;
 import com.lec.soundbooker.service.Service;
 import com.lec.soundbooker.service.UBCommentDeleteService;
 import com.lec.soundbooker.service.UBCommentModifyService;
@@ -90,8 +94,8 @@ public class FrontController extends HttpServlet {
 		}else if(command.equals("/mnamePhoneConfirm.do")) {
 			service = new MnamePhoneConfirmService();
 			service.execute(request, response);
-			
 			viewPage = "member/mnamePhoneConfirm.jsp";
+			
 		}else if(command.equals("/join.do")) {
 			service = new MJoinService();
 			service.execute(request, response);
@@ -142,10 +146,14 @@ public class FrontController extends HttpServlet {
 			service = new MAllView();
 			service.execute(request, response);
 			viewPage = "member/memberList.jsp";
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
+			
+		}else if(command.equals("/mProjectRegister.do")) {
+			service = new MProjectRegisetService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
+			
+		}else if(command.equals("/mMyInfoView.do")) {
+			viewPage = "member/myInfo.jsp";
 /////////////////////////////////////////////////////////////////
 //////////////////////freeboard 관련 요청//////////////////////////
 ////////////////////////////////////////////////////////////////			
@@ -198,7 +206,6 @@ public class FrontController extends HttpServlet {
 			service = new FBCommentModifyService();
 			service.execute(request, response);
 			viewPage = "/freeBoardContent.do";
-			
 /////////////////////////////////////////////////////////////////
 //////////////////////recTeam 관련 요청////////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -235,6 +242,11 @@ public class FrontController extends HttpServlet {
 			service.execute(request, response);
 			viewPage = "recTeam/opModify.jsp";
 			
+		}else if(command.equals("/rtModifyView.do")) {
+			service = new OpModifyViewService();
+			service.execute(request, response);
+			viewPage = "recTeam/opModify.jsp";
+			
 		}else if(command.equals("/opModify.do")) {
 			service = new OpModifyService();
 			service.execute(request, response);
@@ -243,15 +255,10 @@ public class FrontController extends HttpServlet {
 			service = new OpWithdrawalService();
 			service.execute(request, response);
 			viewPage = "/opAllView.do";
-
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
+			
+		}else if(command.equals("/rtMyInfoView.do")) {
+			viewPage = "recTeam/myInfo.jsp";
+			
 /////////////////////////////////////////////////////////////////
 //////////////////////uploadboard 관련 요청////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -355,12 +362,21 @@ public class FrontController extends HttpServlet {
 			service = new PDeleteService();
 			service.execute(request, response);
 			viewPage = "/projectList.do";
+			
+		}else if(command.equals("/rtMyProject.do")) {
+			service = new RtMyProjectService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
+			
+		}else if(command.equals("/memberMyProject.do")) {
+			service = new MMyProjectService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
 		
-
-		}else if(command.equals("")) {
-			viewPage = "";
-		}else if(command.equals("")) {
-			viewPage = "";
+		}else if(command.equals("/mProjectcancel.do")) {
+			service = new MProjectCancelService();
+			service.execute(request, response);
+			viewPage = "/projectContent.do";
 		}else if(command.equals("")) {
 			viewPage = "";
 		}else if(command.equals("")) {

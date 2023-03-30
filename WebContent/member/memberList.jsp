@@ -10,6 +10,7 @@
 	<title>Insert title here</title>
 </head>
 <body>
+	<jsp:include page="../main/header.jsp"/>
 	<div class="opList">
 		<h3 class="worker_title">투입 인원</h3>
 		<table class="worker_table">
@@ -54,5 +55,6 @@
 			</c:if>
 		</div>
 	</div>
+	<jsp:include page="../main/footer.jsp"/>
 </body>
 </html>

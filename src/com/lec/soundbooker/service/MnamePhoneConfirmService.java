@@ -16,7 +16,7 @@ public class MnamePhoneConfirmService implements Service {
 		MemberDao mDao = MemberDao.getInstance();
 		result = mDao.mnamePhoneConfirm(mname, mphone);
 		if(result == MemberDao.EXIST) {
-			request.setAttribute("mnamePhoneConfirmResult", "<b>중복되는 이름과 생년월일이 있습니다</b>");
+			request.setAttribute("mnamePhoneConfirmResult", "<b>중복되는 이름과 휴대폰번호가 있습니다</b>");
 		}else {
 			request.setAttribute("mnamePhoneConfirmResult", "가입 가능합니다");
 		}

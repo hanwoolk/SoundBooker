@@ -72,13 +72,85 @@
     -webkit-overflow-scrolling: touch;
   }
  	#wrapper {
-		height: auto;
+		height: 906px;
 	  min-height: 100%;
 	  padding-bottom: 100px;
 	} 
-	footer{
-		position:absolute;
-		bottom:0;
+	.main{height:930px; padding:0;
+	}
+	.p-5 mb-4 bg-light rounded-3{height:100%;
+	}
+	.image_wrapper {
+	overflow:hidden; height:930px;
+  display: inline-block;
+  padding: 0;
+  animation: fadein 3s;
+  -webkit-animation: fadein 3s;
+  }
+	.image_wrapper img{
+		width:800px; 
+		height:930px; 
+		cursor:default;
+	  object-fit: cover;
+    margin: auto;
+    }
+	.greeting {
+  display: inline-block;
+  padding: 10px;
+  animation: fadein 2.5s;
+  animation-delay:1s;
+  -webkit-animation: fadein 3s;
+  font-weight:10em;
+  font-size:4.7em;
+  margin-left:90px;
+  margin-top:-90px;
+  
+	}
+		.content {
+  display: inline-block;
+  padding: 10px;
+  animation: fadein 2.5s;
+  animation-delay:2s;
+  -webkit-animation: fadein 3s; 
+  font-weight:4em;
+  font-size:1.7em;
+  text-align:left;
+  word-break: keep-all;
+  line-height:2em;
+  margin-left:90px;
+	}
+		.button {
+  display: inline-block;
+  padding: 10px;
+  background-color:#6A56C7;
+  color:#EFC53F;
+  border:none;
+  border-radius:14px;
+  animation: fadein 3s;
+  animation-delay:2.5s;
+  -webkit-animation: fadein 3s; 
+  font-weight:3em;
+  font-size:1.5em;
+  margin-left:300px;
+	}
+	@keyframes fadein {
+	    from {
+	        opacity: 0;
+	    }
+	    to {
+	        opacity: 1;
+	    }
+	}
+	@-webkit-keyframes fadein { 
+	    from {
+	        opacity: 0;
+	    }
+	    to {
+	        opacity: 1;
+	    }
+	}
+	.py-5{
+		padding:0px;
 	}
 </style>
 </head>
@@ -119,19 +191,22 @@
 	<div id="wrapper">
 		<table>
 			<tr>
-				<td>
-			    <div class="p-5 mb-4 bg-light rounded-3" style="width:1000px; margin: 0 auto; height:780px;">
-			      <div class="container-fluid py-5">
-			        <h1 class="display-5 fw-bold">어서오세요</h1>
-			        <p class="col-md-8 fs-4" style="text-align:left;">SoundBooker만의 쉽고 간단한 녹음 프로젝트에 참여하세요. 여러 재미있는 녹음부터 자녀와 함께할 수 있는 녹음, 외국어 녹음 등 많은 프로젝트가 준비되어 있으니 놓치지 말고 참여하세요</p>
-			        <button class="btn btn-primary btn-lg" type="button" onclick="location.href='${conPath}/joinView.do'">회원가입 하러가기</button>
-			      </div>
+				<td class="main">
+			    <div class="p-5 mb-4 bg-light rounded-3" style="width:1000px; margin: 0 auto; height:100%;">
+<!-- 			      <div class="container-fluid py-5">
+ -->			      	<br><br><br><br><br><br><Br>
+			        <p class="greeting">어서오세요</p>
+			        <br><br><br><!-- display-5 fw-bold -->
+			        <p class="content" >SoundBooker만의 쉽고 간단한 녹음 프로젝트에 참여하세요. 여러 재미있는 녹음부터 자녀와 함께할 수 있는 녹음, 외국어 녹음 등 많은 프로젝트가 준비되어 있으니 놓치지 말고 참여하세요</p>
+			        <br><br><br><br><br><!-- col-md-8 fs-4 -->
+			        <button class="button" type="button" onclick="location.href='${conPath}/joinView.do'">회원가입 하러가기</button>
+			      <!-- </div> --><!-- btn btn-primary btn-lg -->
 			    </div>
 		    </td>
-	    </tr>
-	    <tr>
 		    <td>
-		    	<img src="" alt="감각적인 녹음이미지">
+		    	<div class="image_wrapper">
+    				<img src="${conPath }/db/main.jpg" alt="mainIMG" >
+    			</div>
 		    </td>
 	    </tr>
 		</table>

@@ -20,15 +20,16 @@
 	  });
   </script>
   <style>
-    	#wrapper{
-  		width:1000px;
-  		margin:0 auto;
-  		text-align:center;
-  	}
-  	h3{padding-top:30px; padding-bottom:30px;}
+		#wrapper {
+		    justify-content: center;
+		    align-items: center;
+		    height: 573px;
+		    margin: 100px auto 100px auto;
+		}
+  	.h3{padding-top:30px; padding-bottom:30px; text-align:center;}
   	.board_list {
   		border-spacing: 30px;
-  		width:100%;
+  		width:1000px;
   		margin: 0 auto;
   		text-align :center;
   		argin: 20px auto;
@@ -49,13 +50,14 @@
   		position:absolute;
   		bottom:150px;
   		text-align:center;
-  		margin:0 auto;
   	}
   	
   	.posting{
-  	width:800px;
-  	margin:0 auto;
-  	text-align:center;
+	  	width:100%;
+	  	margin:0 auto;
+	  	text-align:center;
+	  	position:absolute;
+	  	bottom:250px;
   	}
   </style>
 </head>
@@ -84,7 +86,7 @@
 				history.go(-1);
 			</script>
 		</c:if>
-		<h3>업로드 게시판</h3>
+		<div class="h3"><h3>업로드 게시판</h3></div>
 		<table class="board_list">
 			<tr>
 				<th>글번호</th><th>작성자ID</th><th>글제목</th>

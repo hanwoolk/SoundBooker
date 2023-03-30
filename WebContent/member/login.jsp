@@ -11,21 +11,32 @@
 	<style>
 		h1,p {text-align: center;}
 		h1 {padding :50px;}
-		.wrapper {
-		  display: flex;
-		  justify-content: center;
-		  align-items: center;
-		  min-height: 100px;
-		  background: ;
+		th{padding-right:30px;		}
+		#wrapper {
+	    justify-content: center;
+	    align-items: center;
+	    height: 714px;
+	    margin: 100px auto 100px auto;
 		}
-		
 		.content {
+			width:520px;
+			margin:0 auto;
 		  font-family: system-ui, serif;
 		  font-size: 2rem;
-		  padding: 3rem;
+		  padding: 40px;
 		  border-radius: 10px;
 		  border:1px solid gray;
-		  background: whtie;
+		  background-color: #6A56C7;
+		  color: #EFC53F;
+		}
+		.bttn{
+			all: unset;
+		  background-color:#6A56C7;
+		  color: #EFC53F;
+		  font-size:1em;
+		  font-weight:1.1em;
+		  padding-top:20px;
+		  margin:0 30px 0 30px;
 		}
 	</style>
 </head>
@@ -45,8 +56,8 @@
 	<form action="${conPath }/login.do" method="post" id="content_form">
 		<input type="hidden" name="method" value="${param.method }">
 		<input type="hidden" name="fnum" value="${param.fnum }">
-		<h1>사용자 로그인</h1>
-		<div class="wrapper">
+		<div id="wrapper">
+			<h1>사용자 로그인</h1>
 			<div class="content">
 			<table>
 				<tr>
@@ -58,8 +69,8 @@
 				<tr>
 					<td colspan="2">
 						<p>
-							<input type="submit" value="로그인" class="btn">
-							<input type="button" value="회원가입" onclick="location='${conPath}/joinView.do'" class="btn">
+							<input type="submit" value="로그인" class="bttn">
+							<input type="button" value="회원가입" onclick="location='${conPath}/joinView.do'" class="bttn">
 						</p>
 					</td>
 				</tr>

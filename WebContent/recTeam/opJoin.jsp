@@ -8,33 +8,42 @@
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<style>
-		#join_wrapper{
-		  height: auto;
+		#wrapper {
+		  justify-content: center;
+		  align-items: center;
+		  height:697px;
 		  min-height: 100%;
-		  padding-bottom: 100px;
+		  padding-bottom:100px ;
 		}
-		#join_wrapper .container{
-			border: 1px solid gray;
-			width : 500px;
-			margin: 30px auto 0 auto;
-			height:700px;
-			padding-top:10px;
-		
-		}
-		h1, h3, p {text-align: center;}
+		.title{text-align:center;}
 		p{margin-top: 30px;}
-		table{ margin: 0 auto; padding:30px;}
-		table tr td input[type=text],input[type=password]  {
-			width:300px;
-			}
-		.must_fill{
-			font-weight:bold;
-			color:red;
+		table tr th{width:160px; text-align:right; padding-right:30px;}
+		table tr td{padding:2px; padding-left:30px;}
+		table tr td:nth-last-child(1){text-align:center; padding:0;}
+		table{margin:0 auto;}
+		.table_wrapper{
+			width:500px;
+		  border-radius: 10px;			
+			margin: 100px auto 0 auto; 
+			border:1px solid gray; 
+			box-shadow:4px 4px #EFC53F;
+			padding:30px 10px 10px 10px;}
 		}
-		.explain{
-			font-style:italic;
-			font-size:0.7em;
-			text-align:right;
+		h3 {
+	    display: block;
+	    font-size: 1.17em;
+	    margin-block-start: 1em;
+	    margin-block-end: 1em;
+	    margin-inline-start: 0px;
+	    margin-inline-end: 0px;
+	    font-weight: bold;
+		}
+		p {text-align: center;}
+		.bttn {
+		    all: unset;
+		    font-size: 1em;
+		    padding-top: 20px;
+		    margin: 0 20px 20px;
 		}
 	</style>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -68,10 +77,10 @@
 <body>
 	<jsp:include page="../main/header.jsp"/>
 	<div id="wrapper">
-		<div class="container">
+		<div class="table_wrapper">
 			<form action="${conPath }/opJoin.do" method="get">
-				<h3>신규 작업자 등록</h3>
-				<table>
+				<div class="title"><h3>신규 작업자 등록</h3></div>
+				<table class="board_list">
 					<tr><th>이름</th>
 						<td>
 							<input type="text" name="rname" class="mname" required="required">
@@ -97,12 +106,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<p>
-								<input type="submit" value="등록">
-								<input type="reset" value="초기화">
-								<input type="button" value="로그인" onclick="location='${conPath}/recTeamLoginView.do'">
-							</p>
+						<td colspan="2">
+								<input type="submit" value="등록" class="bttn">
+								<input type="reset" value="초기화" class="bttn">
+								<input type="button" value="로그인" onclick="location='${conPath}/recTeamLoginView.do'" class="bttn">
 						</td>
 					</tr>
 				</table>

@@ -12,12 +12,20 @@
   <script src="https://code.jquery.com/jquery-3.6.4.js"></Script>
   <style>
   	*{margin:0; padding:0;}
-  	#wrapper{min-height:100%; padding-bottom:100px;
-  	}
+#wrapper {
+    justify-content: center;
+    align-items: center;
+    height: 110%;
+    margin: 100px auto 100px auto;
+}
 		.project_table{
 			width:1000px;
 			margin:60px auto 0 auto;
 			border:1px solid gray;
+		}
+		.project_table tr td{
+			font-size:1.2em;
+			font-weight:1.15em;
 		}
 		.project_table tr td{height:40px;}
 		.project_table .rdate{text-align:right; font-style:italic; padding-right:30px;}
@@ -32,18 +40,18 @@
 			margin:0px auto;
 			border:1px solid gray;
 		}
+		.worker_table tr td{
+			text-align:center;
+			font-size:1.15em;
+			font-weight:1.7em;
+		}
 		.buttons{ text-align:center; margin:10px auto;}
 		.buttons .button{ width:40px; border:none; margin:0 5px;}
 		/* form{width:1000px; margin:0 auto;} */
 		.category {background-color:lightgray; text-align:center;}
 		.category tr td ,.category tr th{border:1px solid gray; text-align:center;}
+		form tr td {text-align:center;}
 		.category_content{background-color:gray; text-align:left;}
-  	.paging {
-  		width:100%;
-  		position:absolute;
-  		bottom:150px;
-  		text-align:center;
-  	}
   </style>
   <script>
   	$(document).ready(function(){
@@ -70,6 +78,16 @@
 					history.back();
 				</script>
 			</c:if>
+			<c:if test="${not empty registerResultMSG}">
+				<script>
+					alert('${registerResultMSG}')
+				</script>
+			</c:if>
+			<c:if test="${not empty cancelMSG}">
+				<script>
+					alert('${cancelMSG}')
+				</script>
+			</c:if>
 		<%-------------------------------- 프로젝트 게시판 상세보기 ---------------------------%>
 			<table class="project_table">
 				<tr><td colspan="2"><p class="pname">${projectContent.pname }</p></td></tr>
@@ -90,9 +108,14 @@
 					<button class="button" onclick="location.href='${conPath}/projectFinish.do?pnum=${param.pnum }&pageNum=${param.pageNum }'">완료</button>
 				</c:if>
 				<button class="button" onclick="location.href='${conPath}/projectList.do?pageNum=${param.pageNum }'">목록</button>
+				<c:if test="${not empty member and (member.pnum eq 0) and (param.pnum != member.pnumreg)}">
+					<button class="button" onclick="location.href='${conPath}/mProjectRegister.do?pnum=${param.pnum }&pageNum=${param.pageNum }'">프로젝트 신청</button>
+				</c:if>
+				<c:if test="${not empty member and (member.pnumreg eq param.pnum)}">
+					<button class="button" onclick="location.href='${conPath}/mProjectcancel.do?pnum=${param.pnum }&pageNum=${param.pageNum }'">신청 취소</button>
+				</c:if>
 			</div>
 		</div>
-	</div>
 	<div class="hr"><hr></div>
 	<br>
 	<%-----------------------------------------------투입된 작업자 리스트----------------------------------------------------------%>
@@ -101,8 +124,14 @@
 			<h3 class="worker_title">투입 인원</h3>
 			<table class="worker_table">
 				<tr class="category">
-					<th >ID</th><th >이름</th><th >직책</th><th>생년월일</th><th>성별</th><th>휴대폰번호</th><th>출신지</th><th>거주지</th>
-					<th>운전 가능여부</th><th>선호시간1</th><th>선호시간2</th><th>선호시간3</th><th>녹음 횟수</th><th>제외 버튼</th>
+					<th >ID</th><th >이름</th><th >직책</th><th>생년월일</th><th>성별</th>
+					<c:if test="${not empty recteam}">
+						<th>휴대폰번호</th><th>출신지</th><th>거주지</th>
+						<th>운전 가능여부</th><th>선호시간1</th><th>선호시간2</th><th>선호시간3</th><th>녹음 횟수</th>
+					</c:if>
+					<c:if test="${recteam.rjob eq 'PROJECT_MANAGER' or recteam.rjob eq 'SCHEDULER'}">
+						<th>제외 버튼</th>
+					</c:if>
 				</tr>
 				<c:forEach var="rdto" items="${projectOp }">
 					<form action="${conPath }/opOut.do" method="get">
@@ -112,14 +141,16 @@
 							<td>${rdto.rjob eq 'OPERATOR'? '작업자':'rdto.rjob'}</td>
 							<td>-</td>
 							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
+							<c:if test="${not empty recteam}">
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+							</c:if>
 							<c:if test="${recteam.rjob eq 'PROJECT_MANAGER' }">
 								<td ><button class="out_button">제외</button></td>
 							<td><input type="hidden" name="rid" value="${rdto.rid }"></td>
@@ -135,16 +166,18 @@
 							<td>${mdto.mid }</td>
 							<td>${fn:substring(mdto.mname,0,1)}**</td>
 							<td>신청자</td>
-							<td>${mdto.mbirth }</td>
+							<td><fmt:formatDate value="${mdto.mbirth}" pattern="YYYY-**-**"/></td>
 							<td>${mdto.mgender }</td>
-							<td>${mdto.mphone }</td>
-							<td>${mdto.morigin eq 'N'? '내국인':'외국인'}</td>
-							<td>${mdto.maddress eq null? '-':mdto.maddress}</td>
-							<td>${mdto.mdrive  eq 'N'? '불가(확인필요)':'가능'}</td>
-							<td>${mdto.mprefer1 eq null? '-':mdto.mprefer1}</td>
-							<td>${mdto.mprefer2 eq null? '-':mdto.mprefer2}</td>
-							<td>${mdto.mprefer3 eq null? '-':mdto.mprefer3}</td>
-							<td>${mdto.rcnt }회</td>
+							<c:if test="${not empty recteam}">
+								<td>${mdto.mphone }</td>
+								<td>${mdto.morigin eq 'N'? '내국인':'외국인'}</td>
+								<td>${mdto.maddress eq null? '-':mdto.maddress}</td>
+								<td>${mdto.mdrive  eq 'N'? '불가(확인필요)':'가능'}</td>
+								<td>${mdto.mprefer1 eq null? '-':mdto.mprefer1}</td>
+								<td>${mdto.mprefer2 eq null? '-':mdto.mprefer2}</td>
+								<td>${mdto.mprefer3 eq null? '-':mdto.mprefer3}</td>
+								<td>${mdto.rcnt }회</td>
+							</c:if>
 							<c:if test="${recteam.rjob eq 'SCHEDULER' }">
 								<td ><button class="out_button">제외</button></td>
 							<td><input type="hidden" name="mid" value="${mdto.mid }"></td>
@@ -180,22 +213,6 @@
 							</tr>
 						</c:forEach>
 					</table>
-					<div class="paging">
-						<c:if test="${startPage > BLOCKSIZE}">
-							[ <a href="${conPath }/opAllView.do?pageNum=${startPage-1}">이전</a> ]
-						</c:if>
-						<c:forEach var="i" begin="${startPage }" end="${endPage}">
-							<c:if test="${i eq pageNum }">
-								[ <b>${i }</b> ]
-							</c:if>
-							<c:if test="${i != pageNum }">
-								[ <a href="${conPath}/opAllView.do?pageNum=${i }">${i}</a> ]
-							</c:if>
-						</c:forEach>
-						<c:if test="${endPage < pageCnt }">
-							[ <a href="${conPath }/opAllView.do?pageNum=${endPage+1}">다음</a> ]
-						</c:if>
-					</div>
 				</form>
 			</div>
 		</c:if>
@@ -230,25 +247,10 @@
 						</c:forEach>
 					</table>
 				</form>
-				<div class="paging">
-					<c:if test="${startPage > BLOCKSIZE}">
-						[ <a href="${conPath }/opAllView.do?pageNum=${startPage-1}">이전</a> ]
-					</c:if>
-					<c:forEach var="i" begin="${startPage }" end="${endPage}">
-						<c:if test="${i eq pageNum }">
-							[ <b>${i }</b> ]
-						</c:if>
-						<c:if test="${i != pageNum }">
-							[ <a href="${conPath}/opAllView.do?pageNum=${i }">${i}</a> ]
-						</c:if>
-					</c:forEach>
-					<c:if test="${endPage < pageCnt }">
-						[ <a href="${conPath }/opAllView.do?pageNum=${endPage+1}">다음</a> ]
-					</c:if>
-				</div>
 			</div>
 		</c:if>
 		<%------------------------------------------------------------------------- --%>
+	</div>
 	<jsp:include page="../main/footer.jsp"/>
 </body>
 </html>

@@ -102,6 +102,34 @@ public class RecTeamDao {
 		}
 		return recTeam;
 	}	
+	// (3) rid로 자신의 프로젝트 불러오기(pnum만)
+	public int getMyProject(String rid) {
+		int rtPnum = FAIL;
+		Connection        conn  = null;
+		PreparedStatement pstmt = null;
+		ResultSet         rs    = null;
+		String sql = "SELECT PNUM FROM RECTEAM WHERE rId=?";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, rid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				rtPnum = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs    != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return rtPnum;
+	}	
 	//-------------------------프로젝트 관리자--------------------------
 	// (1) 퇴사 직원의 빈 ID 출력
 	public String getOpId() {

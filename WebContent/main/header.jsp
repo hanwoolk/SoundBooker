@@ -12,8 +12,8 @@
 <style>
 	
 	img{width:300px; cursor:pointer;}
-	.d-flex {list-style:none;}
-	.d-flex a{text-decoration:none; list-style:none; color:#EFC53F; margin: 0 10px;}
+	.d-flex {list-style:none; padding-right:10px;}
+	.d-flex a{text-decoration:none; list-style:none; color:gray; margin: 0 10px; padding-right:10px;}
 	ul:first-child{margin: 0 30px;}
 	header nav:first-child{background-color:#6A56C7;}
 </style>
@@ -63,7 +63,12 @@
         </a>
         <ul class="dropdown-menu">
         	<li><a class="dropdown-item" href="${conPath }/projectList.do">프로젝트 목록</a></li>
-          <li><a class="dropdown-item" href="${conPath }/.do">마이 프로젝트</a></li>
+        <c:if test="${not empty recteam and recteam.rjob != 'SCHEDULER'}">
+          <li><a class="dropdown-item" href="${conPath }/rtMyProject.do">마이 프로젝트</a></li>
+         </c:if>
+        <c:if test="${not empty member and member.pnum != null}">
+          <li><a class="dropdown-item" href="${conPath }/memberMyProject.do">마이 프로젝트</a></li>
+         </c:if>
         </ul>
       </li>
       <li class="nav-item">
@@ -93,13 +98,13 @@
    	</ul>
 		<ul class="d-flex">
 			<c:if test="${not empty member }">
-				<li><a href="${conPath }/내정보 상세보기.do">${member.mname}님 </a></li>
+				<li><a href="${conPath }/mMyInfoView.do?">${member.mname}님 </a></li>
 				<li><a href="${conPath }/modifyView.do">정보수정 </a></li>
 				<li><a href="${conPath }/logout.do">로그아웃</a></li>
 			</c:if>
 			<c:if test="${not empty recteam }">
-				<li><a href="${conPath }/내정보 상세보기.do">${recteam.rname}님 </a></li>
-				<li><a href="${conPath }/rtmodifyView.do">정보수정 </a></li>
+				<li><a href="${conPath }/rtMyInfoView.do">${recteam.rname}님 </a></li>
+				<li><a href="${conPath }/rtModifyView.do">정보수정 </a></li>
 				<li><a href="${conPath }/logout.do">로그아웃</a></li>
 			</c:if>
      </ul>
@@ -109,12 +114,12 @@
 </nav>
 </header>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <style>
+<!--     <style>
     #wrapper{
 		  height: auto;
 		  min-height: 100%;
 		  padding-bottom: 100px;
 		}
-    </style>
+    </style> -->
 </body>
 </html>

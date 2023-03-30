@@ -14,7 +14,7 @@
 		height:100px; 
 		background-color: #6A56C7;
 		position:relative;
-		transform:translateY(-100%);
+		bottom:-1px;
   }
 	footer #footer_conts, footer #footer_conts a {
 		color: #EFC53F;
@@ -33,7 +33,7 @@
 	<footer>
 		<div id="footer_conts">
 			<p>(주)SoundBooker</p> 
-			<p>서울특별시 어떤구 어떤로 9 좋은빌딩 1-5F | <b><a href="${conPath }/rtLoginView.do">직원 모드</a></b></p>
+			<p>서울특별시 어떤구 어떤로 9 좋은빌딩 1-5F <c:if test="${empty recteam and empty member}">| <b><a href="${conPath }/rtLoginView.do">직원 모드</a></b></c:if></p>
 			<p>Copyright© 2022 SB . All rights reserved.</p>
 		</div>
 	</footer>
