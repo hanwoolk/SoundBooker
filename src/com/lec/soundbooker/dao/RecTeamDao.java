@@ -131,13 +131,39 @@ public class RecTeamDao {
 		return rtPnum;
 	}	
 	//-------------------------프로젝트 관리자--------------------------
+	// (0) 작업자 등록용 빈 ID만들기
+	public int makeOperatorId(String rid) {
+		int result = FAIL;
+		Connection 			conn 	= null;
+		PreparedStatement 	pstmt 	= null;
+		String sql = "INSERT INTO RECTEAM (rID, rPW, rNAME, rJOB) " + 
+				"    VALUES(?,'0','0','OPERATOR')";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, rid);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}	
+	
+	
 	// (1) 퇴사 직원의 빈 ID 출력
 	public String getOpId() {
 		String OpId = null;
 		Connection			conn	= null;
 		PreparedStatement	pstmt	= null;
 		ResultSet			rs		=null;
-		String sql = "SELECT rID FROM RECTEAM WHERE rNAME='0' AND rJOB='OPERATOR' ORDER BY rID";
+		String sql = "SELECT rID FROM RECTEAM WHERE rNAME='0' AND rJOB='OPERATOR' ORDER BY  TO_NUMBER(SUBSTR(rID,3))";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -347,13 +373,13 @@ public class RecTeamDao {
 		}
 		return projectManager;
 	}	
-	// (4-1) 프로젝트 없는 녹음 작업자 전체 수
+	// (4-1) 프로젝트 있는 녹음 작업자 전체 수
 	public int getOperatorTotCnt() {
 		int totCnt = 0;
 		Connection        conn  = null;
 		PreparedStatement pstmt = null;
 		ResultSet         rs    = null;
-		String sql = "SELECT COUNT(*) CNT FROM RECTEAM WHERE rJOB='OPERATOR'";
+		String sql = "SELECT COUNT(*) CNT FROM RECTEAM WHERE rJOB='OPERATOR' AND NOT RNAME IN ('0')";
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -439,7 +465,7 @@ public class RecTeamDao {
 		return recteams;
 	}
 
-	// (4-4) 녹음 작업자 리스트-- 해당 프로젝트 진행중인 녹음 작업자를(PNUM)으로 검색
+	// (4-4-1) 녹음 작업자 리스트-- 해당 프로젝트 진행중인 녹음 작업자를(PNUM)으로 검색
 	public ArrayList<RecTeamDto> getOperatorList(int pnum) {
 		ArrayList<RecTeamDto> recteams = new ArrayList<RecTeamDto>();
 		Connection        conn  = null;
@@ -471,6 +497,33 @@ public class RecTeamDao {
 			}
 		}
 		return recteams;
+	}
+	// (4-4-2) 녹음 작업자의 수-- 해당 프로젝트 진행중인 녹음 작업자를(PNUM)으로 검색
+	public int getHowManyOpCnt(int pnum) {
+		int cnt = 0;
+		Connection        conn  = null;
+		PreparedStatement pstmt = null;
+		ResultSet         rs    = null;
+		String sql = "SELECT COUNT(*) FROM RECTEAM WHERE PNUM=? AND RJOB = 'OPERATOR'";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pnum);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt= rs.getInt(1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs    != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return cnt;
 	}
 	// (4-5) 전체 녹음 작업자 리스트(TOP-N)-- 빈 ID 제외
 	public ArrayList<RecTeamDto> getAllOperatorList(int startRow, int endRow) {

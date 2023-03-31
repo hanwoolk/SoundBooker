@@ -139,7 +139,41 @@ public class MemberDao {
 			}
 		}
 		return result;
-	}	
+	}
+	// (2-2) 더미회원가입
+	public int DummyjoinMember(MemberDto member) {
+		int result = FAIL;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "INSERT INTO MEMBER (mID, mPW, mNAME,mBIRTH, mGENDER, mPHONE, mORIGIN," + 
+				"        mADDRESS, mBANK, mACCOUNT) " + 
+				"    VALUES(?, ?, ?, '1990-06-06', ?, ?, ?," + 
+				"        ?,?, ?)";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMid());
+			pstmt.setString(2, member.getMpw());
+			pstmt.setString(3, member.getMname());
+			pstmt.setString(4, member.getMgender());
+			pstmt.setString(5, member.getMphone());
+			pstmt.setString(6, member.getMorigin());
+			pstmt.setString(7, member.getMaddress());
+			pstmt.setString(8, member.getMbank());
+			pstmt.setString(9, member.getMaccount());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return result;
+	}
 	// (3-1) 계정 활성화
 	public int activateId(String mid) {
 		int result = ALREADYACTIVATE;
@@ -419,7 +453,7 @@ public class MemberDao {
 		return totCnt;
 	}	
 	
-	// (9) 특정 프로젝트에 투입된 신청자(pnum으로 멤버 리스트 출력)
+	// (9-1) 특정 프로젝트에 투입된 신청자(pnum으로 멤버 리스트 출력)
 	public ArrayList<MemberDto> getMemberList(int pnum) {
 		ArrayList<MemberDto> members = new ArrayList<MemberDto>();
 		Connection        conn  = null;
@@ -464,7 +498,33 @@ public class MemberDao {
 		}
 		return members;
 	}
-
+	// (9-2) 특정 프로젝트에 투입된 신청자의 수(pnum으로 출력)
+	public int getHowManyMemberCnt(int pnum) {
+		int cnt = 0;
+		Connection        conn  = null;
+		PreparedStatement pstmt = null;
+		ResultSet         rs    = null;
+		String sql = "SELECT COUNT(*) FROM MEMBER WHERE PNUM=? AND MACTIVATE = 'ON'";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pnum);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt= rs.getInt(1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(rs    != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn  != null) conn.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return cnt;
+	}
 	// (10) 신청한 MEMBER 등록으로 (pNUMREG => pNUM)
 	public int memberConfirm(String mid) {
 		int result = FAIL;

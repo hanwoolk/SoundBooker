@@ -82,7 +82,7 @@
 						<tr>
 							<td colspan="2" style="text-align:center">
 								<input type="submit" value="정보수정" class="bttn">
-								<input type="reset" value="초기화" class="bttn">
+								<input type="reset" value="다시 쓰기" class="bttn">
 								<input type="reset" value="이전" onclick="history.back()" class="bttn">
 							</td>
 						</tr>

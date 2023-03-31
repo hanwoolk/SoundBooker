@@ -12,12 +12,12 @@
 		h1,p {text-align: center;}
 		h1 {padding :50px;}
 		th{padding-right:30px;		}
-#wrapper {
-    justify-content: center;
-    align-items: center;
-    height: 614px;
-    margin: 100px auto 100px auto;
-}
+		#wrapper {
+	    justify-content: center;
+	    align-items: center;
+	    height: 597px;
+	    margin: 100px auto 100px auto;
+		}
 		
 		.content {
 			width:520px;

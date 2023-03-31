@@ -109,7 +109,7 @@ public class ProjectDao {
 			}
 		}
 		return projects;
-	}	
+	}
 	// (2-1) 진행 or 진행 예정 프로젝트 갯수
 	public int getProjectTotCnt() {
 		int totCnt = 0;

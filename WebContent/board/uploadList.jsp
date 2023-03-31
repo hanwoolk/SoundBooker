@@ -57,7 +57,7 @@
 	  	margin:0 auto;
 	  	text-align:center;
 	  	position:absolute;
-	  	bottom:250px;
+	  	bottom:220px;
   	}
   </style>
 </head>

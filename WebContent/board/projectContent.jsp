@@ -99,7 +99,7 @@
 					</td>
 				</tr>
 				<tr><th>프로젝트 시작일 : ${projectContent.pstartdate}</th><th>&nbsp;&nbsp;프로젝트 종료 예정일 : ${projectContent.penddate}</th></tr>
-				<tr><th>모집 참여자 수: ${projectContent.pmember}명</th><th>&nbsp;&nbsp;투입 작업자 수: ${projectContent.pop}명</th></tr>
+				<tr><th>모집 참여자 수: ${empty HowManyMember? "0": HowManyMember} / ${projectContent.pmember}명</th><th>&nbsp;&nbsp;투입 작업자 수: ${empty HowManyOp? "0":HowManyOp} / ${projectContent.pop}명</th></tr>
 			</table>
 			<div class="buttons">
 				<c:if test="${not empty recteam.rid and recteam.rjob eq 'PROJECT_MANAGER'}">
@@ -108,17 +108,17 @@
 					<button class="button" onclick="location.href='${conPath}/projectFinish.do?pnum=${param.pnum }&pageNum=${param.pageNum }'">완료</button>
 				</c:if>
 				<button class="button" onclick="location.href='${conPath}/projectList.do?pageNum=${param.pageNum }'">목록</button>
-				<c:if test="${not empty member and (member.pnum eq 0) and (param.pnum != member.pnumreg)}">
-					<button class="button" onclick="location.href='${conPath}/mProjectRegister.do?pnum=${param.pnum }&pageNum=${param.pageNum }'">프로젝트 신청</button>
-				</c:if>
-				<c:if test="${not empty member and (member.pnumreg eq param.pnum)}">
-					<button class="button" onclick="location.href='${conPath}/mProjectcancel.do?pnum=${param.pnum }&pageNum=${param.pageNum }'">신청 취소</button>
+				<c:if test="${(not empty member and member.pnum eq 0) and (pnum ne member.pnumreg)}">
+					<button class="button" onclick="location.href='${conPath}/mProjectRegister.do?pnum=${pnum }&pageNum=${param.pageNum }'" style="width:120px;">프로젝트 신청</button>
+ 				</c:if>
+				<c:if test="${not empty member and (member.pnumreg eq pnum)}">
+					<button class="button" onclick="location.href='${conPath}/mProjectcancel.do?pnum=${pnum }&pageNum=${param.pageNum }'" style="width:100px;">신청 취소</button>
 				</c:if>
 			</div>
 		</div>
 	<div class="hr"><hr></div>
 	<br>
-	<%-----------------------------------------------투입된 작업자 리스트----------------------------------------------------------%>
+	<%-----------------------------------------------투입된 작업자&신청자 리스트----------------------------------------------------------%>
 	<c:if test="${not empty projectOp or not empty projectMember}">
 		<div class="opList">
 			<h3 class="worker_title">투입 인원</h3>
@@ -129,7 +129,7 @@
 						<th>휴대폰번호</th><th>출신지</th><th>거주지</th>
 						<th>운전 가능여부</th><th>선호시간1</th><th>선호시간2</th><th>선호시간3</th><th>녹음 횟수</th>
 					</c:if>
-					<c:if test="${recteam.rjob eq 'PROJECT_MANAGER' or recteam.rjob eq 'SCHEDULER'}">
+					<c:if test="${(recteam.rjob eq 'PROJECT_MANAGER' and pnum eq recteam.pnum) or recteam.rjob eq 'SCHEDULER' }">
 						<th>제외 버튼</th>
 					</c:if>
 				</tr>
@@ -151,7 +151,7 @@
 								<td>-</td>
 								<td>-</td>
 							</c:if>
-							<c:if test="${recteam.rjob eq 'PROJECT_MANAGER' }">
+							<c:if test="${recteam.rjob eq 'PROJECT_MANAGER' and pnum eq recteam.pnum}">
 								<td ><button class="out_button">제외</button></td>
 							<td><input type="hidden" name="rid" value="${rdto.rid }"></td>
 							<td><input type="hidden" name="pageNum" value="${param.pageNum }"></td>
@@ -180,10 +180,10 @@
 							</c:if>
 							<c:if test="${recteam.rjob eq 'SCHEDULER' }">
 								<td ><button class="out_button">제외</button></td>
+							</c:if>
 							<td><input type="hidden" name="mid" value="${mdto.mid }"></td>
 							<td><input type="hidden" name="pageNum" value="${param.pageNum }"></td>
 							<td><input type="hidden" name="pnum" value="${param.pnum }"></td>
-							</c:if>
 						</tr>
 					</form>
 				</c:forEach>
@@ -199,14 +199,19 @@
 				<form action="${conPath }/opRegister.do" method="get">
 					<table class="worker_table">
 						<tr class="category">
-							<th>ID</th><th>이름</th><th>진행중 프로젝트</th><th>등록버튼</th>
+							<th>ID</th><th>이름</th><th>진행중 프로젝트</th>
+							<c:if test="${pnum eq recteam.pnum }">
+								<th>등록버튼</th>
+							</c:if>
 						</tr>
 						<c:forEach var="rdto" items="${OpList }">
 							<tr>
 								<td>${rdto.rid }</td>
 								<td>${rdto.rname }</td>
 								<td>${rdto.pnum eq 0? "없음":rdto.pnum}</td>
-								<td><input type="submit" value="등록"></td>
+								<c:if test="${recteam.pnum eq pnum }">
+									<td><input type="submit" value="등록"></td>
+								</c:if>
 								<td><input type="hidden" name="rid" value="${rdto.rid }"></td>								
 								<td><input type="hidden" name="pnum" value="${param.pnum }"></td>								
 								<td><input type="hidden" name="pageNum" value="${param.pageNum }"></td>								

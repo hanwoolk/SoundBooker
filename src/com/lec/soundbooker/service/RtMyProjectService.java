@@ -18,6 +18,7 @@ public class RtMyProjectService implements Service {
 		RecTeamDao rDao = RecTeamDao.getInstance();
 		int pnum = rDao.getMyProject(rid);
 		session.setAttribute("pnum",pnum);
+		
 	}
 
 }

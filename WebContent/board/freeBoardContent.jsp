@@ -30,6 +30,7 @@
 		.comment{width:1000px; margin:0 auto;}
 		textarea {width:1000px;}
 		form{width:1000px; margin:0 auto;}
+		a{}
   </style>
   <script src="https://code.jquery.com/jquery-3.6.4.js"></Script>
   <script>
@@ -37,7 +38,7 @@
   		$('.comment_modify').click(function(){
   			var frcontent = $('.frcontent').text();
 				$('.frcontent').replaceWith('<pre><textarea rows="5" cols="20" name="frcontent">'+frcontent+'</textarea></pre>');
-				$('.comment_modify').replaceWith('<button>수정</button>');
+				$('.comment_modify').replaceWith('<button style="all: unset; cursor:pointer;">수정</button>');
   		});
   	});
   </script>
@@ -106,11 +107,11 @@
 						<input type="hidden" name="pageNum" value=${param.pageNum }>
 						<hr>
 						${dto.mid }${dto.rid } 님 | <fmt:formatDate value="${dto.frrdate }" pattern="yy-MM-dd hh:mm"/><br>
-							<pre class="frcontent">${dto.frcontent }</pre>
+						<pre class="frcontent">${dto.frcontent }</pre>
 						<br>
 						<c:if test="${(not empty dto.mid and dto.mid eq member.mid) or (not empty dto.rid and dto.rid eq recteam.rid)}">
-							<span><a class="comment_modify">수정 </a></span>
-							<span><a href="${conPath}/freeCommentDelete.do?fnum=${dto.fnum}&frnum=${dto.frnum}">삭제</a></span><br>
+							<span><a class="comment_modify" style="color : black; text-decoration:none; cursor:pointer">수정 </a></span>
+							<span><a href="${conPath}/freeCommentDelete.do?fnum=${dto.fnum}&frnum=${dto.frnum}" style="color : black; text-decoration:none;">삭제</a></span><br>
 						</c:if>
 					</form>
 				</c:forEach>

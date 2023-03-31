@@ -70,6 +70,7 @@ INSERT INTO RECTEAM (rID, rPW, rNAME, rJOB)
     VALUES('OP7','0','0','OPERATOR');
 INSERT INTO RECTEAM (rID, rPW, rNAME, rJOB) 
     VALUES('OP8','0','0','OPERATOR');
+
 --------------------------------------------------------------------------------
 ----------------------------------MEMBER----------------------------------------
 --------------------------------------------------------------------------------
@@ -207,9 +208,9 @@ VALUES (5 , 'PMKIM1', '글1-댓글1', SYSDATE, '192.168.0.4',2);
 
 SELECT * FROM UPLOADBOARD_COMMENT;
 
-INSERT INTO PROJECT (pNUM, pNAME, pSTARTDATE, pENDDATE, pCONTENT) 
-    VALUES(1,'차량내 소음 측정','2023-01-01','2023-06-06','차량내에서 소음 측정');
+
 COMMIT;
+SELECT rID FROM RECTEAM WHERE rNAME='0' AND rJOB='OPERATOR' ORDER BY  TO_NUMBER(SUBSTR(rID,3));
 
 SELECT * FROM RECTEAM;
 SELECT * FROM MEMBER;

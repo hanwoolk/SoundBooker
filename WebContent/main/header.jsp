@@ -16,6 +16,8 @@
 	.d-flex a{text-decoration:none; list-style:none; color:gray; margin: 0 10px; padding-right:10px;}
 	ul:first-child{margin: 0 30px;}
 	header nav:first-child{background-color:#6A56C7;}
+	li{margin-right:10px;}
+	.dropdown-menu li{margin: 0 auto;}
 </style>
 </head>
 <body>
@@ -38,7 +40,7 @@
           </a>
           <ul class="dropdown-menu">
           	<li><a class="dropdown-item" href="${conPath }/loginView.do">프로젝트 목록</a></li>
-            <li><a class="dropdown-item" href="${conPath }/loginView.do">마이 프로젝트</a></li>
+            <li><a class="dropdown-item" href="${conPath }/loginView.do?pnum=${param.pnum}">마이 프로젝트</a></li>
           </ul>
         </li>
         <li class="nav-item">

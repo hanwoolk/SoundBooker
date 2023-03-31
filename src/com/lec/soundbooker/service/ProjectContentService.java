@@ -21,6 +21,7 @@ public class ProjectContentService implements Service {
 			tempPnum = Integer.parseInt(request.getParameter("pnum"));
 		}
 		int pnum = tempPnum;
+		request.setAttribute("pnum", pnum);
 		ProjectDao pDao = ProjectDao.getInstance();
 		RecTeamDao rDao = RecTeamDao.getInstance();
 		MemberDao mDao	= MemberDao.getInstance();
@@ -28,6 +29,8 @@ public class ProjectContentService implements Service {
 		request.setAttribute("projectContent", pDao.projectContent(pnum));
 		request.setAttribute("projectOp", rDao.getOperatorList(pnum));
 		request.setAttribute("projectMember", mDao.getMemberList(pnum));
+		request.setAttribute("HowManyOp", rDao.getHowManyOpCnt(pnum));
+		request.setAttribute("HowManyMember", mDao.getHowManyMemberCnt(pnum));
 		/////////////////////////////PM용 프로젝트 없는 op_list//////////////////////////////////////////////////
 		String pageNum 	= request.getParameter("pageNum");
 		if(pageNum == null) pageNum = "1";
@@ -54,10 +57,11 @@ public class ProjectContentService implements Service {
 		if(mpageNum == null) mpageNum = "1";
 		int mcurrentPage = Integer.parseInt(mpageNum);
 		final int MPAGESIZE = 20, MBLOCKSIZE = 10; // 진행중 변경 예정
+		int pnumreg = pnum;
 		int mstartRow = (mcurrentPage-1)*MPAGESIZE + 1;
 		int mendRow	 = mstartRow + MPAGESIZE - 1;
-		request.setAttribute("regMemberList", mDao.getRegMemberList(pnum, mstartRow, mendRow));
-		int mtotCnt = mDao.getRegMemberTotCnt(pnum); //글 갯수
+		request.setAttribute("regMemberList", mDao.getRegMemberList(pnumreg, mstartRow, mendRow));
+		int mtotCnt = mDao.getRegMemberTotCnt(pnumreg); //글 갯수
 		int mpageCnt = (int)Math.ceil((double)mtotCnt/MPAGESIZE);
 		int mstartPage	= ((mcurrentPage-1)/MBLOCKSIZE)*MBLOCKSIZE + 1;
 		int mendPage 	= mstartPage + MBLOCKSIZE -1;

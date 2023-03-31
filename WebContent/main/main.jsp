@@ -160,9 +160,14 @@
 			location.href = '${conPath}/boardWriteView.do';
 		</script>
 	</c:if>
-	<c:if test="${param.method eq 'modify'}">
+	<c:if test="${param.method eq 'uploadModify'}">
 		<script>
-			location.href = '${conPath}/modifyView.do.do?mid=${param.mid}';
+			location.href = '${conPath}/uploadModifyView.do?unum=${param.unum}';
+		</script>
+	</c:if>
+	<c:if test="${param.method eq 'FBmodify'}">
+		<script>
+			location.href = '${conPath}/freeBoardModifyView.do?fnum=${param.fnum}';
 		</script>
 	</c:if>
 	<c:if test="${not empty activateId}">
@@ -199,7 +204,12 @@
 			        <br><br><br><!-- display-5 fw-bold -->
 			        <p class="content" >SoundBooker만의 쉽고 간단한 녹음 프로젝트에 참여하세요. 여러 재미있는 녹음부터 자녀와 함께할 수 있는 녹음, 외국어 녹음 등 많은 프로젝트가 준비되어 있으니 놓치지 말고 참여하세요</p>
 			        <br><br><br><br><br><!-- col-md-8 fs-4 -->
-			        <button class="button" type="button" onclick="location.href='${conPath}/joinView.do'">회원가입 하러가기</button>
+			        <c:if test="${empty member and empty recteam}">
+			        	<button class="button" type="button" onclick="location.href='${conPath}/joinView.do'">회원가입 하러가기</button>
+			        </c:if>
+			        <c:if test="${not empty member or not empty recteam}">
+			        	<button class="button" type="button" onclick="location.href='${conPath}/projectList.do'">프로젝트 보러가기</button>
+			        </c:if>
 			      <!-- </div> --><!-- btn btn-primary btn-lg -->
 			    </div>
 		    </td>

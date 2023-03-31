@@ -15,7 +15,7 @@
 		#wrapper {
 	    justify-content: center;
 	    align-items: center;
-	    height: 714px;
+	    height: 597px;
 	    margin: 100px auto 100px auto;
 		}
 		.content {

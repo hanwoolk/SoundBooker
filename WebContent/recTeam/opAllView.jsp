@@ -56,7 +56,7 @@
 <body>
 	<jsp:include page="../main/header.jsp"/>
 	<div id="wrapper">
-		<div class="table_wrapper">
+		<div class="container">
 			<c:set var="SUCCESS" value="1"/>
 			<c:set var="FAIL" value="0"/>
 			<c:if test="${not empty opJoinMSG}">
@@ -81,23 +81,23 @@
 					</tr>
 				</c:forEach>
 			</table>
-			<div class="paging">
-				<c:if test="${startPage > BLOCKSIZE}">
-					[ <a href="${conPath }/opAllView.do?pageNum=${startPage-1}">이전</a> ]
-				</c:if>
-				<c:forEach var="i" begin="${startPage }" end="${endPage}">
-					<c:if test="${i eq pageNum }">
-						[ <b>${i }</b> ]
-					</c:if>
-					<c:if test="${i != pageNum }">
-						[ <a href="${conPath}/opAllView.do?pageNum=${i }">${i}</a> ]
-					</c:if>
-				</c:forEach>
-				<c:if test="${endPage < pageCnt }">
-					[ <a href="${conPath }/opAllView.do?pageNum=${endPage+1}">다음</a> ]
-				</c:if>
-			</div>
 		</div>
+	</div>
+	<div class="paging">
+		<c:if test="${startPage > BLOCKSIZE}">
+			[ <a href="${conPath }/opAllView.do?pageNum=${startPage-1}">이전</a> ]
+		</c:if>
+		<c:forEach var="i" begin="${startPage }" end="${endPage}">
+			<c:if test="${i eq pageNum }">
+				[ <b>${i }</b> ]
+			</c:if>
+			<c:if test="${i != pageNum }">
+				[ <a href="${conPath}/opAllView.do?pageNum=${i }">${i}</a> ]
+			</c:if>
+		</c:forEach>
+		<c:if test="${endPage < pageCnt }">
+			[ <a href="${conPath }/opAllView.do?pageNum=${endPage+1}">다음</a> ]
+		</c:if>
 	</div>
 	<jsp:include page="../main/footer.jsp"/>
 </body>

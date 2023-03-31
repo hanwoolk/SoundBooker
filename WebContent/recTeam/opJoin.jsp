@@ -108,7 +108,7 @@
 					<tr>
 						<td colspan="2">
 								<input type="submit" value="등록" class="bttn">
-								<input type="reset" value="초기화" class="bttn">
+								<input type="reset" value="다시 쓰기" class="bttn">
 								<input type="button" value="로그인" onclick="location='${conPath}/recTeamLoginView.do'" class="bttn">
 						</td>
 					</tr>

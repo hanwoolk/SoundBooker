@@ -19,6 +19,7 @@ public class MProjectRegisetService implements Service {
 		MemberDao mDao2 = MemberDao.getInstance();
 		result = mDao.projectRegister(pnumreg, mid);
 		session.setAttribute("member", mDao2.getMember(mid));;
+		session.setAttribute("pnum", pnumreg);
 		if(result != MemberDao.FAIL) {
 			request.setAttribute("registerResultMSG", "신청 완료되었습니다");
 		}else {

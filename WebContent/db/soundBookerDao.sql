@@ -43,11 +43,12 @@ SELECT COUNT(*) CNT FROM MEMBER;
 SELECT *
     FROM (SELECT ROWNUM RN, A.* FROM(SELECT * FROM MEMBER ORDER BY RCNT DESC) A)
     WHERE RN BETWEEN 1 AND 10;
-
--- (9) 회원탈퇴
+-- (9) 특정 프로젝트를 진행중인 신청자의 수
+SELECT COUNT(*) FROM MEMBER WHERE PNUM=1 AND MACTIVATE = 'ON';
+-- (10) 회원탈퇴
 UPDATE MEMBER SET mACTIVATE = 'OFF'
     WHERE mID ='aaa';
--- (10) 계정 활성화
+-- (11) 계정 활성화
 UPDATE MEMBER SET mACTIVATE = 'ON'
     WHERE mID ='aaa' and mACTIVATE = 'OFF';
 ROLLBACK;
@@ -198,7 +199,8 @@ SELECT *
 -- (2) 자신이 진행중인 프로젝트
 SELECT R.PNUM PNUM, PNAME, PSTARTDATE, PENDDATE, PMEMBER, POP, PCONTENT, PRDATE
     FROM PROJECT P, RECTEAM R WHERE R.PNUM = P.PNUM AND rID='OP3';
-
+-- (3) 특정 프로젝트에 투입된 작업자의 수
+SELECT COUNT(*) FROM RECTEAM WHERE PNUM=1 AND RJOB = 'OPERATOR';
 -------------------------------------------------------------------------------
 -------------------------------- UploadBoard query------------------------------
 -------------------------------------------------------------------------------
