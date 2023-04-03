@@ -24,7 +24,7 @@
 [8. Project Source Explorer](https://github.com/hanwoolk/SoundBooker#project-source-explorer)<br>
 [9. 실행화면 설명](https://github.com/hanwoolk/SoundBooker#%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4-%EC%84%A4%EB%AA%85)<br>
 
-## 잡업분할도
+## 작업분할도
 ![1 작업분할도_1](https://user-images.githubusercontent.com/119464040/228998630-e8b66a95-7385-41d1-bf60-5bb05140e746.JPG)
 ![2 작업분할도_2](https://user-images.githubusercontent.com/119464040/228998776-dea03bd4-9b8a-400d-8a46-31ab806fc419.JPG)
 ![3 작업분할도_3](https://user-images.githubusercontent.com/119464040/228998782-b2f9117d-1efc-4e65-94b2-54d6e5df636c.JPG)
